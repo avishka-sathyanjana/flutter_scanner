@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/mark_item_menu.dart';
 import 'package:flutter_mobile_barcode_qrcode_scanner/qr_scanner.dart';
-
+import 'package:flutter_mobile_barcode_qrcode_scanner/selection_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    title: 'Navigation',
+    home: LocationScreen()
+  ));
 }
 
 
@@ -19,7 +23,7 @@ class MyApp extends StatelessWidget {
             elevation: 0.0,
           )),
       title: "QR Scanner",
-      home:QRScanner(), // to create the scelloton of the app
+      home:SelectionScreen(), // to create the scelloton of the app
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:qr_flutter/qr_flutter.dart';
+// import 'package:qr_flutter/qr_flutter.dart';
 
 class ResultScreen extends StatelessWidget {
 
@@ -25,7 +26,7 @@ class ResultScreen extends StatelessWidget {
               )),
           centerTitle: true,
           title: const Text(
-            "QR Scanner",
+            "QR Scanner 2",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -34,11 +35,13 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
         ),
-        body:  Padding(
+        body:  Container(
+            alignment: Alignment.center,
             padding: const EdgeInsets.all(12.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //to generate the qr code
+                // f// to generate the qr code
                 // QrImageView(
                 //   data: code,
                 //   version: QrVersions.auto,
