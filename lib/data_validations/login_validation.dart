@@ -27,7 +27,6 @@ bool LoginValidation(String email, String password,BuildContext context){
        // showError("successful");
        return false;
      }
-     print("errrrrrrrrrrrrrrrrrrrrrrrr");
      return true;
   }
 
@@ -54,7 +53,7 @@ void showError(BuildContext context, String error) {
                         color: Colors.red
                       ),
                       ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     Text(error,style: const TextStyle(
                       fontFamily: fontRaleway,
                       fontSize:12,
@@ -75,7 +74,7 @@ void showError(BuildContext context, String error) {
       behavior:SnackBarBehavior.floating,
       elevation:0,
       backgroundColor:Colors.transparent,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       // Adjust the duration as needed
     ),
   );

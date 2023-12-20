@@ -39,8 +39,9 @@ class _ButtonWidgetState extends State<ButtonWidget> {
           borderRadius:BorderRadius.circular(12)
       ),
       child: ElevatedButton(
-        onPressed:()=>widget.validationStates(),
+        onPressed:()=>widget.validationStates(),// call back function when execute the button
         style: ButtonStyle(
+          // button style
           backgroundColor: MaterialStateProperty.all<Color>(widget.buttonColor),
           elevation: MaterialStateProperty.all<double>(0), // Remove elevation
           shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(

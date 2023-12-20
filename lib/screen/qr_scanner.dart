@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_barcode_qrcode_scanner/results_screen.dart';
+import '/screen/results_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
+import '/database/auth_file.dart';
 const bgColor = Color(0xfffafafa);
 
 class QRScanner extends StatefulWidget {
@@ -14,6 +16,7 @@ class QRScanner extends StatefulWidget {
 class _QRScannerState extends State<QRScanner> {
 
   bool isScanComplete = false;
+  final FirebaseAuth _auth=FirebaseAuth.instance;
 
   void closeScreen(){
     isScanComplete = false;
@@ -33,8 +36,21 @@ class _QRScannerState extends State<QRScanner> {
             letterSpacing: 1,
           ),
         ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,),
+              onPressed: ()async{
+                 if( await AuthService().isLoginCheck()){
+                   setState(() {
+                      AuthService().logOut();
+                      Navigator.pop(context);
+
+                   });
+                 }
+              },
+        ),
       ), //
       body: Container(
+        //color: Colors.red,
         width: double.infinity,
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -67,9 +83,10 @@ class _QRScannerState extends State<QRScanner> {
                 )
             ),
 
-            // scanner part
+            // scanner part ......................
             Expanded(
                 flex: 4,
+                // scanner widget
                 child: MobileScanner(
                   allowDuplicates: true,
                   onDetect: (barcode, args){

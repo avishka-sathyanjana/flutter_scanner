@@ -1,12 +1,14 @@
 
-import '/qr_scanner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'qr_scanner.dart';
 import '/style_varible/style_screen.dart';
-
 import 'package:flutter/material.dart';
 import '/widget/button_widget.dart';
 import '/data_validations/login_validation.dart';
+import '/database/auth_file.dart';
 import '/screen/dash_bord_screen.dart';
+import 'results_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -19,9 +21,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  late String email=""; //get email value
+  late  String password="";//get password value
 
-  late String email="";
-  late  String password="";
 
 //logo and pages hedar view
   Widget logoView(BuildContext context,String image,String hed){
@@ -57,7 +61,8 @@ class _MainScreenState extends State<MainScreen> {
       IconData icon,
       bool hideText,
       double defirent,
-      Function textValue,){
+      Function textValue,
+      TextEditingController controller){
     return Container(
       width:double.infinity,
       height: 50,
@@ -71,6 +76,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       child: TextField(
         obscureText:hideText,
+        controller:controller ,
         decoration:InputDecoration(
             suffixIcon:Icon(icon,color: Colors.black12,),
             contentPadding:const EdgeInsets.only(left:20,top: 10),
@@ -87,31 +93,41 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   // validation data
-  void validateData(BuildContext context){
+  void validateData(BuildContext context)async{
     // add future function after
       if(!LoginValidation(email, password,context)){
-          //Navigator.pushNamed(context,DashBord.routeDashBord);
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>const QRScanner()));
+              User? user=await AuthService().signInWithEmailAndPassword(
+                  email,
+                  password
+              );
+              if(user!=null){
+                 setState(() {
+                  // Navigator.push(context, MaterialPageRoute(builder: (_)=>const DashBord()));
+                   Navigator.push(context, MaterialPageRoute(builder: (_)=>QRScanner()));
+                   _emailController.clear();
+                   _passwordController.clear();
+                    email="";
+                    password="";
+
+                 });
+              }else{
+                setState(() {
+                  showError(context, "Email or password is invalid");
+                });
+              }
+
       }else{
          throw()=>Exception("error rec vest");
       }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final routes= ModalRoute.of(context)?.settings.arguments as Map<String,dynamic>?;
-    final Function strtTime=routes!['startTime'] as Function;
     return Scaffold(
-     // backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           backgroundColor: colorPlate2,
-            leading:IconButton(
-               icon:const Icon(Icons.arrow_back),
-                onPressed:()=>{
-                  Navigator.pop(context),
-                  strtTime()
-                }
-            ),
+          automaticallyImplyLeading: false,
             title: const Text(
                 "Assets Manager",
                style: TextStyle(
@@ -121,31 +137,32 @@ class _MainScreenState extends State<MainScreen> {
                ),
             ),
         ),
-        body: SingleChildScrollView(
+        body:SingleChildScrollView(
           child: Container(
              //color: colorPlate3,
             margin: const EdgeInsets.all(20),
             child: Column(
                  children: [
-                   logoView(context,"assets/images/logoucsc.png","Login"),
-          
+                   logoView(context,"assets/images/logoucsc.png","Login"),//logo view
+                   // input filed function
                    inputFiled(context, "Enter your Email", Icons.email_outlined,false,50,(value){
                         setState(() {
-                           email=value;
+                           email=value; // set user email to email variable
                         });
-                   }),
-          
+                   },_emailController),
+                  // input filed function
                    inputFiled(context, "Enter your Password",Icons.content_paste_search,true,25,(value){
                         setState(() {
-                           password=value;
+                           password=value; //set password password variable
                         });
-                   }),
-
+                   },_passwordController),
+                   //forget password sections
                    Container(
                      margin: const EdgeInsets.only(top: 25),
                      child:  InkWell(
                        onTap:(){
-                          //navigate to forget password filed
+                          //navigate to forget password filed, now is not works
+                         // navigate the forget password page
                        },
                        child: const Text(
                           "Forget password?",
@@ -157,16 +174,17 @@ class _MainScreenState extends State<MainScreen> {
                        ),
                      ),
                    ),
-
+               //..............................
                    ButtonWidget(
-                       ctx: context,
-                       buttonName: "Login",
-                       buttonFontSize: 18,
-                       buttonColor:Colors.white,
-                       borderColor:colorPlate3,
-                       buttonWidth:double.infinity,
-                       buttonHeghit: 45,
-                       validationStates:()=>validateData(context),
+                     //make the usability button widget
+                       ctx: context, //pass the context
+                       buttonName: "Login",//button name args
+                       buttonFontSize: 18,//button name fonts size
+                       buttonColor:Colors.white,//button background color
+                       borderColor:colorPlate3,//button border color
+                       buttonWidth:double.infinity,//button width
+                       buttonHeghit: 45, //button heghit
+                       validationStates:()=>validateData(context), // call back function
                    )
 
                  ],

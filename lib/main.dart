@@ -1,12 +1,23 @@
 
 import 'dart:async';
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'style_varible/style_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/dash_bord_screen.dart';
 
-void main() {
+Future<void> main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Platform.isAndroid ? await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyBc_Q8ZRWVeWt4kOuH4C4yPsVX7z3kOpGw",
+        appId: "1:139431044319:android:8baf3eb0b00c4f1680f56a",
+        messagingSenderId: "139431044319",
+        projectId:'ucsc-erp-d6ceb')
+  ):await Firebase.initializeApp();
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -26,11 +37,11 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-
       initialRoute:"/",
+      // routes table
       routes: {
-        "/":(ctx)=>const MyHomePage(),
-        MainScreen.mainScreenPageRoute:(ctx)=>MainScreen(),
+        "/":(ctx)=>MainScreen(),
+       // MainScreen.mainScreenPageRoute:(ctx)=>MainScreen(),
         DashBord.routeDashBord:(ctx)=>const DashBord()
       },
     );
@@ -45,22 +56,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Timer _timer;
+  late Timer _timer; // set timer function for splash screen
 
    @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    startTimer();
+  //  startTimer();
 
   }
-
+//time function, this function execute after navigate main_screen page after 4 second
   void startTimer(){
     _timer=Timer.periodic(const Duration(seconds:4), (timer) {
-         // Navigator.push(context, MaterialPageRoute(builder: (_){
-         //     return MainScreen(startTime: startTimer);
-         // }));
-
       Navigator.pushNamed(context,MainScreen.mainScreenPageRoute,arguments: {
         "startTime":startTimer
       });
@@ -68,14 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body:  Container(
-
            child: Center(
               child: ClipRRect(
                    borderRadius: const BorderRadius.all(Radius.circular(12)),
