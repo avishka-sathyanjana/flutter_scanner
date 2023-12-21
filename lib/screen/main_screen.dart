@@ -102,8 +102,8 @@ class _MainScreenState extends State<MainScreen> {
               );
               if(user!=null){
                  setState(() {
-                  // Navigator.push(context, MaterialPageRoute(builder: (_)=>const DashBord()));
-                   Navigator.push(context, MaterialPageRoute(builder: (_)=>QRScanner()));
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=>const DashBord()));
+                   //Navigator.push(context, MaterialPageRoute(builder: (_)=>QRScanner()));
                    _emailController.clear();
                    _passwordController.clear();
                     email="";

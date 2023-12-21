@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'style_varible/style_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/dash_bord_screen.dart';
+import 'screen/qr_scanner.dart';
+
 
 Future<void> main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
       // routes table
       routes: {
         "/":(ctx)=>MainScreen(),
-       // MainScreen.mainScreenPageRoute:(ctx)=>MainScreen(),
+        QRScanner.QRScannerRoute:(ctx)=>const QRScanner(),
         DashBord.routeDashBord:(ctx)=>const DashBord()
       },
     );

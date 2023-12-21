@@ -8,6 +8,7 @@ import '/database/auth_file.dart';
 const bgColor = Color(0xfffafafa);
 
 class QRScanner extends StatefulWidget {
+  static const QRScannerRoute="/QR-route";
   const QRScanner({super.key});
 
   @override
@@ -41,7 +42,7 @@ class _QRScannerState extends State<QRScanner> {
               onPressed: ()async{
                  if( await AuthService().isLoginCheck()){
                    setState(() {
-                      AuthService().logOut();
+                    // AuthService().logOut();
                       Navigator.pop(context);
 
                    });
