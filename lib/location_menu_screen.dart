@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_barcode_qrcode_scanner/results_screen.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/scanner_menu_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -112,7 +113,12 @@ class LocationForm extends StatelessWidget{
 
           ElevatedButton(
             onPressed: (){
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ScannerMenuScreen()
+                ),
+              );
             },
             child: const Text('Submit'),
           ),
