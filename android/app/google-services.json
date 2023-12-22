@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "139431044319",
+    "project_id": "ucsc-erp-d6ceb",
+    "storage_bucket": "ucsc-erp-d6ceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139431044319:android:8baf3eb0b00c4f1680f56a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_mobile_barcode_qrcode_scanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc_Q8ZRWVeWt4kOuH4C4yPsVX7z3kOpGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
