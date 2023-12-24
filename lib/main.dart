@@ -18,6 +18,8 @@ Future<void> main()async {
         messagingSenderId: "139431044319",
         projectId:'ucsc-erp-d6ceb')
   ):await Firebase.initializeApp();
+
+
   runApp(const MyApp());
 
 }

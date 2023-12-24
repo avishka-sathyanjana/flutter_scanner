@@ -1,14 +1,34 @@
+
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/model_data/AssetsData.dart';
 import '/style_varible/style_screen.dart';
+import '/database/auth_file.dart';
 // import 'package:qr_flutter/qr_flutter.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
 
   final String code;
   final Function() closeScreen;
 
   const ResultScreen({super.key, required this.closeScreen, required this.code});
+
+  @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+
+  late  AssetsVarify assetsVarify=AssetsVarify(assetsItemeName: "",
+      mainAssetsType:"",
+      itemCode:"",
+      Division:"",
+      location:""
+  );
+  bool existAssets=true;
+
 
    Widget Cardview(BuildContext context ,String title,String subTitle){
       return
@@ -24,7 +44,7 @@ class ResultScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)
               ),
               child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding as needed
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding as needed
                 //titleAlignment:ListTileTitleAlignment.center,
                 title: Text(
                   title,
@@ -46,7 +66,29 @@ class ResultScreen extends StatelessWidget {
           ),
         );
    }
-  
+
+void getAssets()async{
+     try{
+       var result=await AuthService().getAssets(widget.code);
+       if(result!=null){
+          setState(() {
+             assetsVarify=result;
+          });
+       }else{
+         print("errorrrrrrrrrrrrrr");
+       }
+     }catch(e){
+       print(e);
+     }
+
+}
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAssets();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +97,7 @@ class ResultScreen extends StatelessWidget {
           backgroundColor: colorPlate2,
           leading: IconButton(
               onPressed: (){
-                closeScreen();
+                widget.closeScreen();
                 Navigator.pop(context);
               },
               icon : const Icon(
@@ -73,7 +115,7 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
         ),
-        body:SingleChildScrollView(
+        body:existAssets?SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.all(15),
             child: Column(
@@ -113,26 +155,25 @@ class ResultScreen extends StatelessWidget {
                                          maxLines: 3,
                                          overflow: TextOverflow.ellipsis,
                                        ),
-          
                                  ],
                                ),
                              ),
                            )
-          
+
                          ],
                        )
                     ),
                   ),
-              Cardview(context,"Assets Item Name","Round Table"),
+              Cardview(context,"Assets Item Name",assetsVarify.assetsItemeName),
               Cardview(context,"Main Assets Type","Table"),
               Cardview(context,"Item Code","ucsc/FFF/00123"),
               Cardview(context,"Exist Division","Research lab"),
               Cardview(context,"Location","ucsc Research lab"),
-          
+
               ],
             ),
           ),
-        )
+        ):null
 
     );
   }

@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '/model_data/AssetsData.dart';
 
 class AuthService{
   final FirebaseAuth _auth=FirebaseAuth.instance;
+  final FirebaseFirestore _db=FirebaseFirestore.instance;
+  // make assets table
+  final CollectionReference collectionReference=FirebaseFirestore.instance.collection('assets');
   bool isLogin=false;
 
   Future<User?>signInWithEmailAndPassword(String email,String password)async{
@@ -43,4 +48,23 @@ class AuthService{
     });
     return completer.future;
   }
+
+  // upload the data file to firebase
+Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
+    await collectionReference.add(assetsData);
+}
+
+//fetch data assets collection
+Future<AssetsVarify>getAssets(String AssetsId)async{
+    final snapShot=await _db.collection("assets").where("Asset ID",isEqualTo: AssetsId).get();
+    return snapShot.docs.map((e) => AssetsVarify(
+        assetsItemeName:e["Name of the Item"],
+        mainAssetsType:e["Main Asset Type"],
+        itemCode:e["Asset ID"],
+        Division:e["Division"],
+        location:e["Location"])
+    ).single;
+}
+
+
 }
