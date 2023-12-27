@@ -8,6 +8,7 @@ import 'screen/main_screen.dart';
 import 'screen/dash_bord_screen.dart';
 import 'screen/qr_scanner.dart';
 import 'screen/location_menu_screen.dart';
+import 'screen/scanner_menu_screen.dart';
 
 
 Future<void> main()async {
@@ -48,7 +49,8 @@ class MyApp extends StatelessWidget {
         "/":(ctx)=>MainScreen(),
         //QRScanner.QRScannerRoute:(ctx)=>const QRScanner(),
         DashBord.routeDashBord:(ctx)=>const DashBord(),
-        LocationScreen.locationScreenRoute:(ctx)=>const LocationScreen()
+        LocationScreen.locationScreenRoute:(ctx)=>const LocationScreen(),
+
       },
     );
   }

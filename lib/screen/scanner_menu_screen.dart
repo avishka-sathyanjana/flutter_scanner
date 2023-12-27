@@ -3,7 +3,10 @@ import 'qr_scanner.dart';
 
 
 class ScannerMenuScreen extends StatelessWidget {
-  const ScannerMenuScreen({super.key});
+  static const scannerMenuScreenRoute="/scannerMenu-route";
+  final String locationCode;
+  final String writeLocation;
+  ScannerMenuScreen({required  this.locationCode,this.writeLocation=''});
 
   @override
   Widget build(BuildContext context) {

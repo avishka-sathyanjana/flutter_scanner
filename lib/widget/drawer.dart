@@ -91,7 +91,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                buttonColor:Colors.white,
                borderColor:colorPlate2,
                buttonWidth:150,
-               buttonHeghit:40,
+               buttonHeight:40,
+               buttonRadius: 8.0,
+               textColor: colorPlate2,
                validationStates:()=>Logout(context)
            )
 

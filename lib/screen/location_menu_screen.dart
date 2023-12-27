@@ -3,6 +3,11 @@ import 'results_screen.dart';
 import 'scanner_menu_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+
+ String code='';
+ final TextEditingController locationCode=TextEditingController();
+ String getLocationCode='';
+
 class LocationScreen extends StatefulWidget {
   static const locationScreenRoute="/locationScreen-page";
   const LocationScreen({Key? key});
@@ -56,14 +61,14 @@ class _LocationScreenState extends State<LocationScreen> {
                         allowDuplicates: true,
                         onDetect: (barcode, args){
                           if(!isScanComplete){
-                            String code = barcode.rawValue ?? '---';
+                             code = barcode.rawValue ?? '---';
                             isScanComplete = true;
-                            // Navigator.push(context, MaterialPageRoute(
-                            //     builder: (context) => ResultScreen(
-                            //       closeScreen: closeScreen,
-                            //       code: code,
-                            //     )
-                            // ));
+                            print("code =========>$code");
+
+                            Navigator.push(context, MaterialPageRoute(builder: (_){
+                                return ScannerMenuScreen(locationCode: code,);
+                            }));
+
                           }
                         },
                       )
@@ -85,9 +90,14 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 }
 
-class LocationForm extends StatelessWidget{
+class LocationForm extends StatefulWidget{
   const LocationForm({Key? key});
 
+  @override
+  State<LocationForm> createState() => _LocationFormState();
+}
+
+class _LocationFormState extends State<LocationForm> {
   @override
   Widget build(BuildContext context){
     return Column(
@@ -98,13 +108,20 @@ class LocationForm extends StatelessWidget{
           ),
           const SizedBox(height: 20),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical:20),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical:20),
             child: TextField(
-              decoration: InputDecoration(
+              controller: locationCode,
+              onChanged: (value){
+                    setState(() {
+                        getLocationCode=value;
+
+                    });
+              },
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 // contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                labelText: 'Location ID',
+                labelText:'Location ID',
               ),
             ),
 
@@ -114,12 +131,19 @@ class LocationForm extends StatelessWidget{
 
           ElevatedButton(
             onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ScannerMenuScreen()
-                ),
-              );
+              //call filter function
+              if(getLocationCode.isNotEmpty&&code.isEmpty){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  ScannerMenuScreen(
+                        locationCode: code,
+                        writeLocation: getLocationCode,
+                      )
+                  ),
+                );
+              }
+
             },
             child: const Text('Submit'),
           ),

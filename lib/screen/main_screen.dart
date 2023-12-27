@@ -1,9 +1,7 @@
 
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
 import 'qr_scanner.dart';
 import '/style_varible/style_screen.dart';
 import 'package:flutter/material.dart';
@@ -199,7 +197,9 @@ class _MainScreenState extends State<MainScreen> {
                        buttonColor:Colors.white,//button background color
                        borderColor:colorPlate3,//button border color
                        buttonWidth:double.infinity,//button width
-                       buttonHeghit: 45, //button heghit
+                       buttonHeight: 45,
+                       buttonRadius: 8.0,
+                       textColor: colorPlate2,//button heghit
                        validationStates:()=>validateData(context), // call back function
                    )
 
