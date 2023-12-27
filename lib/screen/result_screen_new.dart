@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
 import '/widget/button_widget.dart';
 import '/widget/condition_dropdown.dart';
 
-void main() {
-  runApp(const MyApp());
+
+class ResultPage extends StatefulWidget {
+  final Function() activeScanner;
+   ResultPage({required this.activeScanner});
+
+  @override
+  State<ResultPage> createState() => _ResultPageState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     var itemCode = '123456789';
@@ -18,20 +22,32 @@ class MyApp extends StatelessWidget {
     var ItemLastCheck = '2021-09-01';
     var itemType = 'Electronics';
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // add appbar
-
-      home: SafeArea(
-        child: Scaffold(
+      return Scaffold(
+          appBar: AppBar(
+            backgroundColor: colorPlate2,
+            leading: IconButton(
+                icon: const Icon(Icons.arrow_back,color: Colors.white,),
+               onPressed: (){
+                    widget.activeScanner();
+                    Navigator.pop(context);
+               },
+            ),
+            title: const Text("Assets Diesels",style: TextStyle(
+               color:Colors.white,
+               fontFamily: fontRaleway,
+               fontSize: 18
+            ),),
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+
+                  // successful container
                   Container(
-                    height: 230,
+                    height: 250,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(197, 255, 225, 0.6705882352941176),
@@ -109,7 +125,8 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: 100,
+                    height: 120,
+                    margin: EdgeInsets.only(top: 13),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(255, 190, 190, 0.7019607843137254),
@@ -241,8 +258,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
+
   }
 }

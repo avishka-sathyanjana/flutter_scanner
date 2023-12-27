@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '/screen/results_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '/database/auth_file.dart';
+import 'result_screen_new.dart';
 const bgColor = Color(0xfffafafa);
 
 class QRScanner extends StatefulWidget {
@@ -95,10 +96,7 @@ class _QRScannerState extends State<QRScanner> {
                       String code = barcode.rawValue ?? '---';
                       isScanComplete = true;
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => ResultScreen(
-                            closeScreen: closeScreen,
-                            code: code,
-                          )
+                          builder: (context) =>ResultPage(activeScanner: closeScreen)
                       ));
                   }
                   },
