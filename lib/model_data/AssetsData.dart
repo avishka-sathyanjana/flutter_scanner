@@ -10,7 +10,7 @@ class AssetsVarify{
     required this.mainAssetsType,
     required this.itemCode,
     required this.Division,
-    required this.location
+    required this.location,
   });
 
 }

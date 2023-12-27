@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import '/model_data/AssetsData.dart';
 
 class AuthService{
@@ -55,15 +56,32 @@ Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
 }
 
 //fetch data assets collection
-Future<AssetsVarify>getAssets(String AssetsId)async{
-    final snapShot=await _db.collection("assets").where("Asset ID",isEqualTo: AssetsId).get();
-    return snapShot.docs.map((e) => AssetsVarify(
-        assetsItemeName:e["Name of the Item"],
-        mainAssetsType:e["Main Asset Type"],
-        itemCode:e["Asset ID"],
-        Division:e["Division"],
-        location:e["Location"])
-    ).single;
+Future<List<AssetsVarify>>getAssets(String AssetsId)async{
+  try {
+    var snapshot = await _db
+        .collection("assets")
+        .where("Asset ID", isEqualTo:AssetsId)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      return snapshot.docs.map((document) {
+        return AssetsVarify(
+            assetsItemeName: document["Name of the Item"],
+            mainAssetsType:document['Main Asset Type'] ,
+            itemCode:document['Asset ID'],
+            Division:document['Division'],
+            location:document['Location'],
+        );
+      }).toList();
+    } else {
+      // Handle the case where no matching document is found
+      return []; // Or throw an exception, or handle it as appropriate
+    }
+  } catch (e) {
+    print("Error in getAssets: $e");
+    // Handle the error or rethrow it based on your requirements
+    return []; // Or throw an exception, or handle it as appropriate
+  }
 }
 
 
