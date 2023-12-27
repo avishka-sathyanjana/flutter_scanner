@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import '/widget/button_widget.dart';
 import '/widget/condition_dropdown.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -33,6 +31,7 @@ class MyApp extends StatelessWidget {
                   Container(
                     height: 230,
                     width: double.infinity,
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(197, 255, 225, 0.6705882352941176),
                       borderRadius: BorderRadius.circular(5),
@@ -109,10 +108,11 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     height: 100,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(255, 190, 190, 0.7019607843137254),
+                      color: const Color.fromRGBO(255, 190, 190, 0.7019607843137254),
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         color: Colors.redAccent,
@@ -135,6 +135,46 @@ class MyApp extends StatelessWidget {
                           SizedBox(height: 8),
                           Text(
                             'No Item Found !',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+// this container is for warning
+                  Container(
+                    height: 80,
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(
+                          255, 234, 171, 0.8666666666666667),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                        color: Colors.orangeAccent,
+                        width: 4,
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Warning !',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Duplicate Item Found',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
