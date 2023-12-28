@@ -70,8 +70,10 @@ flutter:
      - assets/images/logoucsc.png
      - assets/images/scaneer.png
      - assets/images/qrimage.jpeg
+     - assets/images/qr_scan.png
      - assets/json_file/data.json
      - assets/json_file/location.json
+
 
   #   - images/a_dot_ham.jpeg
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/widget/button_widget.dart';
 import 'results_screen.dart';
 import 'scanner_menu_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -24,35 +25,58 @@ class _LocationScreenState extends State<LocationScreen> {
   bool isQrScannerVisible = false;
   bool isScanComplete = false;
 
+  changeButtonState(BuildContext context) {
+    setState(() {
+      isQrScannerVisible = !isQrScannerVisible;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text('Current Location'),
       ),
       body: Center(
 
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ElevatedButton(
-
-                  child: const Text('Scan Location'),
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => const SecondRoute()
-                    //   ),
-                    // );
-
-                    setState(() {
-                      isQrScannerVisible = !isQrScannerVisible;
-                    });
-
-
-                  },
+                if(!isQrScannerVisible)
+                Image.asset(
+                  'assets/images/qr_scan.png',
+                  width: 200, // Set the width as needed
+                  height: 300, // Set the height as needed
                 ),
+
+                if(!isQrScannerVisible)
+                ButtonWidget(
+                    ctx: context,
+                    buttonName: "Scan Location",
+                    buttonFontSize: 20,
+                    buttonColor: Colors.blueAccent,
+                    borderColor: Colors.indigoAccent,
+                    textColor: Colors.white,
+                    buttonWidth: 200,
+                    buttonHeight: 40,
+                    buttonRadius: 10,
+                    validationStates: () => changeButtonState(context)),
+
+                if(isQrScannerVisible)
+                  ButtonWidget(
+                      ctx: context,
+                      buttonName: "Close Camera",
+                      buttonFontSize: 20,
+                      buttonColor: Colors.transparent,
+                      borderColor: Colors.red,
+                      textColor: Colors.red,
+                      buttonWidth: 200,
+                      buttonHeight: 40,
+                      buttonRadius: 10,
+                      validationStates: () => changeButtonState(context)),
+        //
+        // setState(() {
+        //   isQrScannerVisible = !isQrScannerVisible;
+        // });
 
                 const SizedBox(height: 30),
 
@@ -100,6 +124,8 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
+
+
 
 class LocationForm extends StatefulWidget{
   const LocationForm({Key? key});

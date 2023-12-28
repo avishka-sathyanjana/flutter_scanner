@@ -59,11 +59,11 @@ class _IssueScreenState extends State<IssueScreen> {
                   const SizedBox(height: 20),
           
                   // Item Category
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Item Category', border: OutlineInputBorder()),
-                    onSaved: (value) => itemCategory = value,
-                  ),
-                  const SizedBox(height: 20),
+                  // TextFormField(
+                  //   decoration: const InputDecoration(labelText: 'Item Category', border: OutlineInputBorder()),
+                  //   onSaved: (value) => itemCategory = value,
+                  // ),
+                  // const SizedBox(height: 20),
           
                   // Previous Item Codes
                   TextFormField(
