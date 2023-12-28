@@ -7,17 +7,21 @@ import 'style_varible/style_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/dash_bord_screen.dart';
 import 'screen/qr_scanner.dart';
+import 'screen/location_menu_screen.dart';
+import 'screen/scanner_menu_screen.dart';
 
 
 Future<void> main()async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid ? await Firebase.initializeApp(
     options: const FirebaseOptions(
-        apiKey: "AIzaSyBc_Q8ZRWVeWt4kOuH4C4yPsVX7z3kOpGw",
-        appId: "1:139431044319:android:8baf3eb0b00c4f1680f56a",
-        messagingSenderId: "139431044319",
-        projectId:'ucsc-erp-d6ceb')
+        apiKey: "AIzaSyD2cOSKS72wDJpJI6rucYyUt_oJFmgR1JU",
+        appId: "1:24402428387:android:324208609dea95166520d6",
+        messagingSenderId: "24402428387",
+        projectId:'ucsc-erp-next')
   ):await Firebase.initializeApp();
+
+
   runApp(const MyApp());
 
 }
@@ -43,8 +47,10 @@ class MyApp extends StatelessWidget {
       // routes table
       routes: {
         "/":(ctx)=>MainScreen(),
-        QRScanner.QRScannerRoute:(ctx)=>const QRScanner(),
-        DashBord.routeDashBord:(ctx)=>const DashBord()
+        //QRScanner.QRScannerRoute:(ctx)=>const QRScanner(),
+        DashBord.routeDashBord:(ctx)=>const DashBord(),
+        LocationScreen.locationScreenRoute:(ctx)=>const LocationScreen(),
+
       },
     );
   }

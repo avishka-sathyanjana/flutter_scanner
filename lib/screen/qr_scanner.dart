@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '/screen/results_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '/database/auth_file.dart';
+import 'result_screen_new.dart';
 const bgColor = Color(0xfffafafa);
 
 class QRScanner extends StatefulWidget {
@@ -90,16 +91,16 @@ class _QRScannerState extends State<QRScanner> {
                 // scanner widget
                 child: MobileScanner(
                   allowDuplicates: true,
-                  onDetect: (barcode, args){
+                  onDetect: (barcode, args)async{
                     if(!isScanComplete){
                       String code = barcode.rawValue ?? '---';
                       isScanComplete = true;
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => ResultScreen(
-                            closeScreen: closeScreen,
-                            code: code,
-                          )
-                      ));
+                      var result=await AuthService().getAssets(code);
+                       setState(() {
+                         Navigator.push(context, MaterialPageRoute(
+                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsDate:result,)
+                         ));
+                       });
                   }
                   },
                 )

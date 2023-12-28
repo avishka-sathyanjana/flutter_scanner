@@ -1,6 +1,7 @@
 
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter/services.dart';
 import 'qr_scanner.dart';
 import '/style_varible/style_screen.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,7 @@ class _MainScreenState extends State<MainScreen> {
                    _passwordController.clear();
                     email="";
                     password="";
+                    // uploadJson(); // call function ...........
 
                  });
               }else{
@@ -120,6 +122,22 @@ class _MainScreenState extends State<MainScreen> {
          throw()=>Exception("error rec vest");
       }
   }
+
+  //upload data to firebase ...................
+  Future<void>uploadJson()async{
+    String jsonConect=await rootBundle.loadString("assets/json_file/location.json");
+    List<dynamic> usersList = json.decode(jsonConect);
+
+    for(var userData in usersList){
+      await AuthService().uploadUserDataFormJson(userData);
+    }
+
+  }
+
+  //upload data location.....................
+
+  //
+
 
 
   @override
@@ -183,7 +201,9 @@ class _MainScreenState extends State<MainScreen> {
                        buttonColor:Colors.white,//button background color
                        borderColor:colorPlate3,//button border color
                        buttonWidth:double.infinity,//button width
-                       buttonHeghit: 45, //button heghit
+                       buttonHeight: 45,
+                       buttonRadius: 8.0,
+                       textColor: colorPlate2,//button heghit
                        validationStates:()=>validateData(context), // call back function
                    )
 

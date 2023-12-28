@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '/style_varible/style_screen.dart';
+import '../style_varible/style_screen.dart';
+
 
 
 class ButtonWidget extends StatefulWidget {
@@ -8,10 +9,11 @@ class ButtonWidget extends StatefulWidget {
   final double buttonFontSize;
   final Color  buttonColor;
   final Color  borderColor;
+  final Color textColor;
   final double buttonWidth;
-  final double buttonHeghit;
+  final double buttonHeight;
+  final double buttonRadius;
   final Function validationStates;
-
 
 
   ButtonWidget({
@@ -20,8 +22,10 @@ class ButtonWidget extends StatefulWidget {
     required this.buttonFontSize,
     required this.buttonColor,
     required this.borderColor,
+    required this.textColor,
     required this.buttonWidth,
-    required this.buttonHeghit,
+    required this.buttonHeight,
+    required this.buttonRadius,
     required this.validationStates});
 
   @override
@@ -33,10 +37,10 @@ class _ButtonWidgetState extends State<ButtonWidget> {
   Widget build(BuildContext context) {
     return Container(
       width:widget.buttonWidth,
-      height: widget.buttonHeghit,
+      height: widget.buttonHeight,
       margin: const EdgeInsets.only(top: 30),
       decoration: BoxDecoration(
-          borderRadius:BorderRadius.circular(12)
+          borderRadius:BorderRadius.circular(widget.buttonRadius)
       ),
       child: ElevatedButton(
         onPressed:()=>widget.validationStates(),// call back function when execute the button
@@ -45,7 +49,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
           backgroundColor: MaterialStateProperty.all<Color>(widget.buttonColor),
           elevation: MaterialStateProperty.all<double>(0), // Remove elevation
           shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(widget.buttonRadius),
               side: BorderSide(
                   color:widget.borderColor,
                   width: 2
@@ -56,7 +60,8 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         child:Text(widget.buttonName,style: TextStyle(
             fontSize:widget.buttonFontSize,
             fontFamily:fontRaleway,
-            color: colorPlate2
+            color: widget.textColor,
+            fontWeight: FontWeight.w700
         ),),
       ),
     );

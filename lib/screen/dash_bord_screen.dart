@@ -4,6 +4,7 @@ import '/widget/grid_card.dart';
 import '/widget/drawer.dart';
 import '/style_varible/style_screen.dart';
 import '/database/auth_file.dart';
+import 'location_menu_screen.dart';
 class DashBord extends StatefulWidget {
   static const routeDashBord="/dash-bord";
   const DashBord({super.key});
@@ -18,7 +19,7 @@ class _DashBordState extends State<DashBord> {
   void QRscannerPageNavigate()async{
       if(await AuthService().isUserLoggedIn()){
          setState(() {
-            Navigator.pushNamed(context, QRScanner.QRScannerRoute);
+            Navigator.pushNamed(context,LocationScreen.locationScreenRoute);
          });
     }else{
         print("is not login");
