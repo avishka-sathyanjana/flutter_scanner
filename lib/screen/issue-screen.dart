@@ -23,6 +23,7 @@ class _IssueScreenState extends State<IssueScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Issue Form'),
@@ -37,10 +38,10 @@ class _IssueScreenState extends State<IssueScreen> {
           
                 children: [
                   // Issue Type
-                  const IssueDropdown(),
+                  const IssueDropdown(width:350),
 
                   // Item Condition
-                  const ConditionDropdown(),
+                  const ConditionDropdown(size: 350,),
                   const SizedBox(height: 10),
                   // Item Type
                   TextFormField(

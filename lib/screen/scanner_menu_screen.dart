@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import '/screen/result_screen_new.dart';
 import 'qr_scanner.dart';
 import '/database/auth_file.dart';
+import '/data_validations/login_validation.dart';
 
 
 class ScannerMenuScreen extends StatelessWidget {
   static const scannerMenuScreenRoute="/scannerMenu-route";
   final String locationCode;
-  final String writeLocation;
-  ScannerMenuScreen({required  this.locationCode,this.writeLocation=''});
+
+  ScannerMenuScreen({required  this.locationCode});
 
   @override
   Widget build(BuildContext context) {
@@ -92,38 +93,23 @@ class _ItemFormState extends State<ItemForm> {
 
           ElevatedButton(
             onPressed: ()async{
+              if(assetsCode.text.isNotEmpty){
                 var result= await AuthService().getAssets(assetsCode.text);
-               setState(() {
-                 Navigator.push(context, MaterialPageRoute(builder: (_){
-                   return ResultPage( activeScanner: () {  },assetsDate:result,);
-                 }));
-               });
+                setState(() {
+                  Navigator.push(context, MaterialPageRoute(builder: (_){
+                    return ResultPage( activeScanner: () {  },assetsDate:result,);
+                  }));
+                });
+              }else{
+                  setState(() {
+                      showError(context,"Item code is empty");
+                  });
+              }
+
             },
             child: const Text('Submit'),
           ),
         ]
-    );
-  }
-}
-
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Second Route'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          //go to the previous window
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
-      ),
     );
   }
 }

@@ -70,12 +70,15 @@ class _LocationScreenState extends State<LocationScreen> {
                                setState(() {
                                    showError(context, "Invalid Location");
                                    isScanComplete =false;
+                                   code='';
                                });
                              }else{
                                  setState(() {
                                    Navigator.push(context, MaterialPageRoute(builder: (_){
-                                     return ScannerMenuScreen(locationCode: code,writeLocation: locationCode.text,);
+                                     return ScannerMenuScreen(locationCode: code);
                                    }));
+
+                                      code=''; // code verible null after route
                                  });
                              }
 
@@ -143,20 +146,22 @@ class _LocationFormState extends State<LocationForm> {
                     setState(() {
                       showError(context,"Invalid location ");
                     });
-                }else{
+                } else{
                   setState(() {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>  ScannerMenuScreen(
-                            locationCode: code,
-                            writeLocation:locationCode.text,
+                            locationCode:locationCode.text,
                           )
                       ),
                     );
                   });
                 }
-
+              }else if(locationCode.text.isEmpty){
+                setState(() {
+                   showError(context, "Item code is empty");
+                });
               }
 
             },

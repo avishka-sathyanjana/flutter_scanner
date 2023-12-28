@@ -11,6 +11,7 @@ class AuthService{
   // make assets table
   final CollectionReference collectionReference=FirebaseFirestore.instance.collection('assets');
   final CollectionReference collectionRefLocation=FirebaseFirestore.instance.collection('location');
+  final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
   bool isLogin=false;
 
   Future<User?>signInWithEmailAndPassword(String email,String password)async{
@@ -119,6 +120,28 @@ Future<List<AssetsLocation>>getLocation(String locationCode)async{
       print("Error:$e");
       return [];
     }
+}
+//verify data table.......................
+Future<void>verifyTable(String assetsCode,String location,String remarks,String states)async{
+    String userId=getUserId();
+    DateTime curent=DateTime.now();
+    Timestamp dateTime=Timestamp.fromDate(curent);
+    Map<String,dynamic>data={
+      'assets code':assetsCode,
+      'date time':dateTime,
+      'location':location,
+      'remarks':remarks,
+      'statas':states,
+      'user id':userId
+    };
+    
+    collectionVerfyTable.add(data).then((DocumentReference documentRef){
+      print("data save firebase:$documentRef");
+    }).catchError((onError){
+      print("Error data save:$onError");
+    });
+
+
 }
 
 

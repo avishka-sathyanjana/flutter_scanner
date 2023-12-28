@@ -4,9 +4,13 @@ import '/widget/button_widget.dart';
 import '/widget/condition_dropdown.dart';
 import '/model_data/AssetsData.dart';
 import 'issue-screen.dart';
+import '/database/auth_file.dart';
+import '/data_validations/login_validation.dart';
+import 'scanner_menu_screen.dart';
 
 
 class ResultPage extends StatefulWidget {
+
   final Function() activeScanner;
    List<AssetsVarify>assetsDate=[];
 
@@ -17,6 +21,8 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  final TextEditingController _remarks=TextEditingController();
+  bool wornigState=false;
   String itemCode = '';
   String itemName = '';
   String itemCategory = '';
@@ -68,9 +74,10 @@ class _ResultPageState extends State<ResultPage> {
   //we can map assets details this function
   bool assetsDataState(){
     if(widget.assetsDate.isEmpty){
-
+        setState(() {
+          wornigState=true;
+        });
       return false;
-
     }else{
       setState(() {
 
@@ -79,12 +86,28 @@ class _ResultPageState extends State<ResultPage> {
           itemCategory=widget.assetsDate[0].mainAssetsType;
           itemLocation=widget.assetsDate[0].location;
           itemDivition=widget.assetsDate[0].Division;
+         // we can not see worning
+           wornigState=false;
+
 
       });
       return true;
 
     }
 
+  }
+
+  void verfiyData(BuildContext context){
+    if(assetsDataState()&&!wornigState){
+        if(ConditionDropdown.assetsStates.isNotEmpty) {
+          AuthService().verifyTable(itemCode, itemLocation,_remarks.text,ConditionDropdown.assetsStates);
+           Navigator.pop(context);//pop scanner page
+        }else{
+           showError(context,"Select assets state");
+        }
+    }else{
+      print("worning data save");
+    }
   }
   
   void navigeateReportPage(BuildContext context){
@@ -242,7 +265,7 @@ class _ResultPageState extends State<ResultPage> {
                                   child: const Text("Enter Item Condition"),
                                 ),
                                 const SizedBox(width: 16.0), // Adjust the width as needed
-                                const ConditionDropdown(),
+                                const ConditionDropdown(size: 150,),
                               ],
                             ),
 
@@ -250,9 +273,9 @@ class _ResultPageState extends State<ResultPage> {
                             Expanded(
                               child: TextFormField(
                                 maxLines: null,
-                                minLines: 3,
-
-                                decoration: const InputDecoration(
+                                controller: _remarks,
+                                 minLines: 3,
+                                  decoration: const InputDecoration(
                                   labelText: 'Remarks',
                                   border: OutlineInputBorder(),
 
@@ -291,10 +314,7 @@ class _ResultPageState extends State<ResultPage> {
                               buttonWidth: 170.0,
                               buttonHeight: 50.0,
                               buttonRadius: 10.0,
-                              validationStates: () {
-                                // Callback function when the button is pressed
-                                print('Button clicked!');
-                              },
+                              validationStates: ()=>verfiyData(context)
                             ),
                           ]
 

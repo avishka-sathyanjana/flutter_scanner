@@ -14,7 +14,8 @@ enum ConditionLabel {
 }
 
 class IssueDropdown extends StatefulWidget {
-  const IssueDropdown({super.key});
+  final double width;
+  const IssueDropdown({required this.width});
 
   @override
   State<IssueDropdown> createState() => _ConditionDropdownState();
@@ -32,7 +33,7 @@ class _ConditionDropdownState extends State<IssueDropdown> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: DropdownMenu<ConditionLabel>(
-            width: 350,
+            width:widget.width,
             initialSelection: ConditionLabel.noCode,
             controller: colorController,
             requestFocusOnTap: false,
