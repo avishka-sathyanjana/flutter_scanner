@@ -91,13 +91,16 @@ class _QRScannerState extends State<QRScanner> {
                 // scanner widget
                 child: MobileScanner(
                   allowDuplicates: true,
-                  onDetect: (barcode, args){
+                  onDetect: (barcode, args)async{
                     if(!isScanComplete){
                       String code = barcode.rawValue ?? '---';
                       isScanComplete = true;
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) =>ResultPage(activeScanner: closeScreen)
-                      ));
+                      var result=await AuthService().getAssets(code);
+                       setState(() {
+                         Navigator.push(context, MaterialPageRoute(
+                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsDate:result,)
+                         ));
+                       });
                   }
                   },
                 )

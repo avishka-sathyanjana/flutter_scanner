@@ -62,7 +62,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         onDetect: (barcode, args){
                           if(!isScanComplete){
                              code = barcode.rawValue ?? '---';
-                            isScanComplete = true;
+                             isScanComplete = true;
                             print("code =========>$code");
 
                             Navigator.push(context, MaterialPageRoute(builder: (_){

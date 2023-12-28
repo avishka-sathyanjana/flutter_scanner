@@ -1,26 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
+import '/style_varible/style_screen.dart';
 import '/widget/button_widget.dart';
 import '/widget/condition_dropdown.dart';
+import '/model_data/AssetsData.dart';
 
 
 class ResultPage extends StatefulWidget {
   final Function() activeScanner;
-   ResultPage({required this.activeScanner});
+   List<AssetsVarify>assetsDate=[];
+
+   ResultPage({required this.activeScanner,required this.assetsDate});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
+  String itemCode = '';
+  String itemName = '';
+  String itemCategory = '';
+  String itemModel = '';
+  String ItemLastCheck = '';
+  String itemType = '';
+
+
+  Widget errorMassage(BuildContext context){
+    return  Container(
+      height: 120,
+      margin: const EdgeInsets.only(top: 13),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(255, 190, 190, 0.7019607843137254),
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+          color: Colors.redAccent,
+          width: 4,
+        ),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Scan Unsuccessful !',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'No Item Found !',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  //we can map assets details this function
+  bool assetsDataState(){
+    if(widget.assetsDate.isEmpty){
+      //print("nullllllllllll");
+      return false;
+
+    }else{
+      setState(() {
+         // print("datatttttttttttt${widget.assetsDate[0].mainAssetsType}");
+          itemCode=widget.assetsDate[0].itemCode;
+          itemName=widget.assetsDate[0].assetsItemeName;
+          itemCategory=widget.assetsDate[0].mainAssetsType;
+
+      });
+      return true;
+
+    }
+
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    assetsDataState();
+  }
   @override
   Widget build(BuildContext context) {
-    var itemCode = '123456789';
-    var itemName = 'Laptop';
-    var itemCategory = '1000';
-    var itemModel = '2021';
-    var ItemLastCheck = '2021-09-01';
-    var itemType = 'Electronics';
 
       return Scaffold(
           appBar: AppBar(
@@ -46,7 +116,7 @@ class _ResultPageState extends State<ResultPage> {
                 children: [
 
                   // successful container
-                  Container(
+                  assetsDataState()?Container(
                     height: 250,
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -123,44 +193,10 @@ class _ResultPageState extends State<ResultPage> {
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 120,
-                    margin: EdgeInsets.only(top: 13),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(255, 190, 190, 0.7019607843137254),
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: Colors.redAccent,
-                        width: 4,
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Scan Unsuccessful !',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'No Item Found !',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  ):
+                  errorMassage(context),
+
+
 
                   // the data inserting part
                   Container(

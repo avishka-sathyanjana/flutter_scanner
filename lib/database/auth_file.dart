@@ -10,6 +10,7 @@ class AuthService{
   final FirebaseFirestore _db=FirebaseFirestore.instance;
   // make assets table
   final CollectionReference collectionReference=FirebaseFirestore.instance.collection('assets');
+  final CollectionReference collectionRefLocation=FirebaseFirestore.instance.collection('location');
   bool isLogin=false;
 
   Future<User?>signInWithEmailAndPassword(String email,String password)async{
@@ -54,6 +55,11 @@ class AuthService{
 Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
     await collectionReference.add(assetsData);
 }
+  //upload the location json file
+  Future<void>uploadLocation(Map<String,dynamic>location)async{
+    await collectionReference.add(location);
+  }
+
 
 //fetch data assets collection
 Future<List<AssetsVarify>>getAssets(String AssetsId)async{
@@ -83,6 +89,10 @@ Future<List<AssetsVarify>>getAssets(String AssetsId)async{
     return []; // Or throw an exception, or handle it as appropriate
   }
 }
+
+//feach location collection.................
+
+
 
 
 }
