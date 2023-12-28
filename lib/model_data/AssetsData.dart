@@ -14,3 +14,9 @@ class AssetsVarify{
   });
 
 }
+
+class AssetsLocation{
+  final String locationId;
+  final String locationCode;
+  AssetsLocation({required this.locationId,required this.locationCode});
+}

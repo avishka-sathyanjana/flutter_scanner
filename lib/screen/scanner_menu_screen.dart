@@ -61,25 +61,9 @@ class ItemForm extends StatefulWidget{
 
 class _ItemFormState extends State<ItemForm> {
   final TextEditingController assetsCode=TextEditingController();
-  String writeCode='';
+  //String writeCode='';
 
-  // void getDataAssetsItem()async{
-  //   try{
-  //     print("heeeeeeeeeeeeeeeeeeeeee");
-  //     var result=await AuthService().getAssets("");
-  //     print("result list ${result[0].assetsItemeName}");
-  //     if(result.isNotEmpty){
-  //       setState(() {
-  //
-  //       });
-  //       print("length result array ${result.length}");
-  //     }
-  //
-  //   }catch(e){
-  //     print("Error:$e");
-  //   }
-  //
-  // }
+
 
   @override
   Widget build(BuildContext context){
@@ -108,9 +92,7 @@ class _ItemFormState extends State<ItemForm> {
 
           ElevatedButton(
             onPressed: ()async{
-               print("asssssssssssssssss${assetsCode.text}");
                 var result= await AuthService().getAssets(assetsCode.text);
-                print("active code");
                setState(() {
                  Navigator.push(context, MaterialPageRoute(builder: (_){
                    return ResultPage( activeScanner: () {  },assetsDate:result,);

@@ -15,10 +15,10 @@ Future<void> main()async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid ? await Firebase.initializeApp(
     options: const FirebaseOptions(
-        apiKey: "AIzaSyBc_Q8ZRWVeWt4kOuH4C4yPsVX7z3kOpGw",
-        appId: "1:139431044319:android:8baf3eb0b00c4f1680f56a",
-        messagingSenderId: "139431044319",
-        projectId:'ucsc-erp-d6ceb')
+        apiKey: "AIzaSyD2cOSKS72wDJpJI6rucYyUt_oJFmgR1JU",
+        appId: "1:24402428387:android:324208609dea95166520d6",
+        messagingSenderId: "24402428387",
+        projectId:'ucsc-erp-next')
   ):await Firebase.initializeApp();
 
 

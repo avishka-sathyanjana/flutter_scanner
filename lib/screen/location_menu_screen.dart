@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'results_screen.dart';
 import 'scanner_menu_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '/database/auth_file.dart';
+import '/data_validations/login_validation.dart';
 
 
  String code='';
@@ -59,15 +61,24 @@ class _LocationScreenState extends State<LocationScreen> {
                       flex: 4,
                       child: MobileScanner(
                         allowDuplicates: true,
-                        onDetect: (barcode, args){
+                        onDetect: (barcode, args)async{
                           if(!isScanComplete){
                              code = barcode.rawValue ?? '---';
                              isScanComplete = true;
-                            print("code =========>$code");
+                             var result =await AuthService().getLocation(code);
+                             if(result.isEmpty){
+                               setState(() {
+                                   showError(context, "Invalid Location");
+                                   isScanComplete =false;
+                               });
+                             }else{
+                                 setState(() {
+                                   Navigator.push(context, MaterialPageRoute(builder: (_){
+                                     return ScannerMenuScreen(locationCode: code,writeLocation: locationCode.text,);
+                                   }));
+                                 });
+                             }
 
-                            Navigator.push(context, MaterialPageRoute(builder: (_){
-                                return ScannerMenuScreen(locationCode: code,);
-                            }));
 
                           }
                         },
@@ -112,12 +123,6 @@ class _LocationFormState extends State<LocationForm> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical:20),
             child: TextField(
               controller: locationCode,
-              onChanged: (value){
-                    setState(() {
-                        getLocationCode=value;
-
-                    });
-              },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 // contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -130,18 +135,28 @@ class _LocationFormState extends State<LocationForm> {
           const SizedBox(height: 20),
 
           ElevatedButton(
-            onPressed: (){
+            onPressed: ()async{
               //call filter function
-              if(getLocationCode.isNotEmpty&&code.isEmpty){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>  ScannerMenuScreen(
-                        locationCode: code,
-                        writeLocation: getLocationCode,
-                      )
-                  ),
-                );
+              if(locationCode.text.isNotEmpty&&code.isEmpty){
+                var result=await AuthService().getLocation(locationCode.text);
+                if(result.isEmpty){
+                    setState(() {
+                      showError(context,"Invalid location ");
+                    });
+                }else{
+                  setState(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>  ScannerMenuScreen(
+                            locationCode: code,
+                            writeLocation:locationCode.text,
+                          )
+                      ),
+                    );
+                  });
+                }
+
               }
 
             },

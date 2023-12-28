@@ -53,15 +53,24 @@ class AuthService{
 
   // upload the data file to firebase
 Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
-    await collectionReference.add(assetsData);
+    await collectionRefLocation.add(assetsData);
 }
   //upload the location json file
   Future<void>uploadLocation(Map<String,dynamic>location)async{
     await collectionReference.add(location);
   }
+  //get user id ........................
+  String getUserId(){
+    User? user=FirebaseAuth.instance.currentUser;
+    if(user !=null){
+      return user.uid;
+    }else{
+      return "no user sing in";
+    }
+  }
 
 
-//fetch data assets collection
+//fetch data assets collection.........................
 Future<List<AssetsVarify>>getAssets(String AssetsId)async{
   try {
     var snapshot = await _db
@@ -91,7 +100,26 @@ Future<List<AssetsVarify>>getAssets(String AssetsId)async{
 }
 
 //feach location collection.................
+Future<List<AssetsLocation>>getLocation(String locationCode)async{
+    try{
+      var snapShot= await _db.collection("location").
+      where("Location Code",isEqualTo: locationCode).get();
 
+      if(snapShot.docs.isNotEmpty){
+          return snapShot.docs.map((value){
+               return AssetsLocation(
+                   locationId:value["L_ID"],
+                   locationCode:value["Location Code"]
+               );
+         }).toList();
+      }else{
+        return [];
+      }
+    }catch(e){
+      print("Error:$e");
+      return [];
+    }
+}
 
 
 

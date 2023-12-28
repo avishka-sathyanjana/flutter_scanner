@@ -3,6 +3,7 @@ import '/style_varible/style_screen.dart';
 import '/widget/button_widget.dart';
 import '/widget/condition_dropdown.dart';
 import '/model_data/AssetsData.dart';
+import 'issue-screen.dart';
 
 
 class ResultPage extends StatefulWidget {
@@ -19,9 +20,9 @@ class _ResultPageState extends State<ResultPage> {
   String itemCode = '';
   String itemName = '';
   String itemCategory = '';
-  String itemModel = '';
+  String itemDivition = '';
   String ItemLastCheck = '';
-  String itemType = '';
+  String itemLocation = '';
 
 
   Widget errorMassage(BuildContext context){
@@ -67,15 +68,17 @@ class _ResultPageState extends State<ResultPage> {
   //we can map assets details this function
   bool assetsDataState(){
     if(widget.assetsDate.isEmpty){
-      //print("nullllllllllll");
+
       return false;
 
     }else{
       setState(() {
-         // print("datatttttttttttt${widget.assetsDate[0].mainAssetsType}");
+
           itemCode=widget.assetsDate[0].itemCode;
           itemName=widget.assetsDate[0].assetsItemeName;
           itemCategory=widget.assetsDate[0].mainAssetsType;
+          itemLocation=widget.assetsDate[0].location;
+          itemDivition=widget.assetsDate[0].Division;
 
       });
       return true;
@@ -83,12 +86,13 @@ class _ResultPageState extends State<ResultPage> {
     }
 
   }
-@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    assetsDataState();
+  
+  void navigeateReportPage(BuildContext context){
+    setState(() {
+        Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
+    });
   }
+
   @override
   Widget build(BuildContext context) {
 
@@ -117,83 +121,94 @@ class _ResultPageState extends State<ResultPage> {
 
                   // successful container
                   assetsDataState()?Container(
-                    height: 250,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(197, 255, 225, 0.6705882352941176),
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: Colors.greenAccent,
-                        width: 4,
+                      height: 320,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(197, 255, 225, 0.6705882352941176),
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: colorPlate2,
+                          width: 4,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Scan Successful !',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              //center
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Scan Successful !',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                //center
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Item Code: $itemCode',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                            SizedBox(height: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Item Code: $itemCode',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Item Name: $itemName',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                const SizedBox(height: 4,),
+                                Text(
+                                  'Item Name: $itemName',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: fontRaleway
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Item Type: $itemType',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                const SizedBox(height: 4,),
+                                Text(
+                                  'Location: $itemLocation',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: fontRaleway
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Item Category: $itemCategory',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                const SizedBox(height: 4,),
+                                Text(
+                                  'Item Category: $itemCategory',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: fontRaleway
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Item Model: $itemModel',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                SizedBox(height: 4,),
+                                Text(
+                                  'Item Divition: $itemDivition',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: fontRaleway
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Item Last Check: $ItemLastCheck',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                const SizedBox(height: 4,),
+                                Text(
+                                  'Item Last Check: $ItemLastCheck',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: fontRaleway
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ):
+                    ):
+
                   errorMassage(context),
 
 
@@ -264,10 +279,7 @@ class _ResultPageState extends State<ResultPage> {
                               buttonWidth: 170.0,
                               buttonHeight: 50.0,
                               buttonRadius: 10.0,
-                              validationStates: () {
-                                // Callback function when the button is pressed
-                                print('Button clicked!');
-                              },
+                              validationStates: ()=>navigeateReportPage(context)
                             ),
                             ButtonWidget(
                               ctx: context,

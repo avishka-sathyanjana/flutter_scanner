@@ -2,39 +2,41 @@ import 'package:flutter/material.dart';
 
 // DropdownMenuEntry labels and values for the first dropdown menu.
 enum ConditionLabel {
-  good('Good', Colors.blue),
-  repair('Repairable', Colors.orange),
-  defective('Defective', Colors.red);
+
+  noCode('No item code', Colors.red),
+  duplicateItem('Duplicate Item code', Colors.orange),
+  wrongItem('Wrong Item code', Colors.brown),
+  ;
 
   const ConditionLabel(this.label, this.color);
   final String label;
   final Color color;
 }
 
-class ConditionDropdown extends StatefulWidget {
-  const ConditionDropdown({super.key});
+class IssueDropdown extends StatefulWidget {
+  const IssueDropdown({super.key});
 
   @override
-  State<ConditionDropdown> createState() => _ConditionDropdownState();
+  State<IssueDropdown> createState() => _ConditionDropdownState();
 }
 
-class _ConditionDropdownState extends State<ConditionDropdown> {
+class _ConditionDropdownState extends State<IssueDropdown> {
   final TextEditingController colorController = TextEditingController();
   ConditionLabel? selectedColor;
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
+      // width infinity
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: DropdownMenu<ConditionLabel>(
             width: 350,
-            initialSelection: ConditionLabel.good,
+            initialSelection: ConditionLabel.noCode,
             controller: colorController,
             requestFocusOnTap: false,
-            label: const Text('Item Condition'),
+            label: const Text('Issue Type'),
             onSelected: (ConditionLabel? color) {
               setState(() {
                 selectedColor = color;

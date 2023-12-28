@@ -71,6 +71,7 @@ flutter:
      - assets/images/scaneer.png
      - assets/images/qrimage.jpeg
      - assets/json_file/data.json
+     - assets/json_file/location.json
 
   #   - images/a_dot_ham.jpeg
 
