@@ -145,7 +145,7 @@ class _ItemFormState extends State<ItemForm> {
                             var result= await AuthService().getAssets(assetsCode.text);
                             setState(() {
                               Navigator.push(context, MaterialPageRoute(builder: (_){
-                                return ResultPage( activeScanner: () {  },assetsDate:result,);
+                                return ResultPage( activeScanner: () {  },assetsData:result,);
                               }));
                             });
                           }else{

@@ -98,7 +98,7 @@ class _QRScannerState extends State<QRScanner> {
                       var result=await AuthService().getAssets(code);
                        setState(() {
                          Navigator.push(context, MaterialPageRoute(
-                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsDate:result)
+                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsData:result)
                          ));
                        });
                   }

@@ -34,7 +34,7 @@ class _IssueScreenState extends State<IssueScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
           
                 children: [
                   // Issue Type

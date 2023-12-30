@@ -10,14 +10,15 @@ import '/data_validations/login_validation.dart';
 import 'scanner_menu_screen.dart';
 import 'package:provider/provider.dart';
 import '/provider/location_state.dart';
+import '/data_validations/dilog_massage.dart';
 
 
 class ResultPage extends StatefulWidget {
   //final String location;
   final Function() activeScanner;
-   List<AssetsVarify>assetsDate=[];
+  List<AssetsVarify>assetsData=[];
 
-   ResultPage({required this.activeScanner,required this.assetsDate});
+   ResultPage({required this.activeScanner,required this.assetsData});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -28,6 +29,7 @@ class _ResultPageState extends State<ResultPage> {
   String getLocation='';
   bool wornigState=false;
   bool locationError=false;
+  bool unSccsesFull=false;
   String itemCode = '';
   String itemName = '';
   String itemCategory = '';
@@ -36,8 +38,21 @@ class _ResultPageState extends State<ResultPage> {
   String itemLocation = '';
 
 
+  void assingData(){
+    itemCode=widget.assetsData[0].itemCode;
+    itemName=widget.assetsData[0].assetsItemeName;
+    itemCategory=widget.assetsData[0].mainAssetsType;
+    itemLocation=widget.assetsData[0].location;
+    itemDivition=widget.assetsData[0].Division;
+  }
 
-  Widget errorMassage(BuildContext context,String errorHead,String errorType){
+
+
+  Widget errorMassage(
+      BuildContext context,
+      String errorHead,
+      String errorType,
+      Color boderColor){
     return  Container(
       height: 120,
       margin: const EdgeInsets.only(top: 13),
@@ -46,24 +61,26 @@ class _ResultPageState extends State<ResultPage> {
         color: const Color.fromRGBO(255, 190, 190, 0.7019607843137254),
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
-          color: Colors.redAccent,
+          color: boderColor,
           width: 4,
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              errorHead,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+             Text(
+                errorHead,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                softWrap:true,
               ),
-            ),
-            SizedBox(height: 8),
+
+            const SizedBox(height: 8),
             Text(
               errorType,
               style: const TextStyle(
@@ -79,69 +96,67 @@ class _ResultPageState extends State<ResultPage> {
 
   //we can map assets details this function
   bool assetsDataState(){
-    if(widget.assetsDate.isEmpty){
-      print("pukooooloooo");
+    if(widget.assetsData.isEmpty){
+      unSccsesFull=true;
       return false;
 
-    }else if(widget.assetsDate[0].isNotverifyCurentYear){
-      print("ykoooo");
+    }else if(widget.assetsData[0].isNotverifyCurentYear){
 
-        if(widget.assetsDate[0].location.toString()==getLocation){
+        if(widget.assetsData[0].location.toString()==getLocation){
             setState(() {
-              itemCode=widget.assetsDate[0].itemCode;
-              itemName=widget.assetsDate[0].assetsItemeName;
-              itemCategory=widget.assetsDate[0].mainAssetsType;
-              itemLocation=widget.assetsDate[0].location;
-              itemDivition=widget.assetsDate[0].Division;
-             // ItemLastCheck=widget.assetsDate[0].itemLastCheck.toString();
-              // we can not see worning
+              assingData();
               wornigState=false;
+              locationError=false;
+              unSccsesFull=false;
 
             });
-        }else{
-          print("pakoooooooooooooooo");
+        } else{
 
           setState(() {
-            itemCode=widget.assetsDate[0].itemCode;
-            itemName=widget.assetsDate[0].assetsItemeName;
-            itemCategory=widget.assetsDate[0].mainAssetsType;
-            itemLocation=widget.assetsDate[0].location;
-            itemDivition=widget.assetsDate[0].Division;
-            //ItemLastCheck=widget.assetsDate[0].itemLastCheck.toString();
-            // we can not see worning
+             assingData();
             locationError=true;
+            //unSccsesFull=true;
 
           });
         }
 
       return true;
 
-    }else if(widget.assetsDate[0].allredyVerify){
-      print("pukooooooooooooooo");
-      setState(() {
-        itemCode=widget.assetsDate[0].itemCode;
-        itemName=widget.assetsDate[0].assetsItemeName;
-        itemCategory=widget.assetsDate[0].mainAssetsType;
-        itemLocation=widget.assetsDate[0].location;
-        itemDivition=widget.assetsDate[0].Division;
-        //ItemLastCheck=widget.assetsDate[0].itemLastCheck.toString();
-        // we can not see worning
-        wornigState=true;
-      });
+    }else if(widget.assetsData[0].allredyVerify){
+         if(widget.assetsData[0].location.toString()==getLocation){
+           setState(() {
+             assingData();
+             wornigState=true;
+             locationError=false;
+           });
+         }else if(widget.assetsData[0].location.toString()!=getLocation){
+           setState(() {
+             assingData();
+             wornigState=true;
+             locationError=true;
+           });
+         }
+
       return true;
     }else{
-      print("hukooooooooooooo");
       wornigState =false;
       return false;
     }
 
   }
 
-  void verfiyData(BuildContext context){
-    if(assetsDataState()&&!wornigState){
+  void verfiyData(BuildContext context)async{
+
+    if(assetsDataState()&&!wornigState&&!locationError){
         if(ConditionDropdown.assetsStates.isNotEmpty) {
-          AuthService().verifyTable(itemCode, itemLocation,_remarks.text,ConditionDropdown.assetsStates);
-           Navigator.pop(context);//pop scanner page
+          await showConfirmationDialog(context,"Verify !", "Do you verify assets ?");
+          if(dilogState){
+              setState(() {
+                AuthService().verifyTable(itemCode, itemLocation,_remarks.text,ConditionDropdown.assetsStates);
+                Navigator.pop(context);
+              });
+          }
+        //pop scanner page
         }else{
            showError(context,"Select assets state");
         }
@@ -150,10 +165,16 @@ class _ResultPageState extends State<ResultPage> {
     }
   }
   
-  void navigeateReportPage(BuildContext context){
-    setState(() {
-        Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
-    });
+  void navigeateReportPage(BuildContext context)async{
+   await showConfirmationDialog(context,"Issue !","Do you report issue ?");
+   if(dilogState){
+     setState(() {
+       Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
+     });
+   }else{
+     print("Accept cansel");
+   }
+
   }
 
   @override
@@ -187,7 +208,7 @@ class _ResultPageState extends State<ResultPage> {
                       height: 320,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(197, 255, 225, 0.6705882352941176),
+                        color: const Color.fromRGBO(197, 255, 225, 0.6705882352941176),
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
                           color: colorPlate2,
@@ -208,7 +229,7 @@ class _ResultPageState extends State<ResultPage> {
                                 //center
                               ),
                             ),
-                            SizedBox(height: 12),
+                            const SizedBox(height: 12),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -247,7 +268,7 @@ class _ResultPageState extends State<ResultPage> {
                                     fontFamily: fontRaleway
                                   ),
                                 ),
-                                SizedBox(height: 4,),
+                                const SizedBox(height: 4,),
                                 Text(
                                   'Item Divition: $itemDivition',
                                   style: const TextStyle(
@@ -272,25 +293,16 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ):
 
-                  errorMassage(context,'Scan Unsuccessful !','No Item Found !'),
-                  wornigState?errorMassage(context,"Allredy exits item !","Item Found !"):const SizedBox(),
-                  locationError?errorMassage(context,"Invalid Location !","Item Found !"):const SizedBox(),
-
-
-                  // the data inserting part
+                  errorMassage(context,'Scan Unsuccessful !','No Item Found !',Colors.red),
+                  if(!locationError&&wornigState)
+                     errorMassage(context,"Allredy Verify item !","Item Found !",colorPlate2)
+                  else if(locationError&&wornigState)
+                    errorMassage(context,"Allredy verify item but invalid location!","Item Found !",colorPlate2)
+                  else if(locationError&&!wornigState)
+                      errorMassage(context,"Invalid location !","Item Found !",colorPlate2),
                   Container(
                       height: 200,
                       width: double.infinity,
-
-                      // decoration: BoxDecoration(
-                      //     // // color: Colors.green,
-                      //     // border: Border.all(
-                      //     //   color: Colors.black87,
-                      //     //   width: 4,
-                      //     // ),
-                      //     // borderRadius: BorderRadius.circular(5)
-                      //   ),
-
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -329,11 +341,11 @@ class _ResultPageState extends State<ResultPage> {
 
                   Container(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal:10.0),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ButtonWidget(
+                            (unSccsesFull||locationError||wornigState)?ButtonWidget(
                               ctx: context,
                               buttonName: 'Report',
                               buttonFontSize: 20.0,
@@ -344,7 +356,7 @@ class _ResultPageState extends State<ResultPage> {
                               buttonHeight: 50.0,
                               buttonRadius: 10.0,
                               validationStates: ()=>navigeateReportPage(context)
-                            ),
+                            ):
                             ButtonWidget(
                               ctx: context,
                               buttonName: 'Verify',
