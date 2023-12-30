@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/screen/location_menu_screen.dart';
 import '/style_varible/style_screen.dart';
 import '/widget/button_widget.dart';
 import '/widget/condition_dropdown.dart';
@@ -7,10 +8,12 @@ import 'issue-screen.dart';
 import '/database/auth_file.dart';
 import '/data_validations/login_validation.dart';
 import 'scanner_menu_screen.dart';
+import 'package:provider/provider.dart';
+import '/provider/location_state.dart';
 
 
 class ResultPage extends StatefulWidget {
-
+  //final String location;
   final Function() activeScanner;
    List<AssetsVarify>assetsDate=[];
 
@@ -22,7 +25,9 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   final TextEditingController _remarks=TextEditingController();
+  String getLocation='';
   bool wornigState=false;
+  bool locationError=false;
   String itemCode = '';
   String itemName = '';
   String itemCategory = '';
@@ -31,7 +36,8 @@ class _ResultPageState extends State<ResultPage> {
   String itemLocation = '';
 
 
-  Widget errorMassage(BuildContext context){
+
+  Widget errorMassage(BuildContext context,String errorHead,String errorType){
     return  Container(
       height: 120,
       margin: const EdgeInsets.only(top: 13),
@@ -44,23 +50,23 @@ class _ResultPageState extends State<ResultPage> {
           width: 4,
         ),
       ),
-      child: const Padding(
+      child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Scan Unsuccessful !',
-              style: TextStyle(
+              errorHead,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 8),
             Text(
-              'No Item Found !',
-              style: TextStyle(
+              errorType,
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black,
               ),
@@ -74,25 +80,59 @@ class _ResultPageState extends State<ResultPage> {
   //we can map assets details this function
   bool assetsDataState(){
     if(widget.assetsDate.isEmpty){
-        setState(() {
-          wornigState=true;
-        });
+      print("pukooooloooo");
       return false;
-    }else{
-      setState(() {
 
-          itemCode=widget.assetsDate[0].itemCode;
-          itemName=widget.assetsDate[0].assetsItemeName;
-          itemCategory=widget.assetsDate[0].mainAssetsType;
-          itemLocation=widget.assetsDate[0].location;
-          itemDivition=widget.assetsDate[0].Division;
-         // we can not see worning
-           wornigState=false;
+    }else if(widget.assetsDate[0].isNotverifyCurentYear){
+      print("ykoooo");
 
+        if(widget.assetsDate[0].location.toString()==getLocation){
+            setState(() {
+              itemCode=widget.assetsDate[0].itemCode;
+              itemName=widget.assetsDate[0].assetsItemeName;
+              itemCategory=widget.assetsDate[0].mainAssetsType;
+              itemLocation=widget.assetsDate[0].location;
+              itemDivition=widget.assetsDate[0].Division;
+             // ItemLastCheck=widget.assetsDate[0].itemLastCheck.toString();
+              // we can not see worning
+              wornigState=false;
 
-      });
+            });
+        }else{
+          print("pakoooooooooooooooo");
+
+          setState(() {
+            itemCode=widget.assetsDate[0].itemCode;
+            itemName=widget.assetsDate[0].assetsItemeName;
+            itemCategory=widget.assetsDate[0].mainAssetsType;
+            itemLocation=widget.assetsDate[0].location;
+            itemDivition=widget.assetsDate[0].Division;
+            //ItemLastCheck=widget.assetsDate[0].itemLastCheck.toString();
+            // we can not see worning
+            locationError=true;
+
+          });
+        }
+
       return true;
 
+    }else if(widget.assetsDate[0].allredyVerify){
+      print("pukooooooooooooooo");
+      setState(() {
+        itemCode=widget.assetsDate[0].itemCode;
+        itemName=widget.assetsDate[0].assetsItemeName;
+        itemCategory=widget.assetsDate[0].mainAssetsType;
+        itemLocation=widget.assetsDate[0].location;
+        itemDivition=widget.assetsDate[0].Division;
+        //ItemLastCheck=widget.assetsDate[0].itemLastCheck.toString();
+        // we can not see worning
+        wornigState=true;
+      });
+      return true;
+    }else{
+      print("hukooooooooooooo");
+      wornigState =false;
+      return false;
     }
 
   }
@@ -118,7 +158,7 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    getLocation=Provider.of<LocationProvider>(context).location;
       return Scaffold(
           appBar: AppBar(
             backgroundColor: colorPlate2,
@@ -232,8 +272,9 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ):
 
-                  errorMassage(context),
-
+                  errorMassage(context,'Scan Unsuccessful !','No Item Found !'),
+                  wornigState?errorMassage(context,"Allredy exits item !","Item Found !"):const SizedBox(),
+                  locationError?errorMassage(context,"Invalid Location !","Item Found !"):const SizedBox(),
 
 
                   // the data inserting part

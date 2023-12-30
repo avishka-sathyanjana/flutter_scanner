@@ -10,7 +10,7 @@ const bgColor = Color(0xfffafafa);
 
 class QRScanner extends StatefulWidget {
   static const QRScannerRoute="/QR-route";
-  const QRScanner({super.key});
+  //const QRScanner({required this.locaton});
 
   @override
   State<QRScanner> createState() => _QRScannerState();
@@ -98,7 +98,7 @@ class _QRScannerState extends State<QRScanner> {
                       var result=await AuthService().getAssets(code);
                        setState(() {
                          Navigator.push(context, MaterialPageRoute(
-                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsDate:result,)
+                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsDate:result)
                          ));
                        });
                   }

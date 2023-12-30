@@ -1,14 +1,18 @@
 
 import 'dart:async';
 import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'style_varible/style_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/dash_bord_screen.dart';
 import 'screen/qr_scanner.dart';
 import 'screen/location_menu_screen.dart';
 import 'screen/scanner_menu_screen.dart';
+import 'package:provider/provider.dart';
+import 'provider/location_state.dart';
 
 
 Future<void> main()async {
@@ -21,8 +25,13 @@ Future<void> main()async {
         projectId:'ucsc-erp-next')
   ):await Firebase.initializeApp();
 
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => LocationProvider(),
+      child: const MyApp(),
+    ),
+  );
 
-  runApp(const MyApp());
 
 }
 
@@ -74,14 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 //time function, this function execute after navigate main_screen page after 4 second
-  void startTimer(){
-    _timer=Timer.periodic(const Duration(seconds:4), (timer) {
-      Navigator.pushNamed(context,MainScreen.mainScreenPageRoute,arguments: {
-        "startTime":startTimer
-      });
-      _timer.cancel();
-    });
-  }
+//   void startTimer(){
+//     _timer=Timer.periodic(const Duration(seconds:4), (timer) {
+//       Navigator.pushNamed(context,MainScreen.mainScreenPageRoute,arguments: {
+//         "startTime":startTimer
+//       });
+//       _timer.cancel();
+//     });
+//   }
 
   @override
   Widget build(BuildContext context) {

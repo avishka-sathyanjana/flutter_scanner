@@ -5,12 +5,20 @@ class AssetsVarify{
   final String itemCode;
   final String Division;
   final String location;
+  //final DateTime itemLastCheck;
+  final bool isNotverifyCurentYear;
+  final bool allredyVerify;
+  final bool dublicate;
   AssetsVarify({
     required this.assetsItemeName,
     required this.mainAssetsType,
     required this.itemCode,
     required this.Division,
     required this.location,
+    this.isNotverifyCurentYear=false,
+    this.allredyVerify=false,
+    this.dublicate=false
+
   });
 
 }

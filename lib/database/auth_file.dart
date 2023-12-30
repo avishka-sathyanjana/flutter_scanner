@@ -79,7 +79,18 @@ Future<List<AssetsVarify>>getAssets(String AssetsId)async{
         .where("Asset ID", isEqualTo:AssetsId)
         .get();
 
-    if (snapshot.docs.isNotEmpty) {
+    //get caret year..............
+    DateTime curent=DateTime.now();
+    String curentYear=curent.year.toString();
+
+    var verifySnap=await _db.
+        collection("verify table").
+        where("assets code",isEqualTo:AssetsId).
+        where("curentYear",isEqualTo:curentYear).get();
+
+
+    if (snapshot.docs.isNotEmpty &&verifySnap.docs.isEmpty) {
+
       return snapshot.docs.map((document) {
         return AssetsVarify(
             assetsItemeName: document["Name of the Item"],
@@ -87,8 +98,23 @@ Future<List<AssetsVarify>>getAssets(String AssetsId)async{
             itemCode:document['Asset ID'],
             Division:document['Division'],
             location:document['Location'],
+            isNotverifyCurentYear: true
         );
       }).toList();
+     
+    } else if(verifySnap.docs.isNotEmpty&&verifySnap.docs.isNotEmpty){
+
+        return snapshot.docs.map((document) {
+          return AssetsVarify(
+              assetsItemeName: document["Name of the Item"],
+              mainAssetsType:document['Main Asset Type'] ,
+              itemCode:document['Asset ID'],
+              Division:document['Division'],
+              location:document['Location'],
+              allredyVerify: true
+          );
+        }).toList();
+
     } else {
       // Handle the case where no matching document is found
       return []; // Or throw an exception, or handle it as appropriate
@@ -125,6 +151,7 @@ Future<List<AssetsLocation>>getLocation(String locationCode)async{
 Future<void>verifyTable(String assetsCode,String location,String remarks,String states)async{
     String userId=getUserId();
     DateTime curent=DateTime.now();
+    String curentYear=curent.year.toString();
     Timestamp dateTime=Timestamp.fromDate(curent);
     Map<String,dynamic>data={
       'assets code':assetsCode,
@@ -132,7 +159,8 @@ Future<void>verifyTable(String assetsCode,String location,String remarks,String 
       'location':location,
       'remarks':remarks,
       'statas':states,
-      'user id':userId
+      'curentYear':curentYear,
+      'user id':userId,
     };
     
     collectionVerfyTable.add(data).then((DocumentReference documentRef){
