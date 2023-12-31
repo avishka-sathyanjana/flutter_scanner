@@ -1,7 +1,6 @@
 
 import 'dart:async';
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +25,17 @@ Future<void> main()async {
   ):await Firebase.initializeApp();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => LocationProvider(),
-      child: const MyApp(),
-    ),
+    MultiProvider(
+        providers:[
+          ChangeNotifierProvider(create: (context)=>LocationProvider()),
+          ChangeNotifierProvider(create: (context)=>DropDwonIssue()),
+          ChangeNotifierProvider(create: (context)=>DropDwonCondition()),
+        ],
+        child: const MyApp()
+    )
   );
+
+
 
 
 }

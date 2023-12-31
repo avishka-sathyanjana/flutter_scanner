@@ -12,6 +12,7 @@ class AuthService{
   final CollectionReference collectionReference=FirebaseFirestore.instance.collection('assets');
   final CollectionReference collectionRefLocation=FirebaseFirestore.instance.collection('location');
   final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
+  final CollectionReference collectionIssuesTable=FirebaseFirestore.instance.collection("Issue");
   bool isLogin=false;
 
   Future<User?>signInWithEmailAndPassword(String email,String password)async{
@@ -171,6 +172,47 @@ Future<void>verifyTable(String assetsCode,String location,String remarks,String 
 
 
 }
+//add issues  data for table
+  Future<void>addIssues(
+      String issueType,
+      String itemCategory,
+      String itemCondition,
+      String itemType,
+      String location,
+      String model,
+      String remarks,
+      String assetsCode,
+      String previouseCode,
+      )async{
+    String userId=getUserId();
+    DateTime curent=DateTime.now();
+    String curentYear=curent.year.toString();
+    Timestamp dateTime=Timestamp.fromDate(curent);
+    Map<String,dynamic>data={
+      'IssueType':issueType,
+      'ItemCategory':itemCategory,
+      'ItemCondition':itemCondition,
+      'ItemType':itemType,
+      'Location':location,
+      'curentYear':curentYear,
+      'Model':model,
+      'Remarks':remarks,
+      'assetsCode':assetsCode,
+      'dateTime':dateTime,
+      'previousCode':previouseCode,
+      'userId':userId
+
+
+    };
+
+    collectionIssuesTable.add(data).then((DocumentReference documentRef){
+      print("data save firebase:$documentRef");
+    }).catchError((onError){
+      print("Error data save:$onError");
+    });
+
+
+  }
 
 
 

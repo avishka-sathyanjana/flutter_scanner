@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../data_validations/login_validation.dart';
 import '/screen/result_screen_new.dart';
+import 'package:provider/provider.dart';
+import '/provider/location_state.dart';
 
 // DropdownMenuEntry labels and values for the first dropdown menu.
 enum ConditionLabel {
@@ -49,6 +52,8 @@ class _ConditionDropdownState extends State<ConditionDropdown> {
               setState(() {
                 selectedColor = color;
                   printStaticVerible();
+                  Provider.of<DropDwonCondition>(context,listen: false).updateValue(colorController.text);
+
               });
             },
             dropdownMenuEntries: ConditionLabel.values

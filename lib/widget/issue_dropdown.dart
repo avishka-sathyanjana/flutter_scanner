@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/location_state.dart';
+import '/data_validations/login_validation.dart';
 
 // DropdownMenuEntry labels and values for the first dropdown menu.
 enum ConditionLabel {
@@ -25,6 +28,14 @@ class _ConditionDropdownState extends State<IssueDropdown> {
   final TextEditingController colorController = TextEditingController();
   ConditionLabel? selectedColor;
 
+   void validate(BuildContext context){
+     if(colorController.text.isNotEmpty){
+       Provider.of<DropDwonIssue>(context,listen: false).updateValue(colorController.text);
+     }else{
+       showError(context, "Issue type empty");
+     }
+   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,11 +47,12 @@ class _ConditionDropdownState extends State<IssueDropdown> {
             width:widget.width,
             initialSelection: ConditionLabel.noCode,
             controller: colorController,
-            requestFocusOnTap: false,
+            requestFocusOnTap:false,
             label: const Text('Issue Type'),
             onSelected: (ConditionLabel? color) {
               setState(() {
                 selectedColor = color;
+                 validate(context);
               });
             },
             dropdownMenuEntries: ConditionLabel.values
