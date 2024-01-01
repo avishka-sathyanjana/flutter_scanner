@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
 bool dilogState=false;
 Future<void> showConfirmationDialog(BuildContext context,String head,String massage) async {
   return showDialog<void>(
@@ -6,6 +7,9 @@ Future<void> showConfirmationDialog(BuildContext context,String head,String mass
     builder: (BuildContext context) {
       // return an AlertDialog
       return AlertDialog(
+        backgroundColor:Colors.white,
+        elevation: 4,
+        shadowColor: Colors.white,
         title: Text(head),
         content: Text(massage),
         actions: <Widget>[

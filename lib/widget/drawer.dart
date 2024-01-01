@@ -50,7 +50,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
     if(await AuthService().isLoginCheck()) {
       setState(() {
         AuthService().logOut();
-        Navigator.pushNamed(context, "/");
+      // Navigator.pushNamed(context, "/");
+        Navigator.pushReplacementNamed(context, "/");
 
       });
     }
