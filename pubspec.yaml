@@ -75,6 +75,7 @@ flutter:
      - assets/images/qrimage.jpeg
      - assets/images/barcode_scan.jpg
      - assets/images/barcode-amico-blue.png
+
 #     - assets/json_file/data.json
 #     - assets/json_file/location.json
 #     - assets/json_file/AssetListDB.json

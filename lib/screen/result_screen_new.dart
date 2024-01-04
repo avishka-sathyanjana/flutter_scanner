@@ -36,6 +36,9 @@ class _ResultPageState extends State<ResultPage> {
   String itemDivition = '';
   String ItemLastCheck = '';
   String itemLocation = '';
+  String itemNewCode='';
+  String itemOldCode='';
+  String itemPopuseCode='';
 
 
   void assingData(){
@@ -44,6 +47,9 @@ class _ResultPageState extends State<ResultPage> {
     itemCategory=widget.assetsData[0].mainAssetsType;
     itemLocation=widget.assetsData[0].location;
     itemDivition=widget.assetsData[0].Division;
+    itemNewCode=widget.assetsData[0].newCode;
+    itemOldCode=widget.assetsData[0].oldCode;
+    itemPopuseCode=widget.assetsData[0].propuseCode;
 
 
   }
@@ -99,12 +105,12 @@ class _ResultPageState extends State<ResultPage> {
   //we can map assets details this function
   bool assetsDataState(){
     if(widget.assetsData.isEmpty){
-      print("heeeeeeeeeeeeeeeeeeeee");
+     // print("heeeeeeeeeeeeeeeeeeeee");
       unSccsesFull=true;
       return false;
 
     }else if(widget.assetsData[0].isNotverifyCurentYear){
-          print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
+         // print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
         if(widget.assetsData[0].location.toString()==getLocation){
             setState(() {
               assingData();
@@ -142,7 +148,7 @@ class _ResultPageState extends State<ResultPage> {
 
       return true;
     }else{
-      print("heeeeeewwwwwwwwwwwwwww");
+     // print("heeeeeewwwwwwwwwwwwwww");
       wornigState =false;
       return false;
     }
@@ -155,13 +161,25 @@ class _ResultPageState extends State<ResultPage> {
           await showConfirmationDialog(context,"Verify !", "Do you verify assets ?");
           if(dilogState){
               setState(() {
-                AuthService().verifyTable(itemCode, itemLocation,_remarks.text,ConditionDropdown.assetsStates);
+                AuthService().verifyTable(
+                    itemCode,
+                    itemLocation,
+                    _remarks.text
+                    ,ConditionDropdown.assetsStates ,
+                    itemNewCode,
+                    itemOldCode,
+                    itemPopuseCode,
+                );
+
                  itemCode = '';
                  itemName = '';
                  itemCategory = '';
                  itemDivition = '';
                  ItemLastCheck = '';
                  itemLocation = '';
+                 itemNewCode='';
+                 itemOldCode='';
+                 itemPopuseCode='';
                  ConditionDropdown.assetsStates='';
                 Navigator.pop(context);
               });
