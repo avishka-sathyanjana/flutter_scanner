@@ -31,17 +31,56 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
       body: SingleChildScrollView(
         child: Center(
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50,),
+                  const SizedBox(height: 10),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column( // Wrap the list of widgets with a Column
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Consumer<LocationProvider>(
+                            builder: (context, locationProvider, child) {
+                              return Text(
+                                'Current Location:     ${locationProvider.location}',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              );
+                            },
+                          ),
+                          const Text(
+                            'Number of Items Scanned :     ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+
+                  SizedBox(height: 10,),
+                  Image.asset(
+                    'assets/images/barcode_scan.jpg',
+                    width: 200, // Set the width as Zneeded
+                    height: 200, // Set the height as needed
+
+                  ),
                   ButtonWidget(
                     ctx: context,
-                    buttonName: "Scan Item Code",
+                    buttonName: "Scan Bar Code",
                     buttonFontSize: 20,
                     buttonColor: Colors.transparent,
-                    borderColor: Colors.indigoAccent,
-                    textColor: Colors.blueAccent,
-                    buttonWidth: 250,
+                    borderColor: Colors.pink,
+                    textColor: Colors.pink,
+                    buttonWidth: 220,
                     buttonHeight: 40,
                     buttonRadius: 15,
                     validationStates: () {
@@ -57,7 +96,7 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
                     },
                   ),
                   // add a space
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 20),
         
                   //add text 'Or'
                   const Text('OR',style: TextStyle(
@@ -65,7 +104,7 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
                     fontSize: 18,
                   ),),
         
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 10),
                   // add a button
         
                   //     adding the input form
@@ -126,62 +165,60 @@ class _ItemFormState extends State<ItemForm> {
 
             const SizedBox(height: 20),
 
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonWidget(
-                        ctx: context,
-                        buttonName: 'Report',
-                        buttonFontSize: 20.0,
-                        buttonColor: Colors.orangeAccent,
-                        borderColor: Colors.orangeAccent,
-                        textColor: Colors.white,
-                        buttonWidth: 150.0,
-                        buttonHeight: 50.0,
-                        buttonRadius: 10.0,
-                        validationStates: (){
-                           Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
-                        },
-                      ),
-                      ButtonWidget(
-                        ctx: context,
-                        buttonName: 'Submit',
-                        buttonFontSize: 20.0,
-                        buttonColor: Colors.blueAccent,
-                        borderColor: Colors.blue,
-                        textColor: Colors.white,
-                        buttonWidth: 150.0,
-                        buttonHeight: 50.0,
-                        buttonRadius: 10.0,
-                        validationStates: ()async{
-                          String dropValue=Provider.of<DropDwonData>(context,listen: false).value;
-                          print("hsfghf$dropValue");
-                          if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
-                            var result= await AuthService().getAssets(assetsCode.text,dropValue);
-                            setState(() {
-                              Navigator.push(context, MaterialPageRoute(builder: (_){
-                                return ResultPage( activeScanner: () {  },assetsData:result,);
-                              }));
-                            });
-                          }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
-                            setState(() {
-                               showError(context,"select item category");
-                            });
-                          }
-                          else{
-                            setState(() {
-                              showError(context,"Item code is empty");
-                            });
-                          }
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ButtonWidget(
+                      ctx: context,
+                      buttonName: 'Report',
+                      buttonFontSize: 20.0,
+                      buttonColor: Colors.orangeAccent,
+                      borderColor: Colors.orangeAccent,
+                      textColor: Colors.white,
+                      buttonWidth: 150.0,
+                      buttonHeight: 50.0,
+                      buttonRadius: 10.0,
+                      validationStates: (){
+                         Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
+                      },
+                    ),
+                    ButtonWidget(
+                      ctx: context,
+                      buttonName: 'Check',
+                      buttonFontSize: 20.0,
+                      buttonColor: Colors.blueAccent,
+                      borderColor: Colors.blueAccent,
+                      textColor: Colors.white,
+                      buttonWidth: 150.0,
+                      buttonHeight: 50.0,
+                      buttonRadius: 10.0,
+                      validationStates: ()async{
+                        String dropValue=Provider.of<DropDwonData>(context,listen: false).value;
+                        print("hsfghf$dropValue");
+                        if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
+                          var result= await AuthService().getAssets(assetsCode.text,dropValue);
+                          setState(() {
+                            Navigator.push(context, MaterialPageRoute(builder: (_){
+                              return ResultPage( activeScanner: () {  },assetsData:result,);
+                            }));
+                          });
+                        }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
+                          setState(() {
+                             showError(context,"select item category");
+                          });
+                        }
+                        else{
+                          setState(() {
+                            showError(context,"Item code is empty");
+                          });
+                        }
 
-                        },
-                      ),
-                    ]
+                      },
+                    ),
+                  ]
 
-                ),
               ),
             ),
           ]

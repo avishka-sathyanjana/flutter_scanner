@@ -70,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
       margin: EdgeInsets.only(top:defirent),
       decoration:  BoxDecoration(
           border: Border.all(
-              color: colorPlate2,
+              color: Colors.black38,
               width: 2
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10))
@@ -153,7 +153,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: colorPlate2,
           automaticallyImplyLeading: false,
             title: const Text(
-                "Assets Manager",
+                "Board Of Survey",
                style: TextStyle(
                   color: Colors.white,
                   fontFamily: fontRaleway,
@@ -182,7 +182,7 @@ class _MainScreenState extends State<MainScreen> {
                    },_passwordController),
                    //forget password sections
                    Container(
-                     margin: const EdgeInsets.only(top: 25),
+                     margin: const EdgeInsets.only(top: 100),
                      child:  InkWell(
                        onTap:(){
                           //navigate to forget password filed, now is not works
@@ -203,13 +203,13 @@ class _MainScreenState extends State<MainScreen> {
                      //make the usability button widget
                        ctx: context, //pass the context
                        buttonName: "Login",//button name args
-                       buttonFontSize: 18,//button name fonts size
-                       buttonColor:Colors.white,//button background color
-                       borderColor:colorPlate3,//button border color
-                       buttonWidth:double.infinity,//button width
-                       buttonHeight: 45,
-                       buttonRadius: 8.0,
-                       textColor: colorPlate2,//button heghit
+                       buttonFontSize: 20,
+                       buttonColor: Colors.blueAccent,
+                       borderColor: Colors.blueAccent,
+                       textColor: Colors.white,
+                       buttonWidth: 150,
+                       buttonHeight: 50,
+                       buttonRadius: 10,//button heghit
                        validationStates:()=>validateData(context), // call back function
                    )
 

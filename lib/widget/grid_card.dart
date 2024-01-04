@@ -21,35 +21,41 @@ class _GridCardState extends State<GridCard> {
         elevation: 4,
         color: Colors.white,
         child: Container(
-            width: 100,
-            height: 300,
+            width: double.infinity,
+            height: 200,
             //color: colorPlate2,
             child: Stack(
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(widget.imageUrl
-                      ,fit: BoxFit.cover,
+                    child: Image.asset(widget.imageUrl,
+                      width: double.infinity,
+                      height:180,
+
+
                     )
 
                 ),
                 Positioned(
                   bottom: 0,
-                  child: Container(
-                    width: 182,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)),
-                        color: Colors.white,
-                        shape: BoxShape.rectangle
-                    ),
-                    child: Center(
-                      child: Text(
-                        widget.funcName,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontFamily: fontRaleway,
-                            color: colorPlate2
+                  child: Center(
+                    child: Container(
+                      width: 400,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)),
+                          color: Colors.white,
+                          shape: BoxShape.rectangle
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.funcName,
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: fontRaleway,
+                              color: colorPlate2
+                          ),
                         ),
                       ),
                     ),
