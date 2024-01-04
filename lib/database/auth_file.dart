@@ -84,7 +84,6 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
        DateTime curent=DateTime.now();
        String curentYear=curent.year.toString();
         if(itemOption=='1'){
-
             snapshot = await _db
               .collection("assetsNewDB")
               .where("NewCode-last",isEqualTo:assetsId.toString())
@@ -92,11 +91,10 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             //get data vrefiy table
             verifySnap=await _db.
             collection("verify table").
-            where("assets code",isEqualTo:assetsId).
+            where("newCode",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
 
         }else if(itemOption=='2'){
-
            snapshot = await _db
               .collection("assetsNewDB")
               .where("ProposedCode-Last", isEqualTo:assetsId.toString())
@@ -105,7 +103,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
            //get data vrefiy table
            verifySnap=await _db.
            collection("verify table").
-           where("assets code",isEqualTo:assetsId).
+           where("popuseCode",isEqualTo:assetsId).
            where("curentYear",isEqualTo:curentYear).get();
 
         }else if(itemOption=='3'){
@@ -118,7 +116,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             //get data vrefiy table
             verifySnap=await _db.
             collection("verify table").
-            where("assets code",isEqualTo:assetsId).
+            where("oldCode",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
           print("new daata${snapshot.docs.length}");
         }else{
@@ -155,6 +153,9 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             itemCode:document['Barcode'].toString() ,
             Division:document['Division'],
             location:document['Location'],
+            newCode: document['NewCode-last'],
+            oldCode: document['Oldcode-last'],
+            propuseCode: document['ProposedCode-Last'],
             isNotverifyCurentYear: true
         );
       }).toList()
@@ -169,6 +170,9 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
               itemCode:document['Barcode'].toString(),
               Division:document['Division'],
               location:document['Location'],
+              newCode: document['NewCode-last'],
+              oldCode: document['Oldcode-last'],
+              propuseCode: document['ProposedCode-Last'],
               allredyVerify: true
           );
         }).toList()
@@ -206,13 +210,23 @@ Future<List<AssetsLocation>>getLocation(String locationCode)async{
     }
 }
 //verify data table.......................
-Future<void>verifyTable(String assetsCode,String location,String remarks,String states)async{
+Future<void>verifyTable(
+    String assetsCode,
+    String location,
+    String remarks,
+    String states,
+    String itemNewCode,
+    String itemOldCode,
+    String itemPropuseCode)async{
     String userId=getUserId();
     DateTime curent=DateTime.now();
     String curentYear=curent.year.toString();
     Timestamp dateTime=Timestamp.fromDate(curent);
     Map<String,dynamic>data={
       'assets code':assetsCode,
+      'newCode':itemNewCode,
+      'oldCode':itemOldCode,
+      'popuseCode':itemPropuseCode,
       'dateTime':curent.toString(),
       'location':location,
       'remarks':remarks,

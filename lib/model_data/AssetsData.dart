@@ -5,6 +5,9 @@ class AssetsVarify{
   final String itemCode;
   final String Division;
   final String location;
+  final String newCode;
+  final String oldCode;
+  final String propuseCode;
   final bool isNotverifyCurentYear;
   final bool allredyVerify;
   final bool dublicate;
@@ -14,6 +17,9 @@ class AssetsVarify{
     required this.itemCode,
     required this.Division,
     required this.location,
+    required this.newCode,
+    required this.oldCode,
+    required this.propuseCode,
     this.isNotverifyCurentYear=false,
     this.allredyVerify=false,
     this.dublicate=false

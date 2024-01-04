@@ -73,10 +73,10 @@ flutter:
      - assets/images/scaneer.png
      - assets/images/qr_scan.png
      - assets/images/qrimage.jpeg
-     - assets/json_file/data.json
-     - assets/json_file/location.json
-     - assets/json_file/AssetListDB.json
-     - assets/json_file/AssetListDBnew.json
+#     - assets/json_file/data.json
+#     - assets/json_file/location.json
+#     - assets/json_file/AssetListDB.json
+#     - assets/json_file/AssetListDBnew.json
 
   #   - images/a_dot_ham.jpeg
 
