@@ -44,21 +44,23 @@ class _ResultPageState extends State<ResultPage> {
     itemCategory=widget.assetsData[0].mainAssetsType;
     itemLocation=widget.assetsData[0].location;
     itemDivition=widget.assetsData[0].Division;
+
+
   }
 
 
 
-  Widget errorMassage(
+  Widget errorMessage(
       BuildContext context,
       String errorHead,
       String errorType,
       Color boderColor){
     return  Container(
-      height: 120,
+      height: 110,
       margin: const EdgeInsets.only(top: 13),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(255, 190, 190, 0.7019607843137254),
+        color: Colors.orange[100],
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
           color: boderColor,
@@ -69,7 +71,7 @@ class _ResultPageState extends State<ResultPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
              Text(
                 errorHead,
@@ -97,11 +99,12 @@ class _ResultPageState extends State<ResultPage> {
   //we can map assets details this function
   bool assetsDataState(){
     if(widget.assetsData.isEmpty){
+      print("heeeeeeeeeeeeeeeeeeeee");
       unSccsesFull=true;
       return false;
 
     }else if(widget.assetsData[0].isNotverifyCurentYear){
-
+          print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
         if(widget.assetsData[0].location.toString()==getLocation){
             setState(() {
               assingData();
@@ -139,20 +142,27 @@ class _ResultPageState extends State<ResultPage> {
 
       return true;
     }else{
+      print("heeeeeewwwwwwwwwwwwwww");
       wornigState =false;
       return false;
     }
 
   }
-
+//add assets data verify .......................
   void verfiyData(BuildContext context)async{
-
     if(assetsDataState()&&!wornigState&&!locationError){
         if(ConditionDropdown.assetsStates.isNotEmpty) {
           await showConfirmationDialog(context,"Verify !", "Do you verify assets ?");
           if(dilogState){
               setState(() {
                 AuthService().verifyTable(itemCode, itemLocation,_remarks.text,ConditionDropdown.assetsStates);
+                 itemCode = '';
+                 itemName = '';
+                 itemCategory = '';
+                 itemDivition = '';
+                 ItemLastCheck = '';
+                 itemLocation = '';
+                 ConditionDropdown.assetsStates='';
                 Navigator.pop(context);
               });
           }
@@ -211,7 +221,7 @@ class _ResultPageState extends State<ResultPage> {
                         color: const Color.fromRGBO(197, 255, 225, 0.6705882352941176),
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: colorPlate2,
+                          color: Colors.tealAccent,
                           width: 4,
                         ),
                       ),
@@ -241,7 +251,7 @@ class _ResultPageState extends State<ResultPage> {
                                     color: Colors.black,
                                   ),
                                 ),
-                                const SizedBox(height: 4,),
+                                const SizedBox(height:7,),
                                 Text(
                                   'Item Name: $itemName',
                                   style: const TextStyle(
@@ -250,7 +260,7 @@ class _ResultPageState extends State<ResultPage> {
                                     fontFamily: fontRaleway
                                   ),
                                 ),
-                                const SizedBox(height: 4,),
+                                const SizedBox(height:7,),
                                 Text(
                                   'Location: $itemLocation',
                                   style: const TextStyle(
@@ -259,7 +269,7 @@ class _ResultPageState extends State<ResultPage> {
                                     fontFamily: fontRaleway
                                   ),
                                 ),
-                                const SizedBox(height: 4,),
+                                const SizedBox(height: 7,),
                                 Text(
                                   'Item Category: $itemCategory',
                                   style: const TextStyle(
@@ -268,7 +278,7 @@ class _ResultPageState extends State<ResultPage> {
                                     fontFamily: fontRaleway
                                   ),
                                 ),
-                                const SizedBox(height: 4,),
+                                const SizedBox(height:7,),
                                 Text(
                                   'Item Divition: $itemDivition',
                                   style: const TextStyle(
@@ -278,14 +288,14 @@ class _ResultPageState extends State<ResultPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 4,),
-                                Text(
-                                  'Item Last Check: $ItemLastCheck',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontFamily: fontRaleway
-                                  ),
-                                ),
+                                // Text(
+                                //   'Item Last Check: $ItemLastCheck',
+                                //   style: const TextStyle(
+                                //     fontSize: 16,
+                                //     color: Colors.black,
+                                //     fontFamily: fontRaleway
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],
@@ -293,13 +303,13 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ):
 
-                  errorMassage(context,'Scan Unsuccessful !','No Item Found !',Colors.red),
+                  errorMessage(context,'Scan Unsuccessful !','No Item Found !',Colors.red),
                   if(!locationError&&wornigState)
-                     errorMassage(context,"Allredy Verify item !","Item Found !",colorPlate2)
+                     errorMessage(context,"Warning !","Already Verified Item",Colors.orangeAccent)
                   else if(locationError&&wornigState)
-                    errorMassage(context,"Allredy verify item but invalid location!","Item Found !",colorPlate2)
+                    errorMessage(context,"Warning !","Already Verified Item but Invalid Location",Colors.orangeAccent)
                   else if(locationError&&!wornigState)
-                      errorMassage(context,"Invalid location !","Item Found !",colorPlate2),
+                      errorMessage(context,"Warning !","Invalid Location", Colors.orangeAccent),
                   Container(
                       height: 200,
                       width: double.infinity,
@@ -309,18 +319,8 @@ class _ResultPageState extends State<ResultPage> {
                           children: [
                             const SizedBox(
                                 height: 16.0), // Add some space between fields
-                            Row(
-                              // Add some space between fields
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  child: const Text("Enter Item Condition"),
-                                ),
-                                const SizedBox(width: 16.0), // Adjust the width as needed
-                                const ConditionDropdown(size: 150,),
-                              ],
-                            ),
+
+                            ConditionDropdown(size: 380,),
 
                             // Remarks Text Input
                             Expanded(

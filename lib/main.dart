@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,8 @@ Future<void> main()async {
           ChangeNotifierProvider(create: (context)=>LocationProvider()),
           ChangeNotifierProvider(create: (context)=>DropDwonIssue()),
           ChangeNotifierProvider(create: (context)=>DropDwonCondition()),
+          ChangeNotifierProvider(create: (context)=>DropDwonData())
+          
         ],
         child: const MyApp()
     )

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
 import '../widget/button_widget.dart';
 import '/screen/result_screen_new.dart';
 import 'qr_scanner.dart';
 import '/database/auth_file.dart';
 import '/data_validations/login_validation.dart';
 import 'issue-screen.dart';
+import '/widget/custom_dropdwon.dart';
+import 'package:provider/provider.dart';
+import '/provider/location_state.dart';
 
 
 class ScannerMenuScreen extends StatefulWidget {
@@ -24,47 +28,52 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
       appBar: AppBar(
         title: const Text('Scan Menu'),
       ),
-      body: Center(
-
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonWidget(
-                  ctx: context,
-                  buttonName: "Scan Item Code",
-                  buttonFontSize: 20,
-                  buttonColor: Colors.transparent,
-                  borderColor: Colors.indigoAccent,
-                  textColor: Colors.blueAccent,
-                  buttonWidth: 250,
-                  buttonHeight: 40,
-                  buttonRadius: 15,
-                  validationStates: () {
-                    setState(() {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => QRScanner()
-                        ),
-                      );
-                    });
-
-                  },
-                ),
-                // add a space
-                const SizedBox(height: 30),
-
-                //add text 'Or'
-                const Text('Or'),
-
-                const SizedBox(height: 30),
-                // add a button
-
-                //     adding the input form
-                 ItemForm(),
-              ]
-            //
-          )
+      body: SingleChildScrollView(
+        child: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 50,),
+                  ButtonWidget(
+                    ctx: context,
+                    buttonName: "Scan Item Code",
+                    buttonFontSize: 20,
+                    buttonColor: Colors.transparent,
+                    borderColor: Colors.indigoAccent,
+                    textColor: Colors.blueAccent,
+                    buttonWidth: 250,
+                    buttonHeight: 40,
+                    buttonRadius: 15,
+                    validationStates: () {
+                      setState(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => QRScanner()
+                          ),
+                        );
+                      });
+        
+                    },
+                  ),
+                  // add a space
+                  const SizedBox(height: 50),
+        
+                  //add text 'Or'
+                  const Text('OR',style: TextStyle(
+                    fontFamily: fontRaleway,
+                    fontSize: 18,
+                  ),),
+        
+                  const SizedBox(height: 50),
+                  // add a button
+        
+                  //     adding the input form
+                   ItemForm(),
+                ]
+              //
+            )
+        ),
       ),
     );
   }
@@ -93,6 +102,13 @@ class _ItemFormState extends State<ItemForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Item Code category',
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 6,),
+            const DropDwon(),
+            const SizedBox(height: 6,),
             const Text(
               'Enter the Item Code',
               style: TextStyle(fontSize: 20),
@@ -141,14 +157,21 @@ class _ItemFormState extends State<ItemForm> {
                         buttonHeight: 50.0,
                         buttonRadius: 10.0,
                         validationStates: ()async{
-                          if(assetsCode.text.isNotEmpty){
-                            var result= await AuthService().getAssets(assetsCode.text);
+                          String dropValue=Provider.of<DropDwonData>(context,listen: false).value;
+                          print("hsfghf$dropValue");
+                          if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
+                            var result= await AuthService().getAssets(assetsCode.text,dropValue);
                             setState(() {
                               Navigator.push(context, MaterialPageRoute(builder: (_){
                                 return ResultPage( activeScanner: () {  },assetsData:result,);
                               }));
                             });
-                          }else{
+                          }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
+                            setState(() {
+                               showError(context,"select item category");
+                            });
+                          }
+                          else{
                             setState(() {
                               showError(context,"Item code is empty");
                             });
@@ -161,8 +184,6 @@ class _ItemFormState extends State<ItemForm> {
                 ),
               ),
             ),
-
-
           ]
       ),
     );

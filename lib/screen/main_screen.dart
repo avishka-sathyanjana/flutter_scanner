@@ -109,7 +109,7 @@ class _MainScreenState extends State<MainScreen> {
                    _passwordController.clear();
                     email="";
                     password="";
-                    // uploadJson(); // call function ...........
+                     //uploadJson(); // call function ...........
 
                  });
               }else{
@@ -125,11 +125,17 @@ class _MainScreenState extends State<MainScreen> {
 
   //upload data to firebase ...................
   Future<void>uploadJson()async{
-    String jsonConect=await rootBundle.loadString("assets/json_file/location.json");
+    String jsonConect=await rootBundle.loadString("assets/json_file/AssetListDBnew.json");
     List<dynamic> usersList = json.decode(jsonConect);
 
+     // print("length array myyyyyyyyyyyyyy${usersList.length}");
+     var i=0;
     for(var userData in usersList){
       await AuthService().uploadUserDataFormJson(userData);
+      setState(() {
+        print("count${i++}");
+      });
+
     }
 
   }

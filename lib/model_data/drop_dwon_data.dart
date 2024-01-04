@@ -8,3 +8,8 @@ class DropDwonDataCondition{
   final String itemCondition;
   DropDwonDataCondition({required this.itemCondition});
 }
+
+class DropData{
+  final String value;
+  DropData({required this.value});
+}

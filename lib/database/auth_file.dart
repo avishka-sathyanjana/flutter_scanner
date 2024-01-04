@@ -11,6 +11,8 @@ class AuthService{
   // make assets table
   final CollectionReference collectionReference=FirebaseFirestore.instance.collection('assets');
   final CollectionReference collectionRefLocation=FirebaseFirestore.instance.collection('location');
+  final CollectionReference collectionNewDataFile =FirebaseFirestore.instance.collection("assets_data");
+  final CollectionReference assetsDataNew =FirebaseFirestore.instance.collection("assetsNewDB");
   final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
   final CollectionReference collectionIssuesTable=FirebaseFirestore.instance.collection("Issue");
   bool isLogin=false;
@@ -55,7 +57,7 @@ class AuthService{
 
   // upload the data file to firebase
 Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
-    await collectionRefLocation.add(assetsData);
+    await assetsDataNew.add(assetsData);
 }
   //upload the location json file
   Future<void>uploadLocation(Map<String,dynamic>location)async{
@@ -73,57 +75,112 @@ Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
 
 
 //fetch data assets collection.........................
-Future<List<AssetsVarify>>getAssets(String AssetsId)async{
+Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
+
   try {
-    var snapshot = await _db
-        .collection("assets")
-        .where("Asset ID", isEqualTo:AssetsId)
-        .get();
+       QuerySnapshot<Map<String, dynamic>> snapshot;
+       QuerySnapshot<Map<String, dynamic>>verifySnap;
+       //get caret year..............
+       DateTime curent=DateTime.now();
+       String curentYear=curent.year.toString();
+        if(itemOption=='1'){
 
-    //get caret year..............
-    DateTime curent=DateTime.now();
-    String curentYear=curent.year.toString();
+            snapshot = await _db
+              .collection("assetsNewDB")
+              .where("NewCode-last",isEqualTo:assetsId.toString())
+              .get();
+            //get data vrefiy table
+            verifySnap=await _db.
+            collection("verify table").
+            where("assets code",isEqualTo:assetsId).
+            where("curentYear",isEqualTo:curentYear).get();
 
-    var verifySnap=await _db.
-        collection("verify table").
-        where("assets code",isEqualTo:AssetsId).
-        where("curentYear",isEqualTo:curentYear).get();
+        }else if(itemOption=='2'){
+
+           snapshot = await _db
+              .collection("assetsNewDB")
+              .where("ProposedCode-Last", isEqualTo:assetsId.toString())
+              .get();
+
+           //get data vrefiy table
+           verifySnap=await _db.
+           collection("verify table").
+           where("assets code",isEqualTo:assetsId).
+           where("curentYear",isEqualTo:curentYear).get();
+
+        }else if(itemOption=='3'){
+
+            snapshot = await _db
+              .collection("assetsNewDB")
+              .where("Oldcode-last", isEqualTo:assetsId.toString())
+              .get();
+
+            //get data vrefiy table
+            verifySnap=await _db.
+            collection("verify table").
+            where("assets code",isEqualTo:assetsId).
+            where("curentYear",isEqualTo:curentYear).get();
+          print("new daata${snapshot.docs.length}");
+        }else{
+
+             snapshot = await _db
+              .collection("assetsNewDB")
+              .where("Barcode",isEqualTo:int.parse(assetsId))
+              .get();
+
+             //get data vrefiy table
+             verifySnap=await _db.
+             collection("verify table").
+             where("assets code",isEqualTo:assetsId).
+             where("curentYear",isEqualTo:curentYear).get();
+
+          print("new daata${snapshot.docs.length}");
+        }
 
 
-    if (snapshot.docs.isNotEmpty &&verifySnap.docs.isEmpty) {
+      //
+      // verifySnap=await _db.
+      //   collection("verify table").
+      //   where("assets code",isEqualTo:assetsId).
+      //   where("curentYear",isEqualTo:curentYear).get();
+      //  print("new daata${snapshot.docs.length}");
 
-      return snapshot.docs.map((document) {
+
+    if (snapshot.docs.isNotEmpty && verifySnap.docs.isEmpty) {
+
+      return  Future.value( snapshot.docs.map((document) {
         return AssetsVarify(
-            assetsItemeName: document["Name of the Item"],
-            mainAssetsType:document['Main Asset Type'] ,
-            itemCode:document['Asset ID'],
+            assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
+            mainAssetsType:document['Asset Type'] ,
+            itemCode:document['Barcode'].toString() ,
             Division:document['Division'],
             location:document['Location'],
             isNotverifyCurentYear: true
         );
-      }).toList();
+      }).toList()
+      );
      
     } else if(verifySnap.docs.isNotEmpty&&verifySnap.docs.isNotEmpty){
 
-        return snapshot.docs.map((document) {
+        return Future.value( snapshot.docs.map((document) {
           return AssetsVarify(
-              assetsItemeName: document["Name of the Item"],
-              mainAssetsType:document['Main Asset Type'] ,
-              itemCode:document['Asset ID'],
+              assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
+              mainAssetsType:document['Asset Type'] ,
+              itemCode:document['Barcode'].toString(),
               Division:document['Division'],
               location:document['Location'],
               allredyVerify: true
           );
-        }).toList();
-
+        }).toList()
+        );
     } else {
       // Handle the case where no matching document is found
-      return []; // Or throw an exception, or handle it as appropriate
+      return Future.value([]); // Or throw an exception, or handle it as appropriate
     }
   } catch (e) {
     print("Error in getAssets: $e");
     // Handle the error or rethrow it based on your requirements
-    return []; // Or throw an exception, or handle it as appropriate
+    return Future.value([]); // Or throw an exception, or handle it as appropriate
   }
 }
 
@@ -156,7 +213,7 @@ Future<void>verifyTable(String assetsCode,String location,String remarks,String 
     Timestamp dateTime=Timestamp.fromDate(curent);
     Map<String,dynamic>data={
       'assets code':assetsCode,
-      'date time':dateTime,
+      'dateTime':curent.toString(),
       'location':location,
       'remarks':remarks,
       'statas':states,

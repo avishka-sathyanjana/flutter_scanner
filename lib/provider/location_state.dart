@@ -35,3 +35,11 @@ class DropDwonCondition extends ChangeNotifier{
 
   }
 }
+
+class DropDwonData extends ChangeNotifier{
+  DropData _dropData=DropData(value: '');
+  String get value=>_dropData.value;
+  void dropValue(String value){
+    _dropData=DropData(value: value);
+  }
+}

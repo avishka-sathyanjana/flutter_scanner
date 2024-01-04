@@ -5,7 +5,6 @@ class AssetsVarify{
   final String itemCode;
   final String Division;
   final String location;
-  //final DateTime itemLastCheck;
   final bool isNotverifyCurentYear;
   final bool allredyVerify;
   final bool dublicate;
