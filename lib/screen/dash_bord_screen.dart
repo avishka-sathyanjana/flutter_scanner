@@ -34,7 +34,7 @@ class _DashBordState extends State<DashBord> {
   Widget build(BuildContext context) {
     return  WillPopScope(
       onWillPop: ()async{
-        await showConfirmationDialog(context, "Exit","Do you wan to exit !");
+        await showConfirmationDialog(context, "Exit","Do you want to exit !");
         if(dilogState){
           AuthService().logOut();
           SystemNavigator.pop();
@@ -47,7 +47,7 @@ class _DashBordState extends State<DashBord> {
           key: _scaffoldState,
          appBar: AppBar(
            backgroundColor: colorPlate2,
-           title: const Text("Dash Bord",style: TextStyle(
+           title: const Text("Dashboard",style: TextStyle(
                  fontFamily: fontRaleway,
                  fontSize: 18,
                  color: Colors.white
@@ -65,23 +65,14 @@ class _DashBordState extends State<DashBord> {
         body:Container(
            margin: EdgeInsets.only(top: 20),
            padding: EdgeInsets.all(10),
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-               // childAspectRatio: 3/2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-            ),
-            itemCount: 1,
-            itemBuilder: (context,index){
-                return GridCard(
-                   userDifingFunction:QRscannerPageNavigate,
-                   imageUrl: "assets/images/qrimage.jpeg",
-                   funcName: "Item Scanner",
-                );
-      
-            },
-          
+          child: Column(
+            children: [
+              GridCard(
+                userDifingFunction:QRscannerPageNavigate,
+                imageUrl: "assets/images/barcode-amico-blue.png",
+                funcName: "Assets Scanner",
+              ),
+            ],
           ),
         )
       ),
