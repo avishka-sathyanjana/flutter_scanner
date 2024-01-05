@@ -83,7 +83,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
        //get caret year..............
        DateTime curent=DateTime.now();
        String curentYear=curent.year.toString();
-        if(itemOption=='1'){
+        if(itemOption=='New code'){
             snapshot = await _db
               .collection("assetsNewDB")
               .where("NewCode-last",isEqualTo:assetsId.toString())
@@ -94,19 +94,19 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             where("newCode",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
 
-        }else if(itemOption=='2'){
+        }else if(itemOption=='Proposed Code'){
            snapshot = await _db
               .collection("assetsNewDB")
               .where("ProposedCode-Last", isEqualTo:assetsId.toString())
               .get();
 
-           //get data vrefiy table
-           verifySnap=await _db.
-           collection("verify table").
-           where("popuseCode",isEqualTo:assetsId).
-           where("curentYear",isEqualTo:curentYear).get();
+               //get data vrefiy table
+               verifySnap=await _db.
+               collection("verify table").
+               where("popuseCode",isEqualTo:assetsId).
+               where("curentYear",isEqualTo:curentYear).get();
 
-        }else if(itemOption=='3'){
+        }else if(itemOption=='Old code'){
 
             snapshot = await _db
               .collection("assetsNewDB")
@@ -119,7 +119,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             where("oldCode",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
           print("new daata${snapshot.docs.length}");
-        }else{
+          print("hoooooooooooooooooooo");
+        }else {
 
              snapshot = await _db
               .collection("assetsNewDB")
@@ -133,10 +134,11 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
              where("curentYear",isEqualTo:curentYear).get();
 
           print("new daata${snapshot.docs.length}");
+          print("puuuuuuuuuuuuuuu");
         }
 
 
-      //
+
       // verifySnap=await _db.
       //   collection("verify table").
       //   where("assets code",isEqualTo:assetsId).
@@ -217,7 +219,8 @@ Future<void>verifyTable(
     String states,
     String itemNewCode,
     String itemOldCode,
-    String itemPropuseCode)async{
+    String itemPropuseCode,
+    String errorType)async{
     String userId=getUserId();
     DateTime curent=DateTime.now();
     String curentYear=curent.year.toString();
@@ -230,6 +233,7 @@ Future<void>verifyTable(
       'dateTime':curent.toString(),
       'location':location,
       'remarks':remarks,
+      'systemError':errorType,
       'statas':states,
       'curentYear':curentYear,
       'user id':userId,

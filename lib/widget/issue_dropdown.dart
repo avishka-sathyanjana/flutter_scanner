@@ -6,9 +6,10 @@ import '/data_validations/login_validation.dart';
 // DropdownMenuEntry labels and values for the first dropdown menu.
 enum ConditionLabel {
 
-  noCode('No item code', Colors.red),
-  duplicateItem('Duplicate Item code', Colors.orange),
-  wrongItem('Wrong Item code', Colors.brown),
+  newCode('New code', Colors.red),
+  proposeCode('Proposed Code', Colors.orange),
+  oldCode('Old code', Colors.brown),
+  barCode('Barcode', Colors.teal),
   ;
 
   const ConditionLabel(this.label, this.color);
@@ -38,38 +39,35 @@ class _ConditionDropdownState extends State<IssueDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      // width infinity
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: DropdownMenu<ConditionLabel>(
-            width:widget.width,
-            initialSelection: ConditionLabel.noCode,
-            controller: colorController,
-            requestFocusOnTap:false,
-            label: const Text('Issue Type'),
-            onSelected: (ConditionLabel? color) {
-              setState(() {
-                selectedColor = color;
-                 validate(context);
-              });
-            },
-            dropdownMenuEntries: ConditionLabel.values
-                .map<DropdownMenuEntry<ConditionLabel>>(
-                    (ConditionLabel color) {
-                  return DropdownMenuEntry<ConditionLabel>(
-                    value: color,
-                    label: color.label,
-                    enabled: color.label != 'Grey',
-                    style: MenuItemButton.styleFrom(
-                      foregroundColor: color.color,
-                    ),
-                  );
-                }).toList(),
-          ),
-        ),
-      ],
+    return Container(
+      width:widget.width,
+      child: DropdownMenu<ConditionLabel>(
+              width:360,
+              initialSelection: ConditionLabel.newCode,
+              controller: colorController,
+              requestFocusOnTap:true,
+              label: const Text('Issue Type'),
+              onSelected: (ConditionLabel? color) {
+                setState(() {
+                  selectedColor = color;
+                   validate(context);
+                });
+              },
+
+              dropdownMenuEntries: ConditionLabel.values
+                  .map<DropdownMenuEntry<ConditionLabel>>(
+                      (ConditionLabel color) {
+                    return DropdownMenuEntry<ConditionLabel>(
+                      value: color,
+                      label: color.label,
+                      enabled: color.label != 'Grey',
+                      style: MenuItemButton.styleFrom(
+                        foregroundColor: color.color,
+                      ),
+                    );
+                  }).toList(),
+
+      ),
     );
   }
 }

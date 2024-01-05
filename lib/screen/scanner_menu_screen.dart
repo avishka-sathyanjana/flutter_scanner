@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/widget/issue_dropdown.dart';
 import '../widget/button_widget.dart';
 import '/screen/result_screen_new.dart';
 import 'qr_scanner.dart';
@@ -49,17 +50,18 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
+                                  fontFamily: fontRaleway
                                 ),
                               );
                             },
                           ),
-                          const Text(
-                            'Number of Items Scanned :     ',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                          // const Text(
+                          //   'Number of Items Scanned :     ',
+                          //   style: TextStyle(
+                          //     fontSize: 18,
+                          //     fontWeight: FontWeight.w400,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -146,7 +148,7 @@ class _ItemFormState extends State<ItemForm> {
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 6,),
-            const DropDwon(),
+            const IssueDropdown(width:double.infinity),
             const SizedBox(height: 6,),
             const Text(
               'Enter the Item Code',
@@ -195,7 +197,7 @@ class _ItemFormState extends State<ItemForm> {
                       buttonHeight: 50.0,
                       buttonRadius: 10.0,
                       validationStates: ()async{
-                        String dropValue=Provider.of<DropDwonData>(context,listen: false).value;
+                        String dropValue= Provider.of<DropDwonIssue>(context,listen: false).issueType;
                         print("hsfghf$dropValue");
                         if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
                           var result= await AuthService().getAssets(assetsCode.text,dropValue);

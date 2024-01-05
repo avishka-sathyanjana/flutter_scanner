@@ -72,6 +72,7 @@ class _DashBordState extends State<DashBord> {
                 imageUrl: "assets/images/barcode-amico-blue.png",
                 funcName: "Assets Scanner",
               ),
+
             ],
           ),
         )

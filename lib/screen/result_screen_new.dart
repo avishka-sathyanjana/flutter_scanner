@@ -40,6 +40,9 @@ class _ResultPageState extends State<ResultPage> {
   String itemOldCode='';
   String itemPopuseCode='';
 
+  //save error , verible
+  String saveError='';
+
 
   void assingData(){
     itemCode=widget.assetsData[0].itemCode;
@@ -54,6 +57,11 @@ class _ResultPageState extends State<ResultPage> {
 
   }
 
+  void saveErrorType(String error){
+    setState(() {
+        saveError=error;
+    });
+  }
 
 
   Widget errorMessage(
@@ -106,6 +114,7 @@ class _ResultPageState extends State<ResultPage> {
   bool assetsDataState(){
     if(widget.assetsData.isEmpty){
      // print("heeeeeeeeeeeeeeeeeeeee");
+      saveErrorType("Scan Unsuccessful ");
       unSccsesFull=true;
       return false;
 
@@ -125,6 +134,7 @@ class _ResultPageState extends State<ResultPage> {
              assingData();
             locationError=true;
             //unSccsesFull=true;
+            saveErrorType("Invalid Location");
 
           });
         }
@@ -137,12 +147,14 @@ class _ResultPageState extends State<ResultPage> {
              assingData();
              wornigState=true;
              locationError=false;
+             saveErrorType("Already Verified Item");
            });
          }else if(widget.assetsData[0].location.toString()!=getLocation){
            setState(() {
              assingData();
              wornigState=true;
              locationError=true;
+             saveErrorType("Already Verified Item but Invalid Location");
            });
          }
 
@@ -155,11 +167,10 @@ class _ResultPageState extends State<ResultPage> {
 
   }
 //add assets data verify .......................
-  void verfiyData(BuildContext context)async{
-    if(assetsDataState()&&!wornigState&&!locationError){
+  void verfiyData(BuildContext context){
+    if(assetsDataState()){
         if(ConditionDropdown.assetsStates.isNotEmpty) {
-          await showConfirmationDialog(context,"Verify !", "Do you verify assets ?");
-          if(dilogState){
+         // await showConfirmationDialog(context,"Verify !", "Do you verify assets ?");
               setState(() {
                 AuthService().verifyTable(
                     itemCode,
@@ -169,6 +180,7 @@ class _ResultPageState extends State<ResultPage> {
                     itemNewCode,
                     itemOldCode,
                     itemPopuseCode,
+                    saveError
                 );
 
                  itemCode = '';
@@ -181,9 +193,10 @@ class _ResultPageState extends State<ResultPage> {
                  itemOldCode='';
                  itemPopuseCode='';
                  ConditionDropdown.assetsStates='';
+                 saveError='';
                 Navigator.pop(context);
               });
-          }
+
         //pop scanner page
         }else{
            showError(context,"Select assets state");
@@ -262,7 +275,7 @@ class _ResultPageState extends State<ResultPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Item Code: $itemCode',
+                                  'Item Barcode: $itemCode',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -363,24 +376,24 @@ class _ResultPageState extends State<ResultPage> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            (unSccsesFull||locationError||wornigState)?ButtonWidget(
-                              ctx: context,
-                              buttonName: 'Report',
-                              buttonFontSize: 20.0,
-                              buttonColor: Colors.orangeAccent,
-                              borderColor: const Color.fromRGBO(253, 203, 0, 1.0),
-                              textColor: Colors.white,
-                              buttonWidth: 170.0,
-                              buttonHeight: 50.0,
-                              buttonRadius: 10.0,
-                              validationStates: ()=>navigeateReportPage(context)
-                            ):
+                            // (unSccsesFull||locationError||wornigState)?ButtonWidget(
+                            //   ctx: context,
+                            //   buttonName: 'Report',
+                            //   buttonFontSize: 20.0,
+                            //   buttonColor: Colors.orangeAccent,
+                            //   borderColor: const Color.fromRGBO(253, 203, 0, 1.0),
+                            //   textColor: Colors.white,
+                            //   buttonWidth: 170.0,
+                            //   buttonHeight: 50.0,
+                            //   buttonRadius: 10.0,
+                            //   validationStates: ()=>navigeateReportPage(context)
+                            // ):
                             ButtonWidget(
                               ctx: context,
-                              buttonName: 'Verify',
+                              buttonName: 'OK',
                               buttonFontSize: 20.0,
-                              buttonColor: Colors.greenAccent,
-                              borderColor: const Color.fromRGBO(41, 255, 137, 1.0),
+                              buttonColor:(unSccsesFull||locationError||wornigState)?Colors.orangeAccent:Colors.greenAccent,
+                              borderColor:(unSccsesFull||locationError||wornigState)?const Color.fromRGBO(253, 203, 0, 1.0): const Color.fromRGBO(41, 255, 137, 1.0),
                               textColor: Colors.white,
                               buttonWidth: 170.0,
                               buttonHeight: 50.0,
