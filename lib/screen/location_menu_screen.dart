@@ -37,14 +37,14 @@ class _LocationScreenState extends State<LocationScreen> {
         title: const Text('Menu'),
       ),
       body: Center(
-          child: SingleChildScrollView(
+
             child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              if (!isQrScannerVisible)
-                Image.asset(
-                'assets/images/qr_scan.png',
-                width: 200, // Set the width as Zneeded
-                height: 300, // Set the height as needed
-               ),
+              // if (!isQrScannerVisible)
+              //   Image.asset(
+              //   'assets/images/qr_scan.png',
+              //   width: 200, // Set the width as Zneeded
+              //   height: 300, // Set the height as needed
+              //  ),
                if (!isQrScannerVisible)
                 ButtonWidget(
                   ctx: context,
@@ -115,7 +115,6 @@ class _LocationScreenState extends State<LocationScreen> {
                     ]
             
                   ),
-          ),
 
       ),
     );
