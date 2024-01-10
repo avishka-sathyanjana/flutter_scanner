@@ -10,6 +10,7 @@ import 'issue-screen.dart';
 import '/widget/custom_dropdwon.dart';
 import 'package:provider/provider.dart';
 import '/provider/location_state.dart';
+import '/sql_local_db/sql_helper.dart';
 
 
 class ScannerMenuScreen extends StatefulWidget {
@@ -200,7 +201,10 @@ class _ItemFormState extends State<ItemForm> {
                         String dropValue= Provider.of<DropDwonIssue>(context,listen: false).issueType;
                         print("hsfghf$dropValue");
                         if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
-                          var result= await AuthService().getAssets(assetsCode.text,dropValue);
+                         var result= await AuthService().getAssets(assetsCode.text,dropValue);
+                         //  await DatabaseHelpr().database;
+                         //  var result =await DatabaseHelpr().searchByBarcode(assetsCode.text);
+                         //  print("resulllllllt${result}");
                           setState(() {
                             Navigator.push(context, MaterialPageRoute(builder: (_){
                               return ResultPage( activeScanner: () {  },assetsData:result,);

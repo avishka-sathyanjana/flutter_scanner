@@ -13,6 +13,7 @@ class AuthService{
   final CollectionReference collectionRefLocation=FirebaseFirestore.instance.collection('location');
   final CollectionReference collectionNewDataFile =FirebaseFirestore.instance.collection("assets_data");
   final CollectionReference assetsDataNew =FirebaseFirestore.instance.collection("assetsNewDB");
+  final CollectionReference assetsDataNoEmpty =FirebaseFirestore.instance.collection("assetsCollection");
   final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
   final CollectionReference collectionIssuesTable=FirebaseFirestore.instance.collection("Issue");
   bool isLogin=false;
@@ -57,7 +58,7 @@ class AuthService{
 
   // upload the data file to firebase
 Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
-    await assetsDataNew.add(assetsData);
+    await assetsDataNoEmpty.add(assetsData);
 }
   //upload the location json file
   Future<void>uploadLocation(Map<String,dynamic>location)async{
@@ -85,7 +86,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
        String curentYear=curent.year.toString();
         if(itemOption=='New code'){
             snapshot = await _db
-              .collection("assetsNewDB")
+              .collection("assetsCollection")
               .where("NewCode-last",isEqualTo:assetsId.toString())
               .get();
             //get data vrefiy table
@@ -96,7 +97,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
 
         }else if(itemOption=='Proposed Code'){
            snapshot = await _db
-              .collection("assetsNewDB")
+              .collection("assetsCollection")
               .where("ProposedCode-Last", isEqualTo:assetsId.toString())
               .get();
 
@@ -109,7 +110,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
         }else if(itemOption=='Old code'){
 
             snapshot = await _db
-              .collection("assetsNewDB")
+              .collection("assetsCollection")
               .where("Oldcode-last", isEqualTo:assetsId.toString())
               .get();
 
@@ -119,11 +120,11 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             where("oldCode",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
           print("new daata${snapshot.docs.length}");
-          print("hoooooooooooooooooooo");
+
         }else {
 
              snapshot = await _db
-              .collection("assetsNewDB")
+              .collection("assetsCollection")
               .where("Barcode",isEqualTo:int.parse(assetsId))
               .get();
 
@@ -134,7 +135,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
              where("curentYear",isEqualTo:curentYear).get();
 
           print("new daata${snapshot.docs.length}");
-          print("puuuuuuuuuuuuuuu");
+
         }
 
 
