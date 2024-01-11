@@ -46,7 +46,7 @@ class _ConditionDropdownState extends State<IssueDropdown> {
               initialSelection: ConditionLabel.newCode,
               controller: colorController,
               requestFocusOnTap:true,
-              label: const Text('Issue Type'),
+              label: const Text('Code Type'),
               onSelected: (ConditionLabel? color) {
                 setState(() {
                   selectedColor = color;

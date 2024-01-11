@@ -103,7 +103,7 @@ class _QRScannerState extends State<QRScanner> {
                       //String dropData=Provider.of<DropDwonData>(context,listen: false).value;
                      // var result=await AuthService().getAssets(code,'');
                       await DatabaseHelpr().database;
-                      var result =await DatabaseHelpr().searchByBarcode(code);
+                      var result =await DatabaseHelpr().searchByBarcode(code,'');
                        setState(() {
                          Navigator.push(context, MaterialPageRoute(
                              builder: (context) =>ResultPage(activeScanner: closeScreen,assetsData:result)

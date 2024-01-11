@@ -387,7 +387,7 @@ class _ResultPageState extends State<ResultPage> {
                             const SizedBox(
                                 height: 16.0), // Add some space between fields
 
-                            ConditionDropdown(size: 380,),
+                            const ConditionDropdown(size: 380,),
 
                             // Remarks Text Input
                             Expanded(

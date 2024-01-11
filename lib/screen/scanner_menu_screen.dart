@@ -199,17 +199,17 @@ class _ItemFormState extends State<ItemForm> {
                       buttonRadius: 10.0,
                       validationStates: ()async{
                         String dropValue= Provider.of<DropDwonIssue>(context,listen: false).issueType;
-                        print("hsfghf$dropValue");
                         if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
-                        // var result= await AuthService().getAssets(assetsCode.text,dropValue);
                             await DatabaseHelpr().database;
-                            var result =await DatabaseHelpr().searchByBarcode(assetsCode.text);
-                           // print("resulllllllt${result[0].propuseCodeLast.toString()}");
-                          setState(() {
-                            Navigator.push(context, MaterialPageRoute(builder: (_){
-                              return ResultPage( activeScanner: () {  },assetsData:result,);
-                            }));
-                          });
+                            var result =await DatabaseHelpr().searchByBarcode(assetsCode.text,dropValue);
+
+                            setState(() {
+                              Navigator.push(context, MaterialPageRoute(builder: (_){
+                                return ResultPage( activeScanner: () {  },assetsData:result,);
+
+                              }));
+                            });
+
                         }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
                           setState(() {
                              showError(context,"select item category");

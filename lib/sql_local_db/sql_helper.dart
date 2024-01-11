@@ -67,26 +67,54 @@ class DatabaseHelpr{
      }
   }
 
-  Future<List<LocalDataStro>> searchByBarcode(String barcode) async {
+  Future<List<LocalDataStro>> searchByBarcode(String code,String dropValue) async {
     final Database db = await database;
     List<LocalDataStro>result=[];
 
     try{
-       var data=await db.query(
-          "assetsDB",
-           where: 'barcode = ?',
-           whereArgs: [barcode],
-        ) ;
+        if(dropValue=='New code'){
+              var data=await db.query(
+                "assetsDB",
+                where: 'newCodeLast = ?',
+                whereArgs: [code],
+              ) ;
+              if(data.isNotEmpty){
+                 result=data.map((value) => LocalDataStro.fromMap(value)).toList();
+              }
 
-       print("data${data}");
-       if(data.isNotEmpty){
-         print("hiiiii");
-         return result=data.map((value) => LocalDataStro.fromMap(value)).toList();
-       }
+        }else if(dropValue=='Proposed Code'){
+            var data=await db.query(
+              "assetsDB",
+              where: 'newCodeLast = ?',
+              whereArgs: [code],
+            ) ;
+            if(data.isNotEmpty){
+               result=data.map((value) => LocalDataStro.fromMap(value)).toList();
+            }
 
-         return result;
+        }else if(dropValue=='Old code'){
+            var data=await db.query(
+              "assetsDB",
+              where: 'oldCodeLast = ?',
+              whereArgs: [code],
+            ) ;
+            if(data.isNotEmpty){
+              result=data.map((value) => LocalDataStro.fromMap(value)).toList();
+            }
 
+        }else{
+            var data=await db.query(
+              "assetsDB",
+              where: 'barcode = ?',
+              whereArgs: [code],
+            ) ;
+            if(data.isNotEmpty){
+              result=data.map((value) => LocalDataStro.fromMap(value)).toList();
+            }
 
+        }
+
+        return result;
 
     }catch(e){
       print("searching error:${e}");
