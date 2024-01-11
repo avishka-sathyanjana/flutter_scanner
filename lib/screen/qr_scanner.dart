@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../sql_local_db/sql_helper.dart';
 import '/screen/results_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '/database/auth_file.dart';
@@ -100,7 +101,9 @@ class _QRScannerState extends State<QRScanner> {
                       String code = barcode.rawValue ?? '---';
                       isScanComplete = true;
                       //String dropData=Provider.of<DropDwonData>(context,listen: false).value;
-                      var result=await AuthService().getAssets(code,'');
+                     // var result=await AuthService().getAssets(code,'');
+                      await DatabaseHelpr().database;
+                      var result =await DatabaseHelpr().searchByBarcode(code);
                        setState(() {
                          Navigator.push(context, MaterialPageRoute(
                              builder: (context) =>ResultPage(activeScanner: closeScreen,assetsData:result)

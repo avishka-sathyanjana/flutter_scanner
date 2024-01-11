@@ -1,13 +1,12 @@
 
 
-
 import 'dart:async';
-
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '/model_data/local_db.dart';
 import '/database/get_local_data.dart';
+import '/model_data/AssetsData.dart';
 
 class DatabaseHelpr{
  static Database ?_database;
@@ -68,17 +67,26 @@ class DatabaseHelpr{
      }
   }
 
-  Future<List<Map<String, dynamic>>> searchByBarcode(String barcode) async {
+  Future<List<LocalDataStro>> searchByBarcode(String barcode) async {
     final Database db = await database;
-    List<Map<String,dynamic>>result=[];
+    List<LocalDataStro>result=[];
+
     try{
-        var data= db.query(
+       var data=await db.query(
           "assetsDB",
            where: 'barcode = ?',
            whereArgs: [barcode],
-        );
+        ) ;
 
-        return data;
+       print("data${data}");
+       if(data.isNotEmpty){
+         print("hiiiii");
+         return result=data.map((value) => LocalDataStro.fromMap(value)).toList();
+       }
+
+         return result;
+
+
 
     }catch(e){
       print("searching error:${e}");
@@ -86,6 +94,5 @@ class DatabaseHelpr{
     }
 
   }
-
 
 }

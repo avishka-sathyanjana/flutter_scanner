@@ -11,14 +11,16 @@ import 'scanner_menu_screen.dart';
 import 'package:provider/provider.dart';
 import '/provider/location_state.dart';
 import '/data_validations/dilog_massage.dart';
+import '/model_data/local_db.dart';
 
 
 class ResultPage extends StatefulWidget {
   //final String location;
   final Function() activeScanner;
-  List<AssetsVarify>assetsData=[];
+  List<LocalDataStro>assetsData=[];
 
-   ResultPage({required this.activeScanner,required this.assetsData});
+
+  ResultPage({required this.activeScanner,required this.assetsData,});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -45,11 +47,20 @@ class _ResultPageState extends State<ResultPage> {
 
 
   void assingData(){
-    itemCode=widget.assetsData[0].itemCode;
-    itemName=widget.assetsData[0].assetsItemeName;
-    itemCategory=widget.assetsData[0].mainAssetsType;
+    // itemCode=widget.assetsData[0].itemCode;
+    // itemName=widget.assetsData[0].assetsItemeName;
+    // itemCategory=widget.assetsData[0].mainAssetsType;
+    // itemLocation=widget.assetsData[0].location;
+    // itemDivition=widget.assetsData[0].Division;
+    // itemNewCode=widget.assetsData[0].newCode;
+    // itemOldCode=widget.assetsData[0].oldCode;
+    // itemPopuseCode=widget.assetsData[0].propuseCode;
+
+    itemCode=widget.assetsData[0].barcode;
+    itemName=widget.assetsData[0].itemName;
+    itemCategory=widget.assetsData[0].assetsType;
     itemLocation=widget.assetsData[0].location;
-    itemDivition=widget.assetsData[0].Division;
+    itemDivition=widget.assetsData[0].divition;
     itemNewCode=widget.assetsData[0].newCode;
     itemOldCode=widget.assetsData[0].oldCode;
     itemPopuseCode=widget.assetsData[0].propuseCode;
@@ -111,61 +122,86 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   //we can map assets details this function
+  // bool assetsDataState(){
+  //   if(widget.assetsData.isEmpty){
+  //    // print("heeeeeeeeeeeeeeeeeeeee");
+  //     saveErrorType("Scan Unsuccessful ");
+  //     unSccsesFull=true;
+  //     return false;
+  //
+  //   }else if(widget.assetsData[0].isNotverifyCurentYear){
+  //        // print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
+  //       if(widget.assetsData[0].location.toString()==getLocation){
+  //           setState(() {
+  //             assingData();
+  //             wornigState=false;
+  //             locationError=false;
+  //             unSccsesFull=false;
+  //
+  //           });
+  //       } else{
+  //
+  //         setState(() {
+  //            assingData();
+  //           locationError=true;
+  //           //unSccsesFull=true;
+  //           saveErrorType("Invalid Location");
+  //
+  //         });
+  //       }
+  //
+  //     return true;
+  //
+  //   }else if(widget.assetsData[0].allredyVerify){
+  //        if(widget.assetsData[0].location.toString()==getLocation){
+  //          setState(() {
+  //            assingData();
+  //            wornigState=true;
+  //            locationError=false;
+  //            saveErrorType("Already Verified Item");
+  //          });
+  //        }else if(widget.assetsData[0].location.toString()!=getLocation){
+  //          setState(() {
+  //            assingData();
+  //            wornigState=true;
+  //            locationError=true;
+  //            saveErrorType("Already Verified Item but Invalid Location");
+  //          });
+  //        }
+  //
+  //     return true;
+  //   }else{
+  //    // print("heeeeeewwwwwwwwwwwwwww");
+  //     wornigState =false;
+  //     return false;
+  //   }
+  //
+  // }
+
   bool assetsDataState(){
-    if(widget.assetsData.isEmpty){
-     // print("heeeeeeeeeeeeeeeeeeeee");
-      saveErrorType("Scan Unsuccessful ");
-      unSccsesFull=true;
-      return false;
-
-    }else if(widget.assetsData[0].isNotverifyCurentYear){
-         // print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
-        if(widget.assetsData[0].location.toString()==getLocation){
-            setState(() {
-              assingData();
-              wornigState=false;
-              locationError=false;
-              unSccsesFull=false;
-
-            });
-        } else{
-
-          setState(() {
-             assingData();
-            locationError=true;
-            //unSccsesFull=true;
-            saveErrorType("Invalid Location");
-
-          });
-        }
-
-      return true;
-
-    }else if(widget.assetsData[0].allredyVerify){
-         if(widget.assetsData[0].location.toString()==getLocation){
+      if(widget.assetsData.isNotEmpty&&(widget.assetsData[0].location==getLocation)){
            setState(() {
              assingData();
-             wornigState=true;
-             locationError=false;
-             saveErrorType("Already Verified Item");
+               wornigState=false;
+               locationError=false;
+               unSccsesFull=false;
            });
-         }else if(widget.assetsData[0].location.toString()!=getLocation){
-           setState(() {
-             assingData();
-             wornigState=true;
-             locationError=true;
-             saveErrorType("Already Verified Item but Invalid Location");
-           });
-         }
-
-      return true;
-    }else{
-     // print("heeeeeewwwwwwwwwwwwwww");
-      wornigState =false;
-      return false;
-    }
-
+         return true;
+      }else if(widget.assetsData.isNotEmpty&&(widget.assetsData[0].location!=getLocation)){
+               setState(() {
+                    assingData();
+                    locationError=true;
+                    //unSccsesFull=true;
+                    saveErrorType("Invalid Location");
+                  });
+               return true;
+      }else{
+            saveErrorType("Scan Unsuccessful ");
+            unSccsesFull=true;
+            return false;
+      }
   }
+
 //add assets data verify .......................
   void verfiyData(BuildContext context){
     if(assetsDataState()){

@@ -47,7 +47,7 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
                           Consumer<LocationProvider>(
                             builder: (context, locationProvider, child) {
                               return Text(
-                                'Current Location:     ${locationProvider.location}',
+                                'Current Location: ${locationProvider.location}',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
@@ -201,10 +201,10 @@ class _ItemFormState extends State<ItemForm> {
                         String dropValue= Provider.of<DropDwonIssue>(context,listen: false).issueType;
                         print("hsfghf$dropValue");
                         if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
-                         var result= await AuthService().getAssets(assetsCode.text,dropValue);
-                         //  await DatabaseHelpr().database;
-                         //  var result =await DatabaseHelpr().searchByBarcode(assetsCode.text);
-                         //  print("resulllllllt${result}");
+                        // var result= await AuthService().getAssets(assetsCode.text,dropValue);
+                            await DatabaseHelpr().database;
+                            var result =await DatabaseHelpr().searchByBarcode(assetsCode.text);
+                           // print("resulllllllt${result[0].propuseCodeLast.toString()}");
                           setState(() {
                             Navigator.push(context, MaterialPageRoute(builder: (_){
                               return ResultPage( activeScanner: () {  },assetsData:result,);
