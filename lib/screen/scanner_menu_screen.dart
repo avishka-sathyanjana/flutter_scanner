@@ -202,9 +202,7 @@ class _ItemFormState extends State<ItemForm> {
                         print("hsfghf$dropValue");
                         if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
                          var result= await AuthService().getAssets(assetsCode.text,dropValue);
-                         //  await DatabaseHelpr().database;
-                         //  var result =await DatabaseHelpr().searchByBarcode(assetsCode.text);
-                         //  print("resulllllllt${result}");
+
                           setState(() {
                             Navigator.push(context, MaterialPageRoute(builder: (_){
                               return ResultPage( activeScanner: () {  },assetsData:result,);

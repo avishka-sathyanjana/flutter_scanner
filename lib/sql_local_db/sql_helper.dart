@@ -42,6 +42,28 @@ class DatabaseHelpr{
         propuseCodeLast TEXT
       )
     ''');
+
+    await db.execute('''
+        CREATE TABLE assetsOK (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          assetsDB_id INTEGER,
+          barcode TEXT,
+          assetsType TEXT,
+          divition TEXT,
+          location TEXT,
+          itemName TEXT,
+          newCode TEXT,
+          newCodeLast TEXT,
+          oldCode TEXT,
+          oldCodeLast TEXT,
+          propuseCode TEXT,
+          propuseCodeLast TEXT,
+          curantYear TEXT,
+          dateTime DATETIME
+         
+          FOREIGN KEY (assetsDB_id) REFERENCES assetsDB (id) 
+        )
+      ''');
   }
 // insert data .............
   Future<void>insertData(List<LocalDataStro>dataList)async{

@@ -36,9 +36,12 @@ class _ResultPageState extends State<ResultPage> {
   String itemDivition = '';
   String ItemLastCheck = '';
   String itemLocation = '';
-  String itemNewCode='';
-  String itemOldCode='';
-  String itemPopuseCode='';
+  String NewCodeLast='';
+  String OldCodeLast='';
+  String PopuseCodeLast='';
+  String newCode='';
+  String oldCode='';
+  String propuseCode='';
 
   //save error , verible
   String saveError='';
@@ -50,9 +53,12 @@ class _ResultPageState extends State<ResultPage> {
     itemCategory=widget.assetsData[0].mainAssetsType;
     itemLocation=widget.assetsData[0].location;
     itemDivition=widget.assetsData[0].Division;
-    itemNewCode=widget.assetsData[0].newCode;
-    itemOldCode=widget.assetsData[0].oldCode;
-    itemPopuseCode=widget.assetsData[0].propuseCode;
+    NewCodeLast=widget.assetsData[0].newCode;
+    OldCodeLast=widget.assetsData[0].oldCode;
+    PopuseCodeLast=widget.assetsData[0].propuseCode;
+    newCode=widget.assetsData[0].newCode;
+    oldCode=widget.assetsData[0].oldCode;
+    propuseCode=widget.assetsData[0].propuseCode;
 
 
   }
@@ -177,10 +183,14 @@ class _ResultPageState extends State<ResultPage> {
                     itemLocation,
                     _remarks.text
                     ,ConditionDropdown.assetsStates ,
-                    itemNewCode,
-                    itemOldCode,
-                    itemPopuseCode,
-                    saveError
+                    NewCodeLast,
+                    OldCodeLast,
+                    PopuseCodeLast,
+                    saveError,
+                    itemName,
+                    newCode,
+                    oldCode,
+                    propuseCode
                 );
 
                  itemCode = '';
@@ -189,11 +199,14 @@ class _ResultPageState extends State<ResultPage> {
                  itemDivition = '';
                  ItemLastCheck = '';
                  itemLocation = '';
-                 itemNewCode='';
-                 itemOldCode='';
-                 itemPopuseCode='';
+                 NewCodeLast='';
+                 OldCodeLast='';
+                 PopuseCodeLast='';
                  ConditionDropdown.assetsStates='';
                  saveError='';
+                 newCode='';
+                 oldCode='';
+                 propuseCode='';
                 Navigator.pop(context);
               });
 
@@ -376,7 +389,7 @@ class _ResultPageState extends State<ResultPage> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // (unSccsesFull||locationError||wornigState)?ButtonWidget(
+                            // (unSccsesFull)?ButtonWidget(
                             //   ctx: context,
                             //   buttonName: 'Report',
                             //   buttonFontSize: 20.0,

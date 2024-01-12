@@ -156,9 +156,12 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             itemCode:document['Barcode'].toString() ,
             Division:document['Division'],
             location:document['Location'],
-            newCode: document['NewCode-last'],
-            oldCode: document['Oldcode-last'],
-            propuseCode: document['ProposedCode-Last'],
+            newCodeLast: document['NewCode-last'],
+            oldCodeLast: document['Oldcode-last'],
+            propuseCodeLast: document['ProposedCode-Last'],
+            newCode:document['new code'],
+            oldCode: document['old code'],
+            propuseCode: document['Proposed Code'],
             isNotverifyCurentYear: true
         );
       }).toList()
@@ -173,9 +176,13 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
               itemCode:document['Barcode'].toString(),
               Division:document['Division'],
               location:document['Location'],
-              newCode: document['NewCode-last'],
-              oldCode: document['Oldcode-last'],
-              propuseCode: document['ProposedCode-Last'],
+              newCodeLast: document['NewCode-last'],
+              oldCodeLast: document['Oldcode-last'],
+              propuseCodeLast: document['ProposedCode-Last'],
+              newCode:document['new code'],
+              oldCode: document['old code'],
+              propuseCode: document['Proposed Code'],
+
               allredyVerify: true
           );
         }).toList()
@@ -221,21 +228,29 @@ Future<void>verifyTable(
     String itemNewCode,
     String itemOldCode,
     String itemPropuseCode,
-    String errorType)async{
+    String errorType,
+    String itemName,
+    String newCode,
+    String oldCode,
+    String propuseCode)async{
     String userId=getUserId();
     DateTime curent=DateTime.now();
     String curentYear=curent.year.toString();
     Timestamp dateTime=Timestamp.fromDate(curent);
     Map<String,dynamic>data={
-      'assets code':assetsCode,
-      'newCode':itemNewCode,
-      'oldCode':itemOldCode,
-      'popuseCode':itemPropuseCode,
+      'item Name':itemName,
+      'barcode':assetsCode,
+      'new Code last':itemNewCode,
+      'old Code last':itemOldCode,
+      'popuseCode last':itemPropuseCode,
+      'new code':newCode,
+      'old code':oldCode,
+      'propuse code':propuseCode,
       'dateTime':curent.toString(),
       'location':location,
       'remarks':remarks,
       'systemError':errorType,
-      'statas':states,
+      'status':states,
       'curentYear':curentYear,
       'user id':userId,
     };

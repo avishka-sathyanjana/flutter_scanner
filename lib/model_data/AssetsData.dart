@@ -5,6 +5,9 @@ class AssetsVarify{
   final String itemCode;
   final String Division;
   final String location;
+  final String newCodeLast;
+  final String oldCodeLast;
+  final String propuseCodeLast;
   final String newCode;
   final String oldCode;
   final String propuseCode;
@@ -17,6 +20,9 @@ class AssetsVarify{
     required this.itemCode,
     required this.Division,
     required this.location,
+    required this.newCodeLast,
+    required this.oldCodeLast,
+    required this.propuseCodeLast,
     required this.newCode,
     required this.oldCode,
     required this.propuseCode,

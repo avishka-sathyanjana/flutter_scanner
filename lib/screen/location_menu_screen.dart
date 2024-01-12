@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
 import '../widget/button_widget.dart';
 import 'results_screen.dart';
 import 'scanner_menu_screen.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import '/provider/location_state.dart';
 
 String code = '';
+
 final TextEditingController locationCode = TextEditingController();
 String getLocationCode = '';
 
@@ -21,6 +23,7 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+
   bool isQrScannerVisible = false;
   bool isScanComplete = false;
 
@@ -37,86 +40,92 @@ class _LocationScreenState extends State<LocationScreen> {
         title: const Text('Menu'),
       ),
       body: Center(
+        
+              child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                // if (!isQrScannerVisible)
+                //   Image.asset(
+                //   'assets/images/qr_scan.png',
+                //   width: 200, // Set the width as Zneeded
+                //   height: 300, // Set the height as needed
+                //  ),
+        
+                 if (!isQrScannerVisible)
+                  ButtonWidget(
+                    ctx: context,
+                    buttonName: "Scan Location",
+                    buttonFontSize: 20,
+                    buttonColor: Colors.transparent,
+                    borderColor: Colors.indigoAccent,
+                    textColor: Colors.blueAccent,
+                    buttonWidth: 200,
+                    buttonHeight: 40,
+                    buttonRadius: 15,
+                    validationStates: () => changeButtonState(context)),
+              
+                 if (isQrScannerVisible)
+                  ButtonWidget(
+                    ctx: context,
+                    buttonName: "Close Camera",
+                    buttonFontSize: 20,
+                    buttonColor: Colors.transparent,
+                    borderColor: Colors.red,
+                    textColor: Colors.red,
+                    buttonWidth: 200,
+                    buttonHeight: 40,
+                    buttonRadius: 15,
+                    validationStates: () => changeButtonState(context)),
+              
+                   const SizedBox(height: 30),
+              
+                 if (isQrScannerVisible)
+                  Flexible(
+                     fit:FlexFit.loose,
+                      child: MobileScanner(
+                        allowDuplicates: true,
+                        onDetect: (barcode, args) async {
+                          if (!isScanComplete) {
+                            code = barcode.rawValue ?? '---';
+                            isScanComplete = true;
+                            var result = await AuthService().getLocation(code);
+                            if (result.isEmpty) {
+                              setState(() {
+                                showError(context, "Invalid Location");
+                                isScanComplete = false;
+                                code = '';
+                              });
+                            } else {
+                              setState(() {
+                                Provider.of<LocationProvider>(context,listen: false).updateLocation(code);
+                                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                                  return ScannerMenuScreen();
+                                }));
+                                  
+                                code = ''; // code verible null after route
+                              });
+                            }
+                          }
+                        },
+                      )
 
-            child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              // if (!isQrScannerVisible)
-              //   Image.asset(
-              //   'assets/images/qr_scan.png',
-              //   width: 200, // Set the width as Zneeded
-              //   height: 300, // Set the height as needed
-              //  ),
-               if (!isQrScannerVisible)
-                ButtonWidget(
-                  ctx: context,
-                  buttonName: "Scan Location",
-                  buttonFontSize: 20,
-                  buttonColor: Colors.transparent,
-                  borderColor: Colors.indigoAccent,
-                  textColor: Colors.blueAccent,
-                  buttonWidth: 200,
-                  buttonHeight: 40,
-                  buttonRadius: 15,
-                  validationStates: () => changeButtonState(context)),
-            
-               if (isQrScannerVisible)
-                ButtonWidget(
-                  ctx: context,
-                  buttonName: "Close Camera",
-                  buttonFontSize: 20,
-                  buttonColor: Colors.transparent,
-                  borderColor: Colors.red,
-                  textColor: Colors.red,
-                  buttonWidth: 200,
-                  buttonHeight: 40,
-                  buttonRadius: 15,
-                  validationStates: () => changeButtonState(context)),
-            
-                 const SizedBox(height: 30),
-            
-               if (isQrScannerVisible)
-                Expanded(
-                  flex: 4,
-                  child: MobileScanner(
-                    allowDuplicates: true,
-                    onDetect: (barcode, args) async {
-                      if (!isScanComplete) {
-                        code = barcode.rawValue ?? '---';
-                        isScanComplete = true;
-                        var result = await AuthService().getLocation(code);
-                        if (result.isEmpty) {
-                          setState(() {
-                            showError(context, "Invalid Location");
-                            isScanComplete = false;
-                            code = '';
-                          });
-                        } else {
-                          setState(() {
-                            Provider.of<LocationProvider>(context,listen: false).updateLocation(code);
-                            Navigator.push(context, MaterialPageRoute(builder: (_) {
-                              return ScannerMenuScreen();
-                            }));
-            
-                            code = ''; // code verible null after route
-                          });
-                        }
-                      }
-                    },
-                  )
-                ),
-            
-            //add text 'Or'
-                 const Text('Or'),
-            
-                 const SizedBox(height: 30),
-            // add a button
-            
-            //     adding the input form
-                const LocationForm(),
-                    ]
-            
                   ),
+              
+              //add text 'Or'
+        
+                    !isQrScannerVisible?const Text('OR',
+                     style: TextStyle(
+                       fontFamily: fontRaleway,
+                         fontSize: 20,
+                         color: Colors.black),
+                   ):SizedBox(),
+        
+              //     adding the input form
+                   !isQrScannerVisible?LocationForm():SizedBox(),
+                      ]
+              
+                    ),
+        
+        ),
 
-      ),
     );
   }
 }
@@ -150,7 +159,7 @@ class _LocationFormState extends State<LocationForm> {
                 labelText: 'Location ID',
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height:40),
             Container(
               margin: const EdgeInsets.only(bottom: 30),
               child: Center(
