@@ -53,9 +53,9 @@ class _ResultPageState extends State<ResultPage> {
     itemCategory=widget.assetsData[0].mainAssetsType;
     itemLocation=widget.assetsData[0].location;
     itemDivition=widget.assetsData[0].Division;
-    NewCodeLast=widget.assetsData[0].newCode;
-    OldCodeLast=widget.assetsData[0].oldCode;
-    PopuseCodeLast=widget.assetsData[0].propuseCode;
+    NewCodeLast=widget.assetsData[0].newCodeLast;
+    OldCodeLast=widget.assetsData[0].oldCodeLast;
+    PopuseCodeLast=widget.assetsData[0].propuseCodeLast;
     newCode=widget.assetsData[0].newCode;
     oldCode=widget.assetsData[0].oldCode;
     propuseCode=widget.assetsData[0].propuseCode;
@@ -119,13 +119,13 @@ class _ResultPageState extends State<ResultPage> {
   //we can map assets details this function
   bool assetsDataState(){
     if(widget.assetsData.isEmpty){
-     // print("heeeeeeeeeeeeeeeeeeeee");
+
       saveErrorType("Scan Unsuccessful ");
       unSccsesFull=true;
       return false;
 
     }else if(widget.assetsData[0].isNotverifyCurentYear){
-         // print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
         if(widget.assetsData[0].location.toString()==getLocation){
             setState(() {
               assingData();
@@ -166,7 +166,7 @@ class _ResultPageState extends State<ResultPage> {
 
       return true;
     }else{
-     // print("heeeeeewwwwwwwwwwwwwww");
+
       wornigState =false;
       return false;
     }
@@ -389,18 +389,18 @@ class _ResultPageState extends State<ResultPage> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // (unSccsesFull)?ButtonWidget(
-                            //   ctx: context,
-                            //   buttonName: 'Report',
-                            //   buttonFontSize: 20.0,
-                            //   buttonColor: Colors.orangeAccent,
-                            //   borderColor: const Color.fromRGBO(253, 203, 0, 1.0),
-                            //   textColor: Colors.white,
-                            //   buttonWidth: 170.0,
-                            //   buttonHeight: 50.0,
-                            //   buttonRadius: 10.0,
-                            //   validationStates: ()=>navigeateReportPage(context)
-                            // ):
+                            (unSccsesFull)?ButtonWidget(
+                              ctx: context,
+                              buttonName: 'Report',
+                              buttonFontSize: 20.0,
+                              buttonColor: Colors.orangeAccent,
+                              borderColor: const Color.fromRGBO(253, 203, 0, 1.0),
+                              textColor: Colors.white,
+                              buttonWidth: 170.0,
+                              buttonHeight: 50.0,
+                              buttonRadius: 10.0,
+                              validationStates: ()=>navigeateReportPage(context)
+                            ):
                             ButtonWidget(
                               ctx: context,
                               buttonName: 'OK',

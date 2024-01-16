@@ -159,8 +159,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             newCodeLast: document['NewCode-last'],
             oldCodeLast: document['Oldcode-last'],
             propuseCodeLast: document['ProposedCode-Last'],
-            newCode:document['new code'],
-            oldCode: document['old code'],
+            newCode:document['New code'],
+            oldCode: document['Old code'],
             propuseCode: document['Proposed Code'],
             isNotverifyCurentYear: true
         );
@@ -179,8 +179,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
               newCodeLast: document['NewCode-last'],
               oldCodeLast: document['Oldcode-last'],
               propuseCodeLast: document['ProposedCode-Last'],
-              newCode:document['new code'],
-              oldCode: document['old code'],
+              newCode:document['New code'],
+              oldCode: document['Old code'],
               propuseCode: document['Proposed Code'],
 
               allredyVerify: true
