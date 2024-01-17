@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '/model_data/login_remember.dart';
 import '/model_data/LocationCode.dart';
 import '/model_data/drop_dwon_data.dart';
+
 
 class LocationProvider extends ChangeNotifier{
 
@@ -41,5 +43,12 @@ class DropDwonData extends ChangeNotifier{
   String get value=>_dropData.value;
   void dropValue(String value){
     _dropData=DropData(value: value);
+  }
+}
+class IsLoginRemember extends ChangeNotifier{
+   LoginRemember _loginRemember=LoginRemember(isLogin: false);
+  bool get value=>_loginRemember.isLogin;
+  void valueUpdate(bool value){
+    _loginRemember=LoginRemember(isLogin: value);
   }
 }

@@ -8,6 +8,8 @@ import '/database/auth_file.dart';
 import 'location_menu_screen.dart';
 import '/data_validations/dilog_massage.dart';
 import 'report_secreen.dart';
+
+
 class DashBord extends StatefulWidget {
   static const routeDashBord="/dash-bord";
   const DashBord({super.key});
@@ -30,8 +32,6 @@ class _DashBordState extends State<DashBord> {
       }
 
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +57,15 @@ class _DashBordState extends State<DashBord> {
           imageUrl: "assets/images/report.png",
           funcName:"Genarate Reports"
       )
-
     ];
 
     return  WillPopScope(
       onWillPop: ()async{
         await showConfirmationDialog(context, "Exit","Do you want to exit !");
         if(dilogState){
-          AuthService().logOut();
+          //AuthService().logOut();
           SystemNavigator.pop();
           dilogState=false;
-
         }
         return dilogState;
       },
@@ -75,7 +73,8 @@ class _DashBordState extends State<DashBord> {
           key: _scaffoldState,
          appBar: AppBar(
            backgroundColor: colorPlate2,
-           title: const Text("Dashboard",style: TextStyle(
+           title: const Text("Dashboard",
+             style: TextStyle(
                  fontFamily: fontRaleway,
                  fontSize: 18,
                  color: Colors.white
@@ -89,11 +88,13 @@ class _DashBordState extends State<DashBord> {
            ),
       
          ),
-        drawer: const DrawerScreen(),
+        drawer: DrawerScreen(),
         body:Container(
            margin: const EdgeInsets.only(top: 20),
            padding: const EdgeInsets.all(10),
-          child: ListView.builder(itemCount: functions.length,itemBuilder: (context,int index){
+          child: ListView.builder(
+              itemCount: functions.length,
+              itemBuilder: (context,int index){
               return functions[index];
           })
         )

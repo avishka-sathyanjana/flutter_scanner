@@ -15,7 +15,7 @@ Future<void> showConfirmationDialog(BuildContext context,String head,String mass
         actions: <Widget>[
           // "Cancel" button
           TextButton(
-            child: const Text('Cancel'),
+            child: const Text('No'),
             onPressed: () {
               dilogState=false;
               Navigator.of(context).pop(); // Close the dialog
@@ -23,7 +23,7 @@ Future<void> showConfirmationDialog(BuildContext context,String head,String mass
           ),
           // "Accept" button
           TextButton(
-            child: const Text('Accept'),
+            child: const Text('Yes'),
             onPressed: () {
               dilogState=true;
               Navigator.of(context).pop();

@@ -10,17 +10,17 @@ bool LoginValidation(String email, String password,BuildContext context){
    RegExp reg=RegExp(emailPattern);
      if(email.isEmpty){
          emailError="Email is Empty";
-         showError(context, emailError);
+         showError(context, emailError,"Error");
          return true;
      }
      if(password.isEmpty){
        passwordError="Password is Empty";
-       showError(context, passwordError);
+       showError(context, passwordError,"Error");
        return true;
      }
      if(!reg.hasMatch(email)){
        emailError="email pattern is not match";
-       showError(context, emailError);
+       showError(context, emailError,"Error");
        return true;
      }
      if(emailError.isEmpty&&passwordError.isEmpty){
@@ -30,7 +30,7 @@ bool LoginValidation(String email, String password,BuildContext context){
      return true;
   }
 
-void showError(BuildContext context, String error) {
+void showError(BuildContext context, String error,String errorHead) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Container(
@@ -48,7 +48,7 @@ void showError(BuildContext context, String error) {
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                      const Text("Error",style: TextStyle(
+                       Text(errorHead,style: const TextStyle(
                         fontSize: 18,
                         color: Colors.red
                       ),

@@ -121,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
                  });
               }else{
                 setState(() {
-                  showError(context, "Email or password is invalid");
+                  showError(context, "Email or password is invalid","Error");
                 });
               }
 

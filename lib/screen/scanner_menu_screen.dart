@@ -210,12 +210,12 @@ class _ItemFormState extends State<ItemForm> {
                           });
                         }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
                           setState(() {
-                             showError(context,"select item category");
+                             showError(context,"select item category","Error");
                           });
                         }
                         else{
                           setState(() {
-                            showError(context,"Item code is empty");
+                            showError(context,"Item code is empty","Error");
                           });
                         }
 

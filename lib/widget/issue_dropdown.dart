@@ -33,7 +33,7 @@ class _ConditionDropdownState extends State<IssueDropdown> {
      if(colorController.text.isNotEmpty){
        Provider.of<DropDwonIssue>(context,listen: false).updateValue(colorController.text);
      }else{
-       showError(context, "Issue type empty");
+       showError(context, "Issue type empty","Error");
      }
    }
 

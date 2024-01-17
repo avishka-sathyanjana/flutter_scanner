@@ -15,6 +15,7 @@ class AuthService{
   final CollectionReference assetsDataNew =FirebaseFirestore.instance.collection("assetsNewDB");
   final CollectionReference assetsDataNoEmpty =FirebaseFirestore.instance.collection("assetsCollection");
   final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
+  final CollectionReference collectionVerfyTableTest=FirebaseFirestore.instance.collection("verify test");
   final CollectionReference collectionIssuesTable=FirebaseFirestore.instance.collection("Issue");
   bool isLogin=false;
 
@@ -65,10 +66,10 @@ Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
     await collectionReference.add(location);
   }
   //get user id ........................
-  String getUserId(){
+  String ?getUserId(){
     User? user=FirebaseAuth.instance.currentUser;
     if(user !=null){
-      return user.uid;
+      return user.email;
     }else{
       return "no user sing in";
     }
@@ -91,8 +92,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
               .get();
             //get data vrefiy table
             verifySnap=await _db.
-            collection("verify table").
-            where("newCode",isEqualTo:assetsId).
+            collection("verify test").
+            where("new Code last",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
 
         }else if(itemOption=='Proposed Code'){
@@ -103,8 +104,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
 
                //get data vrefiy table
                verifySnap=await _db.
-               collection("verify table").
-               where("popuseCode",isEqualTo:assetsId).
+               collection("verify test").
+               where("popuseCode last",isEqualTo:assetsId).
                where("curentYear",isEqualTo:curentYear).get();
 
         }else if(itemOption=='Old code'){
@@ -116,8 +117,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
 
             //get data vrefiy table
             verifySnap=await _db.
-            collection("verify table").
-            where("oldCode",isEqualTo:assetsId).
+            collection("verify test").
+            where("old Code last",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
           print("new daata${snapshot.docs.length}");
 
@@ -130,21 +131,13 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
 
              //get data vrefiy table
              verifySnap=await _db.
-             collection("verify table").
-             where("assets code",isEqualTo:assetsId).
+             collection("verify test").
+             where("barcode",isEqualTo:assetsId).
              where("curentYear",isEqualTo:curentYear).get();
 
           print("new daata${snapshot.docs.length}");
 
         }
-
-
-
-      // verifySnap=await _db.
-      //   collection("verify table").
-      //   where("assets code",isEqualTo:assetsId).
-      //   where("curentYear",isEqualTo:curentYear).get();
-      //  print("new daata${snapshot.docs.length}");
 
 
     if (snapshot.docs.isNotEmpty && verifySnap.docs.isEmpty) {
@@ -232,8 +225,9 @@ Future<void>verifyTable(
     String itemName,
     String newCode,
     String oldCode,
-    String propuseCode)async{
-    String userId=getUserId();
+    String propuseCode,
+    String division)async{
+    String? userId=getUserId();
     DateTime curent=DateTime.now();
     String curentYear=curent.year.toString();
     Timestamp dateTime=Timestamp.fromDate(curent);
@@ -248,6 +242,7 @@ Future<void>verifyTable(
       'propuse code':propuseCode,
       'dateTime':curent.toString(),
       'location':location,
+      'division':division,
       'remarks':remarks,
       'systemError':errorType,
       'status':states,
@@ -255,7 +250,7 @@ Future<void>verifyTable(
       'user id':userId,
     };
     
-    collectionVerfyTable.add(data).then((DocumentReference documentRef){
+    collectionVerfyTableTest.add(data).then((DocumentReference documentRef){
       print("data save firebase:$documentRef");
     }).catchError((onError){
       print("Error data save:$onError");
@@ -275,7 +270,7 @@ Future<void>verifyTable(
       String assetsCode,
       String previouseCode,
       )async{
-    String userId=getUserId();
+    String? userId=getUserId();
     DateTime curent=DateTime.now();
     String curentYear=curent.year.toString();
     Timestamp dateTime=Timestamp.fromDate(curent);

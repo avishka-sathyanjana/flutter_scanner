@@ -89,7 +89,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             var result = await AuthService().getLocation(code);
                             if (result.isEmpty) {
                               setState(() {
-                                showError(context, "Invalid Location");
+                                showError(context, "Invalid Location","Error");
                                 isScanComplete = false;
                                 code = '';
                               });
@@ -181,7 +181,7 @@ class _LocationFormState extends State<LocationForm> {
 
                       if (result.isEmpty) {
                         setState(() {
-                          showError(context, "Invalid location ");
+                          showError(context, "Invalid location ","Error");
                         });
                       } else {
                         setState(() {
@@ -195,7 +195,7 @@ class _LocationFormState extends State<LocationForm> {
                       }
                     } else if (locationCode.text.isEmpty) {
                       setState(() {
-                        showError(context, "Item code is empty");
+                        showError(context, "Item code is empty","Error");
                       });
                     }
                   },
