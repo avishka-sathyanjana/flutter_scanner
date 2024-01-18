@@ -194,7 +194,7 @@ class _ResultPageState extends State<ResultPage> {
                     propuseCode,
                     itemDivition
                 );
-                showError(context,"all ready add data","successful");
+                showError(context,"all ready add data","successful",Icons.offline_pin_rounded,Colors.green,Colors.white,Colors.black);
                  itemCode = '';
                  itemName = '';
                  itemCategory = '';
@@ -219,7 +219,7 @@ class _ResultPageState extends State<ResultPage> {
 
         //pop scanner page
         }else{
-           showError(context,"Select assets state","Error");
+           showError(context,"Select assets state","Error",Icons.error,colorPlate3,Colors.red,Colors.red);
         }
     }else{
       print("worning data save");
@@ -250,7 +250,7 @@ class _ResultPageState extends State<ResultPage> {
                 //   return ScannerMenuScreen();
                 // }));
                 Navigator.pop(context);
-                Navigator.pop(context);
+
               });
 
             dilogState=false;

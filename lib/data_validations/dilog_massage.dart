@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
+import '/style_varible/style_screen.dart';
 bool dilogState=false;
 Future<void> showConfirmationDialog(BuildContext context,String head,String massage) async {
   return showDialog<void>(

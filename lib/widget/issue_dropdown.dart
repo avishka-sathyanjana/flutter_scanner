@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../style_varible/style_screen.dart';
 import '/provider/location_state.dart';
 import '/data_validations/login_validation.dart';
 
@@ -33,7 +34,7 @@ class _ConditionDropdownState extends State<IssueDropdown> {
      if(colorController.text.isNotEmpty){
        Provider.of<DropDwonIssue>(context,listen: false).updateValue(colorController.text);
      }else{
-       showError(context, "Issue type empty","Error");
+       showError(context, "Issue type empty","Error",Icons.error,colorPlate2,Colors.red,Colors.red);
      }
    }
 

@@ -10,17 +10,17 @@ bool LoginValidation(String email, String password,BuildContext context){
    RegExp reg=RegExp(emailPattern);
      if(email.isEmpty){
          emailError="Email is Empty";
-         showError(context, emailError,"Error");
+         showError(context, emailError,"Error",Icons.error,colorPlate3,Colors.red,Colors.red);
          return true;
      }
      if(password.isEmpty){
        passwordError="Password is Empty";
-       showError(context, passwordError,"Error");
+       showError(context, passwordError,"Error",Icons.error,colorPlate3,Colors.red,Colors.red);
        return true;
      }
      if(!reg.hasMatch(email)){
        emailError="email pattern is not match";
-       showError(context, emailError,"Error");
+       showError(context, emailError,"Error",Icons.error,colorPlate3,Colors.red,Colors.red);
        return true;
      }
      if(emailError.isEmpty&&passwordError.isEmpty){
@@ -30,34 +30,41 @@ bool LoginValidation(String email, String password,BuildContext context){
      return true;
   }
 
-void showError(BuildContext context, String error,String errorHead) {
+void showError(
+    BuildContext context,
+    String error,
+    String errorHead,
+    IconData icon,
+    Color bacground,
+    Color textColor,
+    Color iconColor) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Container(
         height: 80,
         padding: const EdgeInsets.all(8),
-        decoration:const BoxDecoration(
-          color:colorPlate3,
+        decoration: BoxDecoration(
+          color:bacground,
           borderRadius: BorderRadius.all(Radius.circular(10))
         ),
         child:Row(
           children: [
-            const Icon(Icons.error_outline,size: 30,color: Colors.red,),
+             Icon(icon,size: 30,color:iconColor,),
             const SizedBox(width: 15,),
             Expanded(
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                       Text(errorHead,style: const TextStyle(
+                       Text(errorHead,style: TextStyle(
                         fontSize: 18,
-                        color: Colors.red
+                        color: textColor
                       ),
                       ),
                     const SizedBox(height: 10,),
-                    Text(error,style: const TextStyle(
+                    Text(error,style:TextStyle(
                       fontFamily: fontRaleway,
                       fontSize:12,
-                      color: Colors.red,
+                      color: textColor,
 
                     ),
                       maxLines: 2,

@@ -11,7 +11,7 @@ import '/widget/custom_dropdwon.dart';
 import 'package:provider/provider.dart';
 import '/provider/location_state.dart';
 import '/sql_local_db/sql_helper.dart';
-
+import '/data_validations/loding_bar.dart';
 
 class ScannerMenuScreen extends StatefulWidget {
   static const scannerMenuScreenRoute="/scannerMenu-route";
@@ -138,95 +138,104 @@ class _ItemFormState extends State<ItemForm> {
   @override
   Widget build(BuildContext context){
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
 
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Item Code category',
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 6,),
-            const IssueDropdown(width:double.infinity),
-            const SizedBox(height: 6,),
-            const Text(
-              'Enter the Item Code',
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 10),
-
-            TextField(
-              controller: assetsCode,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                // contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                labelText: 'Item Code',
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Item Code category',
+                style: TextStyle(fontSize: 20),
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ButtonWidget(
-                      ctx: context,
-                      buttonName: 'Report',
-                      buttonFontSize: 20.0,
-                      buttonColor: Colors.orangeAccent,
-                      borderColor: Colors.orangeAccent,
-                      textColor: Colors.white,
-                      buttonWidth: 150.0,
-                      buttonHeight: 50.0,
-                      buttonRadius: 10.0,
-                      validationStates: (){
-                         Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
-                      },
-                    ),
-                    ButtonWidget(
-                      ctx: context,
-                      buttonName: 'Check',
-                      buttonFontSize: 20.0,
-                      buttonColor: Colors.blueAccent,
-                      borderColor: Colors.blueAccent,
-                      textColor: Colors.white,
-                      buttonWidth: 150.0,
-                      buttonHeight: 50.0,
-                      buttonRadius: 10.0,
-                      validationStates: ()async{
-                        String dropValue= Provider.of<DropDwonIssue>(context,listen: false).issueType;
-                        print("hsfghf$dropValue");
-                        if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
-                         var result= await AuthService().getAssets(assetsCode.text,dropValue);
-
-                          setState(() {
-                            Navigator.push(context, MaterialPageRoute(builder: (_){
-                              return ResultPage( activeScanner: () {  },assetsData:result,);
-                            }));
-                          });
-                        }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
-                          setState(() {
-                             showError(context,"select item category","Error");
-                          });
-                        }
-                        else{
-                          setState(() {
-                            showError(context,"Item code is empty","Error");
-                          });
-                        }
-
-                      },
-                    ),
-                  ]
-
+              const SizedBox(height: 6,),
+              const IssueDropdown(width:double.infinity),
+              const SizedBox(height: 6,),
+              const Text(
+                'Enter the Item Code',
+                style: TextStyle(fontSize: 20),
               ),
-            ),
-          ]
-      ),
-    );
+              const SizedBox(height: 10),
+
+              TextField(
+                controller: assetsCode,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  // contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  labelText: 'Item Code',
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonWidget(
+                        ctx: context,
+                        buttonName: 'Report',
+                        buttonFontSize: 20.0,
+                        buttonColor: Colors.orangeAccent,
+                        borderColor: Colors.orangeAccent,
+                        textColor: Colors.white,
+                        buttonWidth: 150.0,
+                        buttonHeight: 50.0,
+                        buttonRadius: 10.0,
+                        validationStates: (){
+                           Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
+                        },
+                      ),
+                      ButtonWidget(
+                        ctx: context,
+                        buttonName: 'Check',
+                        buttonFontSize: 20.0,
+                        buttonColor: Colors.blueAccent,
+                        borderColor: Colors.blueAccent,
+                        textColor: Colors.white,
+                        buttonWidth: 150.0,
+                        buttonHeight: 50.0,
+                        buttonRadius: 10.0,
+                        validationStates: ()async{
+                          String dropValue= Provider.of<DropDwonIssue>(context,listen: false).issueType;
+
+                          if(assetsCode.text.isNotEmpty && dropValue.isNotEmpty){
+                             showLoadingDialog(context);
+                             var result= await AuthService().getAssets(assetsCode.text,dropValue);
+                             // set progress bar.....
+                             setState(() {
+                               activate=false;
+                               showLoadingDialog(context);
+                             });
+
+                            setState(() {
+                              // activate progress.....
+                               activate=true;
+                              Navigator.push(context, MaterialPageRoute(builder: (_){
+                                return ResultPage( activeScanner: () {  },assetsData:result,);
+                              }));
+                            });
+                          }else if(assetsCode.text.isNotEmpty&&dropValue.isEmpty){
+                            setState(() {
+                               showError(context,"select item category","Error",Icons.error,colorPlate3,Colors.red,Colors.red);
+                            });
+                          }
+                          else{
+                            setState(() {
+                              showError(context,"Item code is empty","Error",Icons.error,colorPlate3,Colors.red,Colors.red);
+                            });
+                          }
+
+                        },
+                      ),
+                    ]
+
+                ),
+              ),
+            ]
+        ),
+      );
+
   }
 }
