@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_barcode_qrcode_scanner/style_varible/style_screen.dart';
+import '/style_varible/style_screen.dart';
+import '/database/genarate_excel.dart';
 
 class ReportGenarte extends StatefulWidget {
   const ReportGenarte({super.key});
@@ -24,7 +25,11 @@ class _ReportGenarteState extends State<ReportGenarte> {
          ),
       ),
       body: Center(
-        child: Text("genarate Reports"),
+        child:ElevatedButton(onPressed: () async{
+          await GenarateExcel().exportExcel();
+        },
+        child: const Text("reports"),
+        ),
       ),
     );
   }

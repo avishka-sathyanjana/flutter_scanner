@@ -132,8 +132,7 @@ class ItemForm extends StatefulWidget{
 class _ItemFormState extends State<ItemForm> {
   final TextEditingController assetsCode=TextEditingController();
   //String writeCode='';
-
-
+  
 
   @override
   Widget build(BuildContext context){

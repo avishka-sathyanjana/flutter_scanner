@@ -26,8 +26,9 @@ class GenarateExcel{
               italic: true,
               fontFamily: getFontFamily(FontFamily.Comic_Sans_MS),
               rotation: 0,
+              
             );
-            
+              sheet.appendRow([TextCellValue("item Name"),TextCellValue("Bar-code")]);
 
             // add value cel
             for(QueryDocumentSnapshot document in getData.docs){
@@ -45,32 +46,47 @@ class GenarateExcel{
                     TextCellValue(document['systemError'].toString()),
                   ]);
             }
-            sheet.insertRowIterables([const TextCellValue('Miss item')], getData.docs.length);
 
-            var i=0;
-            for (QueryDocumentSnapshot doc in getAssets.docs) {
-              // Ensure i is within bounds
-              if (i < getData.docs.length) {
-                if (doc['Barcode'].toString() != getData.docs[i]['barcode'].toString()) {
-                  sheet.appendRow([
-                    TextCellValue(doc['Description of Articles 2 (Sub item of main item)'].toString()),
-                    TextCellValue(doc['Barcode'].toString()),
-                    TextCellValue(doc['New code'].toString()),
-                    TextCellValue(doc['Old code'].toString()),
-                    TextCellValue(doc['Proposed Code'].toString()),
-                    TextCellValue(doc['Location'].toString()),
-                    TextCellValue(doc['Division'].toString()),
-                  ]);
-                }
-                i++; // Increment i only if it's within bounds
-              } else {
-                print('Warning: getData.docs index out of bounds');
-              }
-            }
+           //  CellStyle missItemCellStyle = CellStyle(
+           //    bold: true,
+           //    italic: true,
+           //    underline: Underline.Single,
+           //    fontSize: 16,  // Set the font size to 16 (you can adjust as needed)
+           //    fontFamily: getFontFamily(FontFamily.Comic_Sans_MS),
+           // // Red color
+           //  );
 
+
+            // sheet.appendRow([
+            //   const TextCellValue('Miss item'),
+            // ]);
+            // var missItemCell = sheet.cell(CellIndex.indexByString("A${sheet.maxRows}"));
+            // missItemCell.cellStyle = missItemCellStyle;
+            //
+            // var i=0;
+            // for (QueryDocumentSnapshot doc in getAssets.docs) {
+            //   // Ensure i is within bounds
+            //   if (i < getData.docs.length) {
+            //     if (doc['Barcode'].toString() != getData.docs[i]['barcode'].toString()) {
+            //       sheet.appendRow([
+            //         TextCellValue(doc['Description of Articles 2 (Sub item of main item)'].toString()),
+            //         TextCellValue(doc['Barcode'].toString()),
+            //         TextCellValue(doc['New code'].toString()),
+            //         TextCellValue(doc['Old code'].toString()),
+            //         TextCellValue(doc['Proposed Code'].toString()),
+            //         TextCellValue(doc['Location'].toString()),
+            //         TextCellValue(doc['Division'].toString()),
+            //       ]);
+            //     }
+            //     i++; // Increment i only if it's within bounds
+            //   } else {
+            //     print('Warning: getData.docs index out of bounds');
+            //   }
+            // }
+            //
 
             var downloadsDirectory=await DownloadsPath.downloadsDirectory();
-            var excelFilePath = join(downloadsDirectory!.path, 'CDF_data.xlsx');
+            var excelFilePath = join(downloadsDirectory!.path, 'CDF_exl.xlsx');
             var fileBytes = excel.encode();
             File(excelFilePath)
               ..createSync(recursive: true)
@@ -78,7 +94,7 @@ class GenarateExcel{
 
             print('Excel file exported to: $excelFilePath');
           }
-          
+
      }catch(e){
        print("Error export excel:$e");
      }
