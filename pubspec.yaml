@@ -39,6 +39,12 @@ dependencies:
   sqflite: ^2.3.0
   excel: ^4.0.2
   path_provider: ^2.1.2
+  flutter_typeahead: ^5.0.2
+  dropdown_button2: ^2.3.9
+  better_open_file: ^3.6.5
+  url_launcher: ^6.2.4
+  flutter_local_notifications: ^16.3.2
+  open_file_plus: ^3.4.1
 #  downloads_path_provider_28: ^0.1.2
 #  downloads_path_provider: ^0.1.2
   lecle_downloads_path_provider: ^0.0.2+8
@@ -82,6 +88,7 @@ flutter:
      - assets/images/barcode_scan.jpg
      - assets/images/barcode-amico-blue.png
      - assets/images/report.png
+     - assets/images/reports.png
 
 #     - assets/json_file/data.json
 #     - assets/json_file/location.json

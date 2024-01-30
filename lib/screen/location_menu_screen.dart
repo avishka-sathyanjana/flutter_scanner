@@ -177,9 +177,8 @@ class _LocationFormState extends State<LocationForm> {
                     validationStates: () async {
                       //call filter function
                       if (locationCode.text.isNotEmpty && code.isEmpty) {
-                        showLoadingDialog(context);
-
-                        var result = await AuthService().getLocation(locationCode.text);
+                           showLoadingDialog(context);
+                           var result = await AuthService().getLocation(locationCode.text);
 
                           setState(() {
                             activate=false;

@@ -19,7 +19,6 @@ import 'model_data/login_remember.dart';
 import '/database/auth_file.dart';
 
 
-
 Future<void> main()async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid ? await Firebase.initializeApp(
@@ -48,6 +47,7 @@ Future<void> main()async {
 
 
 }
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
