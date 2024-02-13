@@ -89,6 +89,7 @@ flutter:
      - assets/images/barcode-amico-blue.png
      - assets/images/report.png
      - assets/images/reports.png
+     - assets/images/add-user.png
 
 #     - assets/json_file/data.json
 #     - assets/json_file/location.json
