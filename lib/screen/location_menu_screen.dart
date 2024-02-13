@@ -200,7 +200,7 @@ class _LocationFormState extends State<LocationForm> {
                                   builder: (context) => ScannerMenuScreen()),
                             );
                             activate=true;
-                            showError(context,"all ready exists location","valid",Icons.offline_pin_sharp,Colors.green,Colors.white,Colors.black);
+                            showError(context,"Valid Location","valid",Icons.offline_pin_sharp,Colors.green,Colors.white,Colors.black);
 
                           });
 

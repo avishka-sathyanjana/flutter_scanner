@@ -63,7 +63,7 @@ class _ReportGenarteState extends State<ReportGenarte> {
       child: DropdownButton2<String>(
         isExpanded: true,
         hint: const Text(
-          'Select divition',
+          'Select division',
           style: TextStyle(
             fontSize: 16,
             color:Colors.black,

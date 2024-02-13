@@ -120,8 +120,8 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
             collection("verify test").
             where("old Code last",isEqualTo:assetsId).
             where("curentYear",isEqualTo:curentYear).get();
-          print("new daata${snapshot.docs.length}");
-
+         // print("new daata${snapshot.docs.length}");
+            print("test 124");
         }else {
 
              snapshot = await _db
@@ -135,13 +135,14 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
              where("barcode",isEqualTo:assetsId).
              where("curentYear",isEqualTo:curentYear).get();
 
-          print("new daata${snapshot.docs.length}");
+        //  print("new daata${snapshot.docs.length}");
+
 
         }
 
 
     if (snapshot.docs.isNotEmpty && verifySnap.docs.isEmpty) {
-
+      print("test 145");
       return  Future.value( snapshot.docs.map((document) {
         return AssetsVarify(
             assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
@@ -159,7 +160,7 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
         );
       }).toList()
       );
-     
+
     } else if(verifySnap.docs.isNotEmpty&&verifySnap.docs.isNotEmpty){
 
         return Future.value( snapshot.docs.map((document) {

@@ -194,7 +194,7 @@ class _ResultPageState extends State<ResultPage> {
                     propuseCode,
                     itemDivition
                 );
-                showError(context,"all ready add data","successful",Icons.offline_pin_rounded,Colors.green,Colors.white,Colors.black);
+                showError(context,"Data Successfully added","successful",Icons.offline_pin_rounded,Colors.green,Colors.white,Colors.black);
                  itemCode = '';
                  itemName = '';
                  itemCategory = '';
@@ -222,18 +222,18 @@ class _ResultPageState extends State<ResultPage> {
            showError(context,"Select assets state","Error",Icons.error,colorPlate3,Colors.red,Colors.red);
         }
     }else{
-      print("worning data save");
+      print("warning data save");
     }
   }
   
   void navigeateReportPage(BuildContext context)async{
-   await showConfirmationDialog(context,"Issue !","Do you report issue ?");
+   await showConfirmationDialog(context,"Issue !","Do you report the issue ?");
    if(dilogState){
      setState(() {
        Navigator.push(context,MaterialPageRoute(builder: (_)=>const IssueScreen()));
      });
    }else{
-     print("Accept cansel");
+     print("Accept cancel");
    }
 
   }
@@ -268,7 +268,7 @@ class _ResultPageState extends State<ResultPage> {
               //         Navigator.pop(context);
               //    },
               // ),
-              title: const Text("Assets Diesels",style: TextStyle(
+              title: const Text("Assets Details",style: TextStyle(
                  color:Colors.white,
                  fontFamily: fontRaleway,
                  fontSize: 18

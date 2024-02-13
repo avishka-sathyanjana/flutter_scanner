@@ -47,7 +47,7 @@ class _ScannerMenuScreenState extends State<ScannerMenuScreen> {
                           Consumer<LocationProvider>(
                             builder: (context, locationProvider, child) {
                               return Text(
-                                'Current Location:     ${locationProvider.location}',
+                                'Current Location:   ${locationProvider.location}',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,

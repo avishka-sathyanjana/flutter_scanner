@@ -37,7 +37,7 @@ class _GridCardState extends State<GridCard> {
 
                 ),
                 Positioned(
-                  bottom: 0,
+                  bottom: 0,  
                   child: Center(
                     child: Container(
                       width: 400,
