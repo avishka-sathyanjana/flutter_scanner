@@ -179,6 +179,7 @@ class _IssueScreenState extends State<IssueScreen> {
                   const SizedBox(height: 20),
           
                   // Item Category
+
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Item Category', border: OutlineInputBorder()),
                     onSaved: (value) => itemCategory = value,
@@ -190,22 +191,18 @@ class _IssueScreenState extends State<IssueScreen> {
                     onSaved: (value) => assetsCode = value,
                   ),
                   const SizedBox(height: 20),
+                  
                   // Previous Item Codes
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Previous Item Codes', border: OutlineInputBorder()),
                     onSaved: (value) => previousItemCodes = value,
                   ),
+                  
                   const SizedBox(height: 20),
           
                   // Model
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Model', border: OutlineInputBorder()),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Please enter the model';
-                    //   }
-                    //   return null;
-                    // },
                     onSaved: (value) => model = value,
                   ),
                   const SizedBox(height: 20),

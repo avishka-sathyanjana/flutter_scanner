@@ -24,7 +24,6 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-
   bool isQrScannerVisible = false;
   bool isScanComplete = false;
 
@@ -38,17 +37,11 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text('Current Location'),
       ),
       body: Center(
         
               child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                // if (!isQrScannerVisible)
-                //   Image.asset(
-                //   'assets/images/qr_scan.png',
-                //   width: 200, // Set the width as Zneeded
-                //   height: 300, // Set the height as needed
-                //  ),
         
                  if (!isQrScannerVisible)
                   ButtonWidget(
@@ -126,10 +119,10 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
         
         ),
-
     );
   }
 }
+
 
 class LocationForm extends StatefulWidget {
   const LocationForm({Key? key});
@@ -216,6 +209,5 @@ class _LocationFormState extends State<LocationForm> {
               ),
             ]),
       );
-
   }
 }

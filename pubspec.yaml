@@ -90,12 +90,10 @@ flutter:
      - assets/images/report.png
      - assets/images/reports.png
      - assets/images/add-user.png
-
 #     - assets/json_file/data.json
 #     - assets/json_file/location.json
 #     - assets/json_file/AssetListDB.json
      - assets/json_file/AssetListDBwithNoEmplty.json
-
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
