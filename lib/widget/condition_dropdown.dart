@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../data_validations/login_validation.dart';
+import '/screen/result_screen_new.dart';
+import 'package:provider/provider.dart';
+import '/provider/location_state.dart';
 
 // DropdownMenuEntry labels and values for the first dropdown menu.
 enum ConditionLabel {
@@ -12,7 +16,9 @@ enum ConditionLabel {
 }
 
 class ConditionDropdown extends StatefulWidget {
-  const ConditionDropdown({super.key});
+  static String assetsStates='';
+  final double size;
+  const ConditionDropdown({required this.size});
 
   @override
   State<ConditionDropdown> createState() => _ConditionDropdownState();
@@ -20,7 +26,14 @@ class ConditionDropdown extends StatefulWidget {
 
 class _ConditionDropdownState extends State<ConditionDropdown> {
   final TextEditingController colorController = TextEditingController();
+  //String dropdownData='';
   ConditionLabel? selectedColor;
+
+  void printStaticVerible(){
+      setState(() {
+          ConditionDropdown.assetsStates=colorController.text;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +43,7 @@ class _ConditionDropdownState extends State<ConditionDropdown> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: DropdownMenu<ConditionLabel>(
-            width: 350,
+            width:widget.size,
             initialSelection: ConditionLabel.good,
             controller: colorController,
             requestFocusOnTap: false,
@@ -38,6 +51,9 @@ class _ConditionDropdownState extends State<ConditionDropdown> {
             onSelected: (ConditionLabel? color) {
               setState(() {
                 selectedColor = color;
+                  printStaticVerible();
+                  Provider.of<DropDwonCondition>(context,listen: false).updateValue(colorController.text);
+
               });
             },
             dropdownMenuEntries: ConditionLabel.values

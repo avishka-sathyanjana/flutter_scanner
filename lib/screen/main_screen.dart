@@ -10,6 +10,8 @@ import '/data_validations/login_validation.dart';
 import '/database/auth_file.dart';
 import '/screen/dash_bord_screen.dart';
 import 'results_screen.dart';
+import '/database/get_local_data.dart';
+import '/database/genarate_excel.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -70,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
       margin: EdgeInsets.only(top:defirent),
       decoration:  BoxDecoration(
           border: Border.all(
-              color: colorPlate2,
+              color: Colors.black38,
               width: 2
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10))
@@ -110,11 +112,16 @@ class _MainScreenState extends State<MainScreen> {
                     email="";
                     password="";
                     // uploadJson(); // call function ...........
+                     //update locale database....................
+                      //LocalFeach().getAssetsCollection();
+
+                      // GenarateExcel().exportExcel();
+
 
                  });
               }else{
                 setState(() {
-                  showError(context, "Email or password is invalid");
+                  showError(context, "Email or password is invalid","Error",Icons.error,colorPlate3,Colors.red,Colors.red);
                 });
               }
 
@@ -125,12 +132,15 @@ class _MainScreenState extends State<MainScreen> {
 
   //upload data to firebase ...................
   Future<void>uploadJson()async{
-    String jsonConect=await rootBundle.loadString("assets/json_file/location.json");
+    String jsonConect=await rootBundle.loadString("assets/json_file/AssetListDBwithNoEmplty.json");
     List<dynamic> usersList = json.decode(jsonConect);
+
+      print("length array myyyyyyyyyyyyyy${usersList.length}");
 
     for(var userData in usersList){
       await AuthService().uploadUserDataFormJson(userData);
     }
+    print("complete asing data bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
 
   }
 
@@ -147,7 +157,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: colorPlate2,
           automaticallyImplyLeading: false,
             title: const Text(
-                "Assets Manager",
+                "Board Of Survey",
                style: TextStyle(
                   color: Colors.white,
                   fontFamily: fontRaleway,
@@ -176,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
                    },_passwordController),
                    //forget password sections
                    Container(
-                     margin: const EdgeInsets.only(top: 25),
+                     margin: const EdgeInsets.only(top: 100),
                      child:  InkWell(
                        onTap:(){
                           //navigate to forget password filed, now is not works
@@ -197,13 +207,13 @@ class _MainScreenState extends State<MainScreen> {
                      //make the usability button widget
                        ctx: context, //pass the context
                        buttonName: "Login",//button name args
-                       buttonFontSize: 18,//button name fonts size
-                       buttonColor:Colors.white,//button background color
-                       borderColor:colorPlate3,//button border color
-                       buttonWidth:double.infinity,//button width
-                       buttonHeight: 45,
-                       buttonRadius: 8.0,
-                       textColor: colorPlate2,//button heghit
+                       buttonFontSize: 20,
+                       buttonColor: Colors.blueAccent,
+                       borderColor: Colors.blueAccent,
+                       textColor: Colors.white,
+                       buttonWidth: 150,
+                       buttonHeight: 50,
+                       buttonRadius: 10,//button heghit
                        validationStates:()=>validateData(context), // call back function
                    )
 

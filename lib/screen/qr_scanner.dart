@@ -6,11 +6,15 @@ import '/screen/results_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '/database/auth_file.dart';
 import 'result_screen_new.dart';
+import '/provider/location_state.dart';
+import 'package:provider/provider.dart';
+
+
 const bgColor = Color(0xfffafafa);
 
 class QRScanner extends StatefulWidget {
   static const QRScannerRoute="/QR-route";
-  const QRScanner({super.key});
+  //const QRScanner({required this.locaton});
 
   @override
   State<QRScanner> createState() => _QRScannerState();
@@ -95,10 +99,11 @@ class _QRScannerState extends State<QRScanner> {
                     if(!isScanComplete){
                       String code = barcode.rawValue ?? '---';
                       isScanComplete = true;
-                      var result=await AuthService().getAssets(code);
+                      //String dropData=Provider.of<DropDwonData>(context,listen: false).value;
+                      var result=await AuthService().getAssets(code,'');
                        setState(() {
                          Navigator.push(context, MaterialPageRoute(
-                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsDate:result,)
+                             builder: (context) =>ResultPage(activeScanner: closeScreen,assetsData:result)
                          ));
                        });
                   }

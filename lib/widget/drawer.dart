@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_barcode_qrcode_scanner/screen/dash_bord_screen.dart';
+import 'package:provider/provider.dart';
 import '/widget/button_widget.dart';
 import '/style_varible/style_screen.dart';
 import '/database/auth_file.dart';
 import '/screen/main_screen.dart';
+import '/provider/location_state.dart';
+import '/model_data/login_remember.dart';
 class DrawerScreen extends StatefulWidget {
-  const DrawerScreen({super.key});
+
+  DrawerScreen({super.key});
 
   @override
   State<DrawerScreen> createState() => _DrawerScreenState();
@@ -46,12 +51,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   }
 
-  void Logout(BuildContext context)async{
-    if(await AuthService().isLoginCheck()) {
+  void Logout()async{
+
+    if(await AuthService().isUserLoggedIn()) {
       setState(() {
         AuthService().logOut();
-        Navigator.pushNamed(context, "/");
-
+         Navigator.pushReplacementNamed(context, MainScreen.mainScreenPageRoute);
       });
     }
   }
@@ -94,7 +99,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                buttonHeight:40,
                buttonRadius: 8.0,
                textColor: colorPlate2,
-               validationStates:()=>Logout(context)
+               validationStates:()=>Logout()
            )
 
         ],

@@ -34,6 +34,20 @@ dependencies:
   cloud_firestore: ^4.13.6
   firebase_auth: ^4.15.3
   firebase_storage: ^11.5.6
+  provider: ^6.1.1
+  multi_dropdown: ^2.1.3
+  sqflite: ^2.3.0
+  excel: ^4.0.2
+  path_provider: ^2.1.2
+  flutter_typeahead: ^5.0.2
+  dropdown_button2: ^2.3.9
+  better_open_file: ^3.6.5
+  url_launcher: ^6.2.4
+  flutter_local_notifications: ^16.3.2
+  open_file_plus: ^3.4.1
+#  downloads_path_provider_28: ^0.1.2
+#  downloads_path_provider: ^0.1.2
+  lecle_downloads_path_provider: ^0.0.2+8
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -69,12 +83,17 @@ flutter:
   assets:
      - assets/images/logoucsc.png
      - assets/images/scaneer.png
-     - assets/images/qrimage.jpeg
      - assets/images/qr_scan.png
-     - assets/json_file/data.json
-     - assets/json_file/location.json
-
-
+     - assets/images/qrimage.jpeg
+     - assets/images/barcode_scan.jpg
+     - assets/images/barcode-amico-blue.png
+     - assets/images/report.png
+     - assets/images/reports.png
+     - assets/images/add-user.png
+#     - assets/json_file/data.json
+#     - assets/json_file/location.json
+#     - assets/json_file/AssetListDB.json
+     - assets/json_file/AssetListDBwithNoEmplty.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

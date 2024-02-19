@@ -11,8 +11,44 @@ class AuthService{
   // make assets table
   final CollectionReference collectionReference=FirebaseFirestore.instance.collection('assets');
   final CollectionReference collectionRefLocation=FirebaseFirestore.instance.collection('location');
+  final CollectionReference collectionNewDataFile =FirebaseFirestore.instance.collection("assets_data");
+  final CollectionReference assetsDataNew =FirebaseFirestore.instance.collection("assetsNewDB");
+  final CollectionReference assetsDataNoEmpty =FirebaseFirestore.instance.collection("assetsCollection");
+  final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
+  final CollectionReference collectionVerfyTableTest=FirebaseFirestore.instance.collection("verify test");
+  final CollectionReference collectionIssuesTable=FirebaseFirestore.instance.collection("Issue");
+  final CollectionReference collectionUser=FirebaseFirestore.instance.collection('User');
   bool isLogin=false;
 
+  //carate user.......................
+  Future<String> signUpWithEmailAndPassword(  String frist,String last, String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // User registration successful
+      User? user = userCredential.user;
+      if(user!=null){
+         Map<String,dynamic>data={
+           'frist_name':frist,
+           'last_name':last,
+           'email':email
+         };
+         collectionUser.add(data).then((DocumentReference documentRef){
+           print("data save firebase:$documentRef");
+         }).catchError((onError){
+           print("Error data save:$onError");
+         });
+         return user.email.toString();
+      }
+      return user.toString();
+    } catch (e) {
+      print('Error registering user: $e');
+      return '';
+    }
+  }
+  //sign in user.......................
   Future<User?>signInWithEmailAndPassword(String email,String password)async{
     try{
       UserCredential userCredential= await _auth.signInWithEmailAndPassword(
@@ -53,17 +89,17 @@ class AuthService{
 
   // upload the data file to firebase
 Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
-    await collectionRefLocation.add(assetsData);
+    await assetsDataNoEmpty.add(assetsData);
 }
   //upload the location json file
   Future<void>uploadLocation(Map<String,dynamic>location)async{
     await collectionReference.add(location);
   }
   //get user id ........................
-  String getUserId(){
+  String ?getUserId(){
     User? user=FirebaseAuth.instance.currentUser;
     if(user !=null){
-      return user.uid;
+      return user.email;
     }else{
       return "no user sing in";
     }
@@ -71,31 +107,118 @@ Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
 
 
 //fetch data assets collection.........................
-Future<List<AssetsVarify>>getAssets(String AssetsId)async{
-  try {
-    var snapshot = await _db
-        .collection("assets")
-        .where("Asset ID", isEqualTo:AssetsId)
-        .get();
+Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
 
-    if (snapshot.docs.isNotEmpty) {
-      return snapshot.docs.map((document) {
+  try {
+       QuerySnapshot<Map<String, dynamic>> snapshot;
+       QuerySnapshot<Map<String, dynamic>>verifySnap;
+       //get caret year..............
+       DateTime curent=DateTime.now();
+       String curentYear=curent.year.toString();
+        if(itemOption=='New code'){
+            snapshot = await _db
+              .collection("assetsCollection")
+              .where("NewCode-last",isEqualTo:assetsId.toString())
+              .get();
+            //get data vrefiy table
+            verifySnap=await _db.
+            collection("verify test").
+            where("new Code last",isEqualTo:assetsId).
+            where("curentYear",isEqualTo:curentYear).get();
+
+        }else if(itemOption=='Proposed Code'){
+           snapshot = await _db
+              .collection("assetsCollection")
+              .where("ProposedCode-Last", isEqualTo:assetsId.toString())
+              .get();
+
+               //get data vrefiy table
+               verifySnap=await _db.
+               collection("verify test").
+               where("popuseCode last",isEqualTo:assetsId).
+               where("curentYear",isEqualTo:curentYear).get();
+
+        }else if(itemOption=='Old code'){
+
+            snapshot = await _db
+              .collection("assetsCollection")
+              .where("Oldcode-last", isEqualTo:assetsId.toString())
+              .get();
+
+            //get data vrefiy table
+            verifySnap=await _db.
+            collection("verify test").
+            where("old Code last",isEqualTo:assetsId).
+            where("curentYear",isEqualTo:curentYear).get();
+         // print("new daata${snapshot.docs.length}");
+            print("test 124");
+        }else {
+
+             snapshot = await _db
+              .collection("assetsCollection")
+              .where("Barcode",isEqualTo:int.parse(assetsId))
+              .get();
+
+             //get data vrefiy table
+             verifySnap=await _db.
+             collection("verify test").
+             where("barcode",isEqualTo:assetsId).
+             where("curentYear",isEqualTo:curentYear).get();
+
+        //  print("new daata${snapshot.docs.length}");
+
+
+        }
+
+
+    if (snapshot.docs.isNotEmpty && verifySnap.docs.isEmpty) {
+      print("test 145");
+      return  Future.value( snapshot.docs.map((document) {
         return AssetsVarify(
-            assetsItemeName: document["Name of the Item"],
-            mainAssetsType:document['Main Asset Type'] ,
-            itemCode:document['Asset ID'],
+            assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
+            mainAssetsType:document['Asset Type'] ,
+            itemCode:document['Barcode'].toString() ,
             Division:document['Division'],
             location:document['Location'],
+            newCodeLast: document['NewCode-last'],
+            oldCodeLast: document['Oldcode-last'],
+            propuseCodeLast: document['ProposedCode-Last'],
+            newCode:document['New code'],
+            oldCode: document['Old code'],
+            propuseCode: document['Proposed Code'],
+            isNotverifyCurentYear: true
         );
-      }).toList();
+      }).toList()
+      );
+
+    } else if(verifySnap.docs.isNotEmpty&&verifySnap.docs.isNotEmpty){
+
+        return Future.value( snapshot.docs.map((document) {
+          return AssetsVarify(
+              assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
+              mainAssetsType:document['Asset Type'] ,
+              itemCode:document['Barcode'].toString(),
+              Division:document['Division'],
+              location:document['Location'],
+              newCodeLast: document['NewCode-last'],
+              oldCodeLast: document['Oldcode-last'],
+              propuseCodeLast: document['ProposedCode-Last'],
+              newCode:document['New code'],
+              oldCode: document['Old code'],
+              propuseCode: document['Proposed Code'],
+
+              allredyVerify: true
+          );
+        }).toList()
+        );
     } else {
       // Handle the case where no matching document is found
-      return []; // Or throw an exception, or handle it as appropriate
+      return Future.value([]); // Or throw an exception, or handle it as appropriate
     }
   } catch (e) {
     print("Error in getAssets: $e");
     // Handle the error or rethrow it based on your requirements
-    return []; // Or throw an exception, or handle it as appropriate
+    return Future.value([]); // Or throw an exception, or handle it as appropriate
   }
 }
 
@@ -120,6 +243,93 @@ Future<List<AssetsLocation>>getLocation(String locationCode)async{
       return [];
     }
 }
+//verify data table.......................
+Future<void>verifyTable(
+    String assetsCode,
+    String location,
+    String remarks,
+    String states,
+    String itemNewCode,
+    String itemOldCode,
+    String itemPropuseCode,
+    String errorType,
+    String itemName,
+    String newCode,
+    String oldCode,
+    String propuseCode,
+    String division)async{
+    String? userId=getUserId();
+    DateTime curent=DateTime.now();
+    String curentYear=curent.year.toString();
+    Timestamp dateTime=Timestamp.fromDate(curent);
+    Map<String,dynamic>data={
+      'item Name':itemName,
+      'barcode':assetsCode,
+      'new Code last':itemNewCode,
+      'old Code last':itemOldCode,
+      'popuseCode last':itemPropuseCode,
+      'new code':newCode,
+      'old code':oldCode,
+      'propuse code':propuseCode,
+      'dateTime':curent.toString(),
+      'location':location,
+      'division':division,
+      'remarks':remarks,
+      'systemError':errorType,
+      'status':states,
+      'curentYear':curentYear,
+      'user id':userId,
+    };
+    
+    collectionVerfyTableTest.add(data).then((DocumentReference documentRef){
+      print("data save firebase:$documentRef");
+    }).catchError((onError){
+      print("Error data save:$onError");
+    });
+
+
+}
+//add issues  data for table
+  Future<void>addIssues(
+      String issueType,
+      String itemCategory,
+      String itemCondition,
+      String itemType,
+      String location,
+      String model,
+      String remarks,
+      String assetsCode,
+      String previouseCode,
+      )async{
+    String? userId=getUserId();
+    DateTime curent=DateTime.now();
+    String curentYear=curent.year.toString();
+    Timestamp dateTime=Timestamp.fromDate(curent);
+    Map<String,dynamic>data={
+      'IssueType':issueType,
+      'ItemCategory':itemCategory,
+      'ItemCondition':itemCondition,
+      'ItemType':itemType,
+      'Location':location,
+      'curentYear':curentYear,
+      'Model':model,
+      'Remarks':remarks,
+      'assetsCode':assetsCode,
+      'dateTime':dateTime,
+      'previousCode':previouseCode,
+      'userId':userId
+
+
+    };
+
+    collectionIssuesTable.add(data).then((DocumentReference documentRef){
+      print("data save firebase:$documentRef");
+    }).catchError((onError){
+      print("Error data save:$onError");
+    });
+
+
+  }
 
 
 
