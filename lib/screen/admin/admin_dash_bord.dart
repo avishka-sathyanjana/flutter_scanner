@@ -4,8 +4,10 @@ import '../../data_validations/dilog_massage.dart';
 import '../../widget/drawer.dart';
 import '/style_varible/style_screen.dart';
 import '/widget/grid_card.dart';
+import 'user_create_screen.dart';
 
 class AdminDsh extends StatefulWidget {
+  static const String addminRoute="/admin-dash";
   const AdminDsh({super.key});
 
   @override
@@ -22,10 +24,10 @@ class _AdminDshState extends State<AdminDsh> {
     List<Widget>card=[
         GridCard(
             userDifingFunction:(){
-
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const UserCreate()));
             },
             imageUrl: "assets/images/add-user.png",
-            funcName:"Create user"
+            funcName:"Create user Account"
         )
     ];
     return WillPopScope(
@@ -39,16 +41,18 @@ class _AdminDshState extends State<AdminDsh> {
       return dilogState;
     },
       child: Scaffold(
+         key: _scaffoldState,
           appBar: AppBar(
             backgroundColor: colorPlate2,
              title: const Text(
                'Admin Dash Bord',
                style: TextStyle(
-                 color: Colors.white
+                 color: Colors.white,
+                 fontFamily:fontRaleway
                ),
              ),
             leading: IconButton(
-              icon: const Icon(Icons.drag_indicator_outlined),
+              icon: const Icon(Icons.drag_indicator_outlined,color: Colors.white,),
               onPressed: (){
                 _scaffoldState.currentState?.openDrawer();
               },

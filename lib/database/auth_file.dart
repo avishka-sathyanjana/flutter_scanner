@@ -17,8 +17,38 @@ class AuthService{
   final CollectionReference collectionVerfyTable=FirebaseFirestore.instance.collection("verify table");
   final CollectionReference collectionVerfyTableTest=FirebaseFirestore.instance.collection("verify test");
   final CollectionReference collectionIssuesTable=FirebaseFirestore.instance.collection("Issue");
+  final CollectionReference collectionUser=FirebaseFirestore.instance.collection('User');
   bool isLogin=false;
 
+  //carate user.......................
+  Future<String> signUpWithEmailAndPassword(  String frist,String last, String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // User registration successful
+      User? user = userCredential.user;
+      if(user!=null){
+         Map<String,dynamic>data={
+           'frist_name':frist,
+           'last_name':last,
+           'email':email
+         };
+         collectionUser.add(data).then((DocumentReference documentRef){
+           print("data save firebase:$documentRef");
+         }).catchError((onError){
+           print("Error data save:$onError");
+         });
+         return user.email.toString();
+      }
+      return user.toString();
+    } catch (e) {
+      print('Error registering user: $e');
+      return '';
+    }
+  }
+  //sign in user.......................
   Future<User?>signInWithEmailAndPassword(String email,String password)async{
     try{
       UserCredential userCredential= await _auth.signInWithEmailAndPassword(
