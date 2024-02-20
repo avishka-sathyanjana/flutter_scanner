@@ -75,8 +75,8 @@ class _UserCreateState extends State<UserCreate> {
         title: const Text(
           "user Create",
           style: TextStyle(
-            color: Colors.white,
-            fontFamily: fontRaleway
+              color: Colors.white,
+              fontFamily: fontRaleway
           ),
         ),
       ),
@@ -89,44 +89,44 @@ class _UserCreateState extends State<UserCreate> {
               //mainAxisAlignment: MainAxisAlignment.start,
               //crossAxisAlignment:CrossAxisAlignment.center,
               children: [
-                  Image.asset('assets/images/add-user.png',width: 150,height: 150,),
-                 Container(
-                   margin: EdgeInsets.only(top: heghit/30),
-                   child: Row(
-                       children: [
-                         inputFild(
-                             width/2.4, 70, "First Name",false,
-                                 (value){
-                               if(value.toString().isEmpty){
-                                 return "Frist Name is Empty";
-                               }
-                               return null;
-                             },
-                                 (text){
-                               setState(() {
-                                 _nameFrist=text.toString();
-                               });
-                             }
-                         ),
-                           SizedBox(width: width/12,),
-                         //........................
-                         inputFild(
-                             width/2.4, 70, "Last Name",false,
-                                 (value){
-                               if(value.toString().isEmpty){
-                                 return "Email is empty";
-                               }
-                               return null;
-                             },
-                                 (text){
-                               setState(() {
-                                 _nameLast=text.toString();
-                               });
-                             }
-                         ),
-                       ],
-                     ),
-                 ),
+                Image.asset('assets/images/add-user.png',width: 150,height: 150,),
+                Container(
+                  margin: EdgeInsets.only(top: heghit/30),
+                  child: Row(
+                    children: [
+                      inputFild(
+                          width/2.4, 70, "First Name",false,
+                              (value){
+                            if(value.toString().isEmpty){
+                              return "Frist Name is Empty";
+                            }
+                            return null;
+                          },
+                              (text){
+                            setState(() {
+                              _nameFrist=text.toString();
+                            });
+                          }
+                      ),
+                      SizedBox(width: width/12,),
+                      //........................
+                      inputFild(
+                          width/2.4, 70, "Last Name",false,
+                              (value){
+                            if(value.toString().isEmpty){
+                              return "Email is empty";
+                            }
+                            return null;
+                          },
+                              (text){
+                            setState(() {
+                              _nameLast=text.toString();
+                            });
+                          }
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 30,),
                 inputFild(
                     width, 70, "Email",false,
@@ -146,7 +146,7 @@ class _UserCreateState extends State<UserCreate> {
                       });
                     }
                 ),
-            
+
                 const SizedBox(height: 30,),
                 inputFild(
                     width, 70, "Enter your password",true,
@@ -156,23 +156,23 @@ class _UserCreateState extends State<UserCreate> {
                         return " password is Empty";
                       }
                       if(value.toString().length<5){
-                         return "password should be morthan 5 character";
+                        return "password should be morthan 5 character";
                       }
                       if (!specialChar.hasMatch(value.toString())) {
                         return "password should has special character";
                       }
-                            setState(() {
-                              _pass=value.toString();
-                            });
-                        return null;
-                      },
+                      setState(() {
+                        _pass=value.toString();
+                      });
+                      return null;
+                    },
                         (text){
-                        setState(() {
-                          _pass=text.toString();
-                        });
+                      setState(() {
+                        _pass=text.toString();
+                      });
                     }
                 ),
-            
+
                 const SizedBox(height: 30,),
                 inputFild(
                     width, 70, "Comfrome your password",true,
@@ -191,9 +191,9 @@ class _UserCreateState extends State<UserCreate> {
                       });
                     }
                 ),
-            
-               SizedBox(height: heghit/45,),
-            
+
+                SizedBox(height: heghit/45,),
+
                 ButtonWidget(ctx: context,
                     buttonName:"Create Account",
                     buttonFontSize: 16,
@@ -204,44 +204,44 @@ class _UserCreateState extends State<UserCreate> {
                     buttonHeight:50,
                     buttonRadius:8,
                     validationStates:()async{
-                        if(_formKey.currentState!.validate()){
-                           _formKey.currentState!.save();
-                           var result= await AuthService().signUpWithEmailAndPassword(
-                               _nameFrist,
-                               _nameLast,
-                               _email,
-                               _comfromPass
-                           );
-                           if(result.isNotEmpty){
-                               setState(() {
-                                 showError(
-                                     context,
-                                     "succsesful create user",
-                                     "User Create",
-                                     Icons.credit_score, Colors.green,
-                                     Colors.white,
-                                     Colors.white
-                                 );
-                                 //navigate page
-                                 Navigator.pop(context);
-                               });
+                      if(_formKey.currentState!.validate()){
+                        _formKey.currentState!.save();
+                        var result= await AuthService().signUpWithEmailAndPassword(
+                            _nameFrist,
+                            _nameLast,
+                            _email,
+                            _comfromPass
+                        );
+                        if(result.isNotEmpty){
+                          setState(() {
+                            showError(
+                                context,
+                                "succsesful create user",
+                                "User Create",
+                                Icons.credit_score, Colors.green,
+                                Colors.white,
+                                Colors.white
+                            );
+                            //navigate page
+                            Navigator.pop(context);
+                          });
 
-                           }else{
-                             setState(() {
-                               showError(
-                                   context,
-                                   "user is not create",
-                                   "User Create",
-                                   Icons.credit_score, Colors.red,
-                                   Colors.white,
-                                   Colors.white
-                               );
-                             });
-                           }
-
+                        }else{
+                          setState(() {
+                            showError(
+                                context,
+                                "user is not create",
+                                "User Create",
+                                Icons.credit_score, Colors.red,
+                                Colors.white,
+                                Colors.white
+                            );
+                          });
                         }
+
+                      }
                     })
-            
+
               ],
             ),
           ),
