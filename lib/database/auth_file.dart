@@ -30,17 +30,17 @@ class AuthService{
       // User registration successful
       User? user = userCredential.user;
       if(user!=null){
-         Map<String,dynamic>data={
-           'frist_name':frist,
-           'last_name':last,
-           'email':email
-         };
-         collectionUser.add(data).then((DocumentReference documentRef){
-           print("data save firebase:$documentRef");
-         }).catchError((onError){
-           print("Error data save:$onError");
-         });
-         return user.email.toString();
+        Map<String,dynamic>data={
+          'frist_name':frist,
+          'last_name':last,
+          'email':email
+        };
+        collectionUser.add(data).then((DocumentReference documentRef){
+          print("data save firebase:$documentRef");
+        }).catchError((onError){
+          print("Error data save:$onError");
+        });
+        return user.email.toString();
       }
       return user.toString();
     } catch (e) {
@@ -57,8 +57,8 @@ class AuthService{
       );
       return userCredential.user;
     }catch(e){
-       print("Error sing in ");
-       return null;
+      print("Error sing in ");
+      return null;
     }
 
   }
@@ -69,16 +69,16 @@ class AuthService{
   }
 
   //sing out function
- void logOut(){
+  void logOut(){
     _auth.signOut();
-}
+  }
 //is login or not check
   Future<bool> isLoginCheck() async {
     final Completer<bool> completer = Completer<bool>();
-     _auth.authStateChanges().listen((User? user) {
+    _auth.authStateChanges().listen((User? user) {
       if (user != null) {
         completer.complete(true);
-       // isLogin=true;
+        // isLogin=true;
       } else {
         completer.complete(false);
         //isLogin=false;
@@ -88,9 +88,9 @@ class AuthService{
   }
 
   // upload the data file to firebase
-Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
+  Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
     await assetsDataNoEmpty.add(assetsData);
-}
+  }
   //upload the location json file
   Future<void>uploadLocation(Map<String,dynamic>location)async{
     await collectionReference.add(location);
@@ -107,91 +107,91 @@ Future<void>uploadUserDataFormJson(Map<String,dynamic>assetsData)async{
 
 
 //fetch data assets collection.........................
-Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
+  Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
 
-  try {
-       QuerySnapshot<Map<String, dynamic>> snapshot;
-       QuerySnapshot<Map<String, dynamic>>verifySnap;
-       //get caret year..............
-       DateTime curent=DateTime.now();
-       String curentYear=curent.year.toString();
-        if(itemOption=='New code'){
-            snapshot = await _db
-              .collection("assetsCollection")
-              .where("NewCode-last",isEqualTo:assetsId.toString())
-              .get();
-            //get data vrefiy table
-            verifySnap=await _db.
-            collection("verify test").
-            where("new Code last",isEqualTo:assetsId).
-            where("curentYear",isEqualTo:curentYear).get();
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot;
+      QuerySnapshot<Map<String, dynamic>>verifySnap;
+      //get caret year..............
+      DateTime curent=DateTime.now();
+      String curentYear=curent.year.toString();
+      if(itemOption=='New code'){
+        snapshot = await _db
+            .collection("assetsCollection")
+            .where("NewCode-last",isEqualTo:assetsId.toString())
+            .get();
+        //get data vrefiy table
+        verifySnap=await _db.
+        collection("verify test").
+        where("new Code last",isEqualTo:assetsId).
+        where("curentYear",isEqualTo:curentYear).get();
 
-        }else if(itemOption=='Proposed Code'){
-           snapshot = await _db
-              .collection("assetsCollection")
-              .where("ProposedCode-Last", isEqualTo:assetsId.toString())
-              .get();
+      }else if(itemOption=='Proposed Code'){
+        snapshot = await _db
+            .collection("assetsCollection")
+            .where("ProposedCode-Last", isEqualTo:assetsId.toString())
+            .get();
 
-               //get data vrefiy table
-               verifySnap=await _db.
-               collection("verify test").
-               where("popuseCode last",isEqualTo:assetsId).
-               where("curentYear",isEqualTo:curentYear).get();
+        //get data vrefiy table
+        verifySnap=await _db.
+        collection("verify test").
+        where("popuseCode last",isEqualTo:assetsId).
+        where("curentYear",isEqualTo:curentYear).get();
 
-        }else if(itemOption=='Old code'){
+      }else if(itemOption=='Old code'){
 
-            snapshot = await _db
-              .collection("assetsCollection")
-              .where("Oldcode-last", isEqualTo:assetsId.toString())
-              .get();
+        snapshot = await _db
+            .collection("assetsCollection")
+            .where("Oldcode-last", isEqualTo:assetsId.toString())
+            .get();
 
-            //get data vrefiy table
-            verifySnap=await _db.
-            collection("verify test").
-            where("old Code last",isEqualTo:assetsId).
-            where("curentYear",isEqualTo:curentYear).get();
-         // print("new daata${snapshot.docs.length}");
-            print("test 124");
-        }else {
+        //get data vrefiy table
+        verifySnap=await _db.
+        collection("verify test").
+        where("old Code last",isEqualTo:assetsId).
+        where("curentYear",isEqualTo:curentYear).get();
+        // print("new daata${snapshot.docs.length}");
+        print("test 124");
+      }else {
 
-             snapshot = await _db
-              .collection("assetsCollection")
-              .where("Barcode",isEqualTo:int.parse(assetsId))
-              .get();
+        snapshot = await _db
+            .collection("assetsCollection")
+            .where("Barcode",isEqualTo:int.parse(assetsId))
+            .get();
 
-             //get data vrefiy table
-             verifySnap=await _db.
-             collection("verify test").
-             where("barcode",isEqualTo:assetsId).
-             where("curentYear",isEqualTo:curentYear).get();
+        //get data vrefiy table
+        verifySnap=await _db.
+        collection("verify test").
+        where("barcode",isEqualTo:assetsId).
+        where("curentYear",isEqualTo:curentYear).get();
 
         //  print("new daata${snapshot.docs.length}");
 
 
-        }
+      }
 
 
-    if (snapshot.docs.isNotEmpty && verifySnap.docs.isEmpty) {
-      print("test 145");
-      return  Future.value( snapshot.docs.map((document) {
-        return AssetsVarify(
-            assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
-            mainAssetsType:document['Asset Type'] ,
-            itemCode:document['Barcode'].toString() ,
-            Division:document['Division'],
-            location:document['Location'],
-            newCodeLast: document['NewCode-last'],
-            oldCodeLast: document['Oldcode-last'],
-            propuseCodeLast: document['ProposedCode-Last'],
-            newCode:document['New code'],
-            oldCode: document['Old code'],
-            propuseCode: document['Proposed Code'],
-            isNotverifyCurentYear: true
+      if (snapshot.docs.isNotEmpty && verifySnap.docs.isEmpty) {
+        print("test 145");
+        return  Future.value( snapshot.docs.map((document) {
+          return AssetsVarify(
+              assetsItemeName: document["Description of Articles 2 (Sub item of main item)"],
+              mainAssetsType:document['Asset Type'] ,
+              itemCode:document['Barcode'].toString() ,
+              Division:document['Division'],
+              location:document['Location'],
+              newCodeLast: document['NewCode-last'],
+              oldCodeLast: document['Oldcode-last'],
+              propuseCodeLast: document['ProposedCode-Last'],
+              newCode:document['New code'],
+              oldCode: document['Old code'],
+              propuseCode: document['Proposed Code'],
+              isNotverifyCurentYear: true
+          );
+        }).toList()
         );
-      }).toList()
-      );
 
-    } else if(verifySnap.docs.isNotEmpty&&verifySnap.docs.isNotEmpty){
+      } else if(verifySnap.docs.isNotEmpty&&verifySnap.docs.isNotEmpty){
 
         return Future.value( snapshot.docs.map((document) {
           return AssetsVarify(
@@ -211,30 +211,30 @@ Future<List<AssetsVarify>>getAssets(String assetsId ,String itemOption)async{
           );
         }).toList()
         );
-    } else {
-      // Handle the case where no matching document is found
+      } else {
+        // Handle the case where no matching document is found
+        return Future.value([]); // Or throw an exception, or handle it as appropriate
+      }
+    } catch (e) {
+      print("Error in getAssets: $e");
+      // Handle the error or rethrow it based on your requirements
       return Future.value([]); // Or throw an exception, or handle it as appropriate
     }
-  } catch (e) {
-    print("Error in getAssets: $e");
-    // Handle the error or rethrow it based on your requirements
-    return Future.value([]); // Or throw an exception, or handle it as appropriate
   }
-}
 
 //feach location collection.................
-Future<List<AssetsLocation>>getLocation(String locationCode)async{
+  Future<List<AssetsLocation>>getLocation(String locationCode)async{
     try{
       var snapShot= await _db.collection("location").
       where("Location Code",isEqualTo: locationCode).get();
 
       if(snapShot.docs.isNotEmpty){
-          return snapShot.docs.map((value){
-               return AssetsLocation(
-                   locationId:value["L_ID"],
-                   locationCode:value["Location Code"]
-               );
-         }).toList();
+        return snapShot.docs.map((value){
+          return AssetsLocation(
+              locationId:value["L_ID"],
+              locationCode:value["Location Code"]
+          );
+        }).toList();
       }else{
         return [];
       }
@@ -242,22 +242,22 @@ Future<List<AssetsLocation>>getLocation(String locationCode)async{
       print("Error:$e");
       return [];
     }
-}
+  }
 //verify data table.......................
-Future<void>verifyTable(
-    String assetsCode,
-    String location,
-    String remarks,
-    String states,
-    String itemNewCode,
-    String itemOldCode,
-    String itemPropuseCode,
-    String errorType,
-    String itemName,
-    String newCode,
-    String oldCode,
-    String propuseCode,
-    String division)async{
+  Future<void>verifyTable(
+      String assetsCode,
+      String location,
+      String remarks,
+      String states,
+      String itemNewCode,
+      String itemOldCode,
+      String itemPropuseCode,
+      String errorType,
+      String itemName,
+      String newCode,
+      String oldCode,
+      String propuseCode,
+      String division)async{
     String? userId=getUserId();
     DateTime curent=DateTime.now();
     String curentYear=curent.year.toString();
@@ -280,7 +280,7 @@ Future<void>verifyTable(
       'curentYear':curentYear,
       'user id':userId,
     };
-    
+
     collectionVerfyTableTest.add(data).then((DocumentReference documentRef){
       print("data save firebase:$documentRef");
     }).catchError((onError){
@@ -288,7 +288,7 @@ Future<void>verifyTable(
     });
 
 
-}
+  }
 //add issues  data for table
   Future<void>addIssues(
       String issueType,
