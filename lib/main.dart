@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,9 +43,6 @@ Future<void> main()async {
     )
   );
 
-
-
-
 }
 
 
@@ -60,13 +56,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
    bool isLoginRememberUser=false;
    bool isLoginRememberAdmin=false;
-   //bool checkLogOut= AuthService().isUserLoggedIn() as bool;
   final FirebaseAuth auth=FirebaseAuth.instance;
   final FirebaseFirestore _db=FirebaseFirestore.instance;
   final CollectionReference collectionUser=FirebaseFirestore.instance.collection('User');
 
 
-   void checkLogin() async{
+  Future<void> checkLogin()async{
      print("call back..........");
 
        auth.authStateChanges().listen((User? user) {
@@ -105,18 +100,16 @@ class _MyAppState extends State<MyApp> {
      });
    }
 
+
+
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     checkLogin();
-
-
   }
   @override
   Widget build(BuildContext context) {
-
-   // isLoginRemember=Provider.of<IsLoginRemember>(context,listen: false).value;
     return MaterialApp(
       theme: ThemeData(
         colorScheme:ColorScheme.fromSeed(seedColor: colorPlate1),
@@ -129,6 +122,7 @@ class _MyAppState extends State<MyApp> {
           )
         )
       ),
+
      home: isLoginRememberUser?const DashBord():(isLoginRememberAdmin?const AdminDsh():MainScreen()),
       // routes table
       routes: {
