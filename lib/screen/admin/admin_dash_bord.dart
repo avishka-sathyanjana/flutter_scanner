@@ -5,6 +5,7 @@ import '../../widget/drawer.dart';
 import '/style_varible/style_screen.dart';
 import '/widget/grid_card.dart';
 import 'user_create_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminDsh extends StatefulWidget {
   static const String addminRoute="/admin-dash";
@@ -14,9 +15,39 @@ class AdminDsh extends StatefulWidget {
   State<AdminDsh> createState() => _AdminDshState();
 }
 
-class _AdminDshState extends State<AdminDsh> {
-
+class _AdminDshState extends State<AdminDsh>with WidgetsBindingObserver {
+  final int _selectIndex=1;
   final GlobalKey<ScaffoldState> _scaffoldState=GlobalKey<ScaffoldState>();
+
+
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   // _loadState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _saveState();
+    }
+  }
+
+
+  Future<void>_saveState()async{
+     SharedPreferences preferences= await SharedPreferences.getInstance();
+     await preferences.setInt('selectType',_selectIndex);
+  }
+
+
 
 
   @override
@@ -35,6 +66,7 @@ class _AdminDshState extends State<AdminDsh> {
         await showConfirmationDialog(context, "Exit","Do you want to exit !");
         if(dilogState){
           //AuthService().logOut();
+          _saveState();
           SystemNavigator.pop();
           dilogState=false;
         }

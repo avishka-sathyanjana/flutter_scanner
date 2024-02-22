@@ -48,6 +48,7 @@ dependencies:
 #  downloads_path_provider_28: ^0.1.2
 #  downloads_path_provider: ^0.1.2
   lecle_downloads_path_provider: ^0.0.2+8
+  shared_preferences: ^2.2.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -93,7 +94,7 @@ flutter:
 #     - assets/json_file/data.json
 #     - assets/json_file/location.json
 #     - assets/json_file/AssetListDB.json
-     - assets/json_file/AssetListDBwithNoEmplty.json
+#     - assets/json_file/AssetListDBwithNoEmplty.json_file
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

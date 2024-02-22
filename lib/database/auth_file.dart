@@ -33,7 +33,8 @@ class AuthService{
         Map<String,dynamic>data={
           'frist_name':frist,
           'last_name':last,
-          'email':email
+          'email':email,
+          'type':'user'
         };
         collectionUser.add(data).then((DocumentReference documentRef){
           print("data save firebase:$documentRef");

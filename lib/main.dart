@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'style_varible/style_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/dash_bord_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isLoginRememberUser=false;
   bool isLoginRememberAdmin=false;
+  int  loginState=0;
   final FirebaseAuth auth=FirebaseAuth.instance;
   final FirebaseFirestore _db=FirebaseFirestore.instance;
   final CollectionReference collectionUser=FirebaseFirestore.instance.collection('User');
@@ -100,13 +102,22 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void>checkUser()async{
+    SharedPreferences preferences=await SharedPreferences.getInstance();
+    setState(() {
+        loginState=preferences.getInt('selectType')?? 0;
+        print("state$loginState");
+    });
+  }
+
 
 
   @override
   void initState(){
     // TODO: implement initState
     super.initState();
-    checkLogin();
+    //checkLogin();
+    checkUser();
   }
   @override
   Widget build(BuildContext context) {
@@ -123,7 +134,8 @@ class _MyAppState extends State<MyApp> {
           )
       ),
 
-      home: isLoginRememberUser?const DashBord():(isLoginRememberAdmin?const AdminDsh():MainScreen()),
+     // home:isLoginRememberUser?const DashBord():(isLoginRememberAdmin?const AdminDsh():MainScreen()),
+      home: loginState==1?const AdminDsh():(loginState==2?const DashBord():MainScreen()),
       // routes table
       routes: {
         MainScreen.mainScreenPageRoute:(ctx)=>MainScreen(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_barcode_qrcode_scanner/screen/qr_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/widget/grid_card.dart';
 import '/widget/drawer.dart';
 import '/style_varible/style_screen.dart';
@@ -18,7 +19,8 @@ class DashBord extends StatefulWidget {
   State<DashBord> createState() => _DashBordState();
 }
 
-class _DashBordState extends State<DashBord> {
+class _DashBordState extends State<DashBord> with WidgetsBindingObserver{
+  final int _selectIndex=2;
   final GlobalKey<ScaffoldState> _scaffoldState=GlobalKey<ScaffoldState>();
  
 
@@ -32,6 +34,34 @@ class _DashBordState extends State<DashBord> {
       }
 
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _saveState();
+    }
+  }
+
+
+  Future<void>_saveState()async{
+    SharedPreferences preferences= await SharedPreferences.getInstance();
+    await preferences.setInt('selectType',_selectIndex);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +94,7 @@ class _DashBordState extends State<DashBord> {
         await showConfirmationDialog(context, "Exit","Do you want to exit !");
         if(dilogState){
           //AuthService().logOut();
+          _saveState();
           SystemNavigator.pop();
           dilogState=false;
         }

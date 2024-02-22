@@ -7,6 +7,7 @@ import '/database/auth_file.dart';
 import '/screen/main_screen.dart';
 import '/provider/location_state.dart';
 import '/model_data/login_remember.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class DrawerScreen extends StatefulWidget {
 
   DrawerScreen({super.key});
@@ -52,13 +53,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
   }
 
   void Logout()async{
+    print("line 56");
+     SharedPreferences preferences =await SharedPreferences.getInstance();
+    //  await preferences.remove('selectType');
+    print("line 59");
 
-    if(await AuthService().isUserLoggedIn()) {
       setState(() {
+        print('line 62');
+        preferences.setInt('selectType', 0);
         AuthService().logOut();
          Navigator.pushReplacementNamed(context, MainScreen.mainScreenPageRoute);
       });
-    }
+
+
   }
 
   @override
